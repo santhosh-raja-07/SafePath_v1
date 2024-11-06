@@ -1,0 +1,46 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+.main-container{
+    background-color: #e7ecf1;
+    width: 55rem;
+    height: 25rem;
+    text-align: center;
+    padding-top: 6rem;
+    border-radius: 1rem;
+    margin-top: 15rem;
+}
+body{
+    display: flex;
+    justify-content: center;
+}
+.btn-1 button,.btn-2 button{
+    background-color: #0097b2;
+    border: none;
+    color: white;
+    padding: 10px 55px 10px 55px;
+    margin-top: 2rem;
+    cursor: pointer;
+    border-radius: 2em;
+    font-size: medium;
+}
+.btn-2 button{
+    padding: 10px 45px 10px 45px;
+}
+
+/* switch */
+
+.anonymous-switch{
+    display: none;
+}
+.form-switch{
+    margin-left: 22em;
+    margin-top: 1em;
+}
+.checkbox{
+    font-size: x-large;
+}
+
+

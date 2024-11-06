@@ -1,0 +1,168 @@
+{
+  "laws": [
+    {
+      "name": "Indian Penal Code (IPC)",
+      "year": 1860,
+      "description": "Covers various offenses against women including rape, acid attacks, assault, and harassment.",
+      "sections": [
+        {
+          "section": "354",
+          "description": "Assault or criminal force to woman with intent to outrage her modesty"
+        },
+        {
+          "section": "354A",
+          "description": "Sexual harassment including unwelcome advances, sexual favors, or pornography"
+        },
+        {
+          "section": "354B",
+          "description": "Assault with intent to disrobe"
+        },
+        {
+          "section": "354C",
+          "description": "Voyeurism - capturing or distributing private images of a woman"
+        },
+        {
+          "section": "354D",
+          "description": "Stalking (both online and offline)"
+        },
+        {
+          "section": "509",
+          "description": "Insulting the modesty of a woman through word, gesture, or act"
+        },
+        {
+          "section": "376",
+          "description": "Rape and punishment based on severity of the crime"
+        },
+        {
+          "section": "498A",
+          "description": "Cruelty by husband or relatives"
+        },
+        {
+          "section": "326A",
+          "description": "Acid attacks"
+        }
+      ]
+    },
+    {
+      "name": "Protection of Women from Domestic Violence Act",
+      "year": 2005,
+      "description": "Provides protection to women against various forms of domestic violence.",
+      "sections": [
+        {
+          "section": "Broad Definition",
+          "description": "Covers physical, emotional, sexual, economic, or verbal abuse"
+        },
+        {
+          "section": "Protection Officers",
+          "description": "Government-appointed officers to assist women with legal and support services"
+        },
+        {
+          "section": "Right to Reside",
+          "description": "Ensures woman's right to reside in shared household"
+        }
+      ]
+    },
+    {
+      "name": "Sexual Harassment of Women at Workplace Act",
+      "year": 2013,
+      "description": "Protects women from sexual harassment at workplace and mandates grievance mechanisms.",
+      "sections": [
+        {
+          "section": "Internal Complaints Committee (ICC)",
+          "description": "Committee to address harassment complaints in workplaces with 10+ employees"
+        },
+        {
+          "section": "Local Complaints Committee (LCC)",
+          "description": "District-level committee for small workplaces or in cases against an employer"
+        }
+      ]
+    },
+    {
+      "name": "Protection of Children from Sexual Offences (POCSO) Act",
+      "year": 2012,
+      "description": "Protects children from sexual assault, harassment, and pornography.",
+      "sections": [
+        {
+          "section": "Mandatory Reporting",
+          "description": "Requires anyone aware of abuse to report it"
+        },
+        {
+          "section": "Special Courts",
+          "description": "Designated courts to ensure child-friendly and speedy trials"
+        }
+      ]
+    },
+    {
+      "name": "Indecent Representation of Women (Prohibition) Act",
+      "year": 1986,
+      "description": "Prevents degrading portrayal of women in media and advertisements.",
+      "sections": [
+        {
+          "section": "Prohibition of Indecent Representation",
+          "description": "Prohibits depiction of women that is degrading or likely to corrupt public morals"
+        }
+      ]
+    },
+    {
+      "name": "Dowry Prohibition Act",
+      "year": 1961,
+      "description": "Prohibits the giving and taking of dowry and addresses harassment or deaths related to dowry.",
+      "sections": [
+        {
+          "section": "304B (Dowry Death)",
+          "description": "Punishment for suspicious deaths due to dowry within 7 years of marriage"
+        }
+      ]
+    },
+    {
+      "name": "Maternity Benefit Act",
+      "year": 1961,
+      "description": "Provides maternity leave, medical benefits, and workplace protections for women.",
+      "sections": [
+        {
+          "section": "Maternity Leave",
+          "description": "26 weeks of paid leave for childbirth"
+        },
+        {
+          "section": "Crèche Facility",
+          "description": "Mandatory for companies with 50+ employees"
+        }
+      ]
+    },
+    {
+      "name": "National Commission for Women Act",
+      "year": 1990,
+      "description": "Establishes the National Commission for Women to monitor women's rights and suggest reforms.",
+      "sections": [
+        {
+          "section": "Inquiry Powers",
+          "description": "Investigates complaints and inspects places where women are lodged"
+        }
+      ]
+    },
+    {
+      "name": "Equal Remuneration Act",
+      "year": 1976,
+      "description": "Mandates equal pay for equal work and non-discrimination in employment for women.",
+      "sections": [
+        {
+          "section": "Equal Opportunities",
+          "description": "Equal pay and non-discrimination in hiring, promotions, and training"
+        }
+      ]
+    },
+    {
+      "name": "Muslim Women (Protection of Rights on Marriage) Act",
+      "year": 2019,
+      "description": "Outlaws the practice of instant triple talaq and provides legal protection to Muslim women.",
+      "sections": [
+        {
+          "section": "Triple Talaq Offense",
+          "description": "Declares instant triple talaq as illegal and void"
+        }
+      ]
+    }
+  ]
+}
+
+  

@@ -1,0 +1,218 @@
+*{
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    background-color: #e7ecf1;
+    color: black;
+    padding: 10px;
+    box-shadow: black 2px 4px 15px 0px;
+}
+header{
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.spanname{
+    color: #0097b2;
+}
+h1{
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+.header a{
+    text-decoration: none;
+    color: black;
+    font-weight: bolder;
+}
+.navbar ul {
+    display: flex; 
+    gap: 4rem;
+    list-style: none;
+}
+.nav{
+    display: flex; 
+    gap: 4rem;
+    list-style: none;
+    padding: 5px;
+}
+.favicon{
+    width: 2rem;
+    height: 2rem;
+    background-color: #0097b2;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+.main-img img{
+    width: 65rem;
+    height: 30rem;
+    border-radius: 5rem;
+}
+.main-img{
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+.justice-btn{
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    position: absolute;
+    top: 37.5rem;
+}
+.justice-btn button{
+    color: white;
+    background-color: #0097b2;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px 8px 12px;
+    border-radius: 2rem;
+    font-size: smaller;
+}
+.images{
+    /* max-width:inherit; */
+    /* object-fit:contain; */
+    display: flex;
+    justify-content: center;
+}
+.images img{
+    width: 70%;
+    height: auto;
+    border-radius: 2rem;
+    margin-top: 2rem; 
+    margin-left: 12rem;
+}
+.main-topic{
+    color: #0097b2;
+}
+.read-btn button{
+    background-color: #0097b2;
+    color: white; 
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px 8px 12px;
+    border-radius: 7px;
+}
+.sub-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+}
+.head-and-btn{
+    display: inline-block;
+    justify-content: center;
+    margin: 8rem 15rem 0rem 0rem ;
+}
+.footer{
+    width: 100%;
+    height: 15vh;
+    background-color: #0097b2;
+    margin-top: 2rem;
+}
+
+/* Login-page */
+
+.login-page{
+    background-color: white;
+    border: solid black;
+    width: 21rem;
+    height: 18rem; 
+    border-radius: 1rem;
+    text-align: center;
+    z-index: 4;
+    position: absolute;
+    top: 15rem;
+    left: 35rem;
+    display: none;
+}
+.body{
+    opacity: 1;
+}
+#x-mark1{
+    cursor: pointer;
+}
+.xmark{
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    font-size:x-large;
+}
+.login-page input{
+    margin-top: 2rem;
+    padding: 10px 40px 10px 40px;
+    background-color:#e7ecf1;
+    border-radius: 1rem;
+    border: none;
+    text-align: center;
+}
+.sign-up-link{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.Login-btn button{
+    padding: 10px 25px 10px 25px;
+    border-radius: 2em;
+    border: none;
+    background-color: #0097b2;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+.sign-up-link a{
+    text-decoration: none;
+    color: black;
+}
+::placeholder{
+    color: black;
+}
+#sign-up{
+    cursor: pointer;
+}
+span{
+    color: red;
+}
+
+/* SIGN-UP PAGE */
+
+.sign-up-page{
+    background-color: white;
+    border: solid black;
+    width: 21rem;
+    height: 20rem; 
+    border-radius: 1rem;
+    text-align: center;
+    z-index: 4;
+    position: absolute;
+    top: 15rem;
+    left: 35rem;
+    display: none;
+}
+.body{
+    opacity: 1;
+}
+#x-mark2{
+    cursor: pointer;
+}
+.sign-up-page input{
+    margin-top: 1.5rem;
+    padding: 10px 40px 10px 40px;
+    background-color:#e7ecf1;
+    border-radius: 1rem;
+    border: none;
+    text-align: center;
+}
+.Sign-up-btn button{
+    padding: 10px 25px 10px 25px;
+    border-radius: 2em;
+    border: none;
+    background-color: #0097b2;
+    color: black;
+    font-weight: bold;
+    margin-top: 1.5rem;
+    cursor: pointer;
+}
