@@ -7,6 +7,14 @@ body{
    background-color: white;
    color: #0097b2;
 }
+button {
+    transition: transform .5s;
+  }
+  
+button:hover {
+    transform: scale(1.1);
+    box-shadow: black 2px 2px 5px ;
+  }
 .homebtn{
     font-size: xx-large;
     margin-left: 1rem;
@@ -22,7 +30,6 @@ body{
     margin: 10px 0;
     border-radius: 4px;
     background-color: #f9f9f9;
-
 }
 strong{
     color: black;
@@ -31,6 +38,12 @@ strong{
     text-align: center;
     margin-top: 100px;
 }
-.list{
-    list-style-type: none;
+.result{
+    border: white solid;
+    box-shadow: black 3px 3px 12px ;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.result h3,h4{
+    color: black;
 }

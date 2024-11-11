@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (checkbox.checked) {
             document.querySelector(".anonymous-switch").style.display = "none";
             alert("ANONYMOUS ACTIVATED");
+            
         }
         },500)
     }
@@ -19,10 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
             checkbox.style.backgroundColor = '#0097b2'; // Replace with desired color
             checkbox.style.borderColor = '#0097b2'; // Optional
             anonymousActivated(); // Call the function when activated
+
         } else {
             // Change the color when toggled off
             checkbox.style.backgroundColor = 'white'; // Replace with desired color
-            checkbox.style.borderColor = 'black'; // Optional
+            checkbox.style.borderColor = 'white'; // Optional
         }
     });
 });

@@ -1,93 +1,29 @@
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getDatabase, ref, update, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+const law = [];
+fetch("/assets/data/law.json")
+    .then(res => res.json())
+    .then(datas => {
+        law.push(datas);
+        const laws = law[0].laws;
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBGrcRVf1Kktffn_fYl_CtSvoCsHUK2eTg",
-    authDomain: "safepath-87ebf.firebaseapp.com",
-    projectId: "safepath-87ebf",
-    storageBucket: "safepath-87ebf.firebasestorage.app",
-    messagingSenderId: "904889745500",
-    appId: "1:904889745500:web:c2404615bc6e86c8bea699",
-    measurementId: "G-RYFJ9DQFER"
-};
+        for (let i = 0; i < laws.length; i++) {
+            let mainDiv = document.getElementById("result");
+            let div1 = document.createElement("div");
+            div1.innerHTML = `
+                <h3>Name: ${laws[i].name} Year: ${laws[i].year}</h3>
+                <h5>Description: ${laws[i].description}</h5>`;
+            let sectionsDiv = document.createElement("div");
+            for (let j = 0; j < laws[i].sections.length; j++) {
+                let sectionDiv = document.createElement("div");
+                sectionDiv.innerHTML = `
+                    <h4>Section: ${laws[i].sections[j].section}</h4>
+                    <h5>Description: ${laws[i].sections[j].description}</h5>`;
+                
+                sectionsDiv.appendChild(sectionDiv); 
+            }
+            div1.classList.add("result");
+            div1.appendChild(sectionsDiv);
+            mainDiv.appendChild(div1); 
+        }
+    })
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-
-async function setData() {
-    try {
-        // Parse JSON data
-        // const jsonData = JSON.parse();
-
-        // Define the path where you want to save the JSON data in Firebase
-        const dataRef = ref(database, '/assets/data/law.json'); // Replace with your desired path
-
-        // Use set to upload the JSON data
-        await set(console.log(dataRef.json()));
-    } catch (error) {
-        console.error('Error uploading JSON:', error);
-    }
-};
-setData();
-
-
-
-
-// let laws = [];
-
-// // Fetch JSON data
-// async function fetchLaws() {
-//     try {
-//         const response = await fetch('/assets/data/law.json'); // Update this to your actual JSON file path
-//         const data = await response.json();
-//         laws = data.laws; // Store the array of laws
-//     } catch (error) {
-//         console.error('Error fetching laws:', error);
-//     }
-// }
-
-// // Search function
-// function searchLaws() {
-//     const input = document.getElementById('searchInput').value.toLowerCase();
-//     const resultDiv = document.getElementById('result');
-    
-//     // Clear previous results
-//     resultDiv.innerHTML = '';
-
-//     // Filter laws based on the search input
-//     const filteredLaws = laws.filter(law => {
-//         const lawName = law.name.toLowerCase();
-//         const lawDescription = law.description.toLowerCase();
-//         return lawName.includes(input) || lawDescription.includes(input);
-//     });
-
-//     // Display results
-//     if (filteredLaws.length > 0) {
-//         filteredLaws.forEach(law => {
-//             const lawElement = document.createElement('div');
-//             lawElement.classList.add('law-item');
-//             lawElement.innerHTML = `<h3>${law.name} (${law.year})</h3><p>${law.description}</p>`;
-
-//             // Display sections if they exist
-//             if (law.sections && law.sections.length > 0) {
-//                 const sectionList = document.createElement('ul');
-//                 law.sections.forEach(section => {
-//                     const sectionItem = document.createElement('li');
-//                     sectionItem.innerHTML = `Section ${section.section}: ${section.description}`;
-//                     sectionList.appendChild(sectionItem);
-//                     sectionList.setAttribute("class","list");
-//                 });
-//                 lawElement.appendChild(sectionList);
-//             }
-
-//             resultDiv.appendChild(lawElement);
-//         });
-//     } else {
-//         resultDiv.innerHTML = '<p>No results found.</p>';
-//     }
-// }
-
-// // Call fetchLaws to get the data when the page loads
-// window.onload = fetchLaws;

@@ -42,5 +42,17 @@ body{
 .checkbox{
     font-size: x-large;
 }
-
-
+.homebtn{
+    font-size: xx-large;
+    margin-left: 1rem;
+    margin-top: 0.7rem;
+    color: black;
+}
+button {
+    transition: transform .5s;
+  }
+  
+button:hover {
+    transform: scale(1.1);
+    box-shadow: black 2px 2px 5px ;
+  }

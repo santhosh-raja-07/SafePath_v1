@@ -2,6 +2,7 @@
     margin: 0%;
     padding: 0%;
     box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .header{
     display: flex;
@@ -113,14 +114,21 @@ h1{
     background-color: #0097b2;
     margin-top: 2rem;
 }
+button {
+    transition: transform .5s;
+  }
+  
+button:hover {
+    transform: scale(1.1);
+    box-shadow: black 2px 2px 5px ;
+  }
 
 /* Login-page */
 
 .login-page{
     background-color: white;
-    border: solid black;
     width: 21rem;
-    height: 18rem; 
+    height: 19rem; 
     border-radius: 1rem;
     text-align: center;
     z-index: 4;
@@ -128,9 +136,11 @@ h1{
     top: 15rem;
     left: 35rem;
     display: none;
+    box-shadow: black 3px 3px 10px 1px;
 }
 .body{
-    opacity: 1;
+    /* filter: brightness(100%); */
+opacity: 1;
 }
 #x-mark1{
     cursor: pointer;
@@ -181,9 +191,9 @@ span{
 
 .sign-up-page{
     background-color: white;
-    border: solid black;
-    width: 21rem;
-    height: 20rem; 
+    box-shadow: black 3px 3px 10px 1px;
+    width: 23rem;
+    height: 23rem; 
     border-radius: 1rem;
     text-align: center;
     z-index: 4;
@@ -199,7 +209,7 @@ span{
     cursor: pointer;
 }
 .sign-up-page input{
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     padding: 10px 40px 10px 40px;
     background-color:#e7ecf1;
     border-radius: 1rem;
@@ -214,5 +224,27 @@ span{
     color: black;
     font-weight: bold;
     margin-top: 1.5rem;
+    margin-left: 3rem;
     cursor: pointer;
 }
+#login-link{
+    cursor: pointer;
+    padding-left: 10px;
+}
+
+/* Translate */
+.languagebtn{
+    font-size: x-large;
+    margin-top: 5px;
+    cursor: pointer;
+}
+.translate{
+    font-size: large;
+    position: absolute;
+    right: 4.5rem;
+    top: 3rem;
+    display: none;
+}
+
+
+  
