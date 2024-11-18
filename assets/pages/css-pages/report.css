@@ -1,0 +1,74 @@
+*{
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    background-color: #e7ecf1;
+    color: black;
+    padding: 10px;
+    box-shadow: black 2px 4px 15px 0px;
+}
+header{
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.spanname{
+    color: #0097b2;
+}
+h1{
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+.header a{
+    text-decoration: none;
+    color: black;
+    font-weight: bolder;
+}
+.navbar ul {
+    display: flex; 
+    gap: 4rem;
+    list-style: none;
+}
+.nav{
+    display: flex; 
+    gap: 4rem;
+    list-style: none;
+    padding: 5px;
+}
+.favicon{
+    width: 2rem;
+    height: 2rem;
+    background-color: #0097b2;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+.languagebtn{
+    font-size: x-large;
+    margin-top: 5px;
+    cursor: pointer;
+}
+.translate{
+    font-size: large;
+    position: absolute;
+    right: 4.5rem;
+    top: 3rem;
+    display: none;
+}
+.head{
+    text-align: center;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+}
+.main-container{
+    text-align: center;
+}
+.start-check div input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+}

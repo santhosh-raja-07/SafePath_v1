@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/pages/css-pages/report.css">
+    <title>SafePath</title>
+</head>
+<body >
+    <div class="body">
+    <header>
+    <nav class="header">
+        <div>
+            <h2>Safe<span class="spanname">Path</span></h2>
+        </div>
+        <div class="navbar">
+            <ul>
+                <div class="nav">
+                    <div><i class="fa-sharp fa-solid fa-globe languagebtn"></i>
+                        <select class="translate">
+                            <option id="lang-english" value="english">English</option>
+                            <option id="lang-tamil" value="tamil">Tamil</option>
+                            <option id="lang-telugu" value="telugu">Telugu</option>
+                            <option id="lang-hindi" value="hindi">Hindi</option>
+                            <option id="lang-kanada" value="kanada">Kanadam</option>
+                        </select>
+                    </div>
+                    <li><div class="favicon"></div></li>
+                </div>
+            </ul>
+        </div>
+        </nav>
+    </header>
+</div>
+                <main >
+                    <div class="head"><h2>Report an incident</h2></div>
+                    <form class="main-container" >
+                        <div><h3>incident details</h3></div>
+                      <div class="start-check">
+                        <div><input type="checkbox" id="minor" required>MINOR</div>
+                        <div><input type="checkbox" id="Major" required>MAJOR</div>
+                    </div>
+                        <div class="reporting">
+                            <div><input type="text" placeholder="Where did this happen ?" required></div>
+                            <div><input type="text" placeholder="When did this happen ?" required></div>
+                            <div><textarea placeholder="Describe what happen..." required></textarea></div>
+                        </div>
+                        <div class="end-check">
+                            <div><h4><input type="checkbox" id="anonymous-checkbox" required>ANONYMOUS</h4></div>
+                            <div><button type="reset">CANCEL</button></div>
+                            <div><button type="submit">SEND</button></div>
+                        </div>
+                    </form>
+                </main>
+            </body>
+            <script type="module" src="/assets/pages/js.pages/translate.js"></script>
+            </html>

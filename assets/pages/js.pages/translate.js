@@ -63,6 +63,7 @@ language.addEventListener("click", () => {
         const langTamil=document.getElementById("lang-tamil");
         const langTelugu=document.getElementById("lang-telugu");
         const langHindi=document.getElementById("lang-hindi");
+        const langKanada=document.getElementById("lang-kanada");
 
         const selectedLanguage = languageSelect.value;
         setTimeout(async () => {
@@ -90,6 +91,7 @@ language.addEventListener("click", () => {
                             langTamil.textContent="Tamil";
                             langTelugu.textContent="Telugu";
                             langHindi.textContent="Hindi";
+                            langKanada.textContent="Kanada";
 
                         } else {
                             console.error("Unexpected format in translation data:", data);
@@ -117,6 +119,7 @@ language.addEventListener("click", () => {
                             langTamil.textContent="Tamil";
                             langTelugu.textContent="Telugu";
                             langHindi.textContent="Hindi";
+                            langKanada.textContent="Kanada";
                         } else {
                             console.error("Unexpected format in translation data:", data);
                         }
@@ -143,6 +146,34 @@ language.addEventListener("click", () => {
                             langTamil.textContent="Tamil";
                             langTelugu.textContent="Telugu";
                             langHindi.textContent="Hindi";
+                            langKanada.textContent="Kanada";
+                        } else {
+                            console.error("Unexpected format in translation data:", data);
+                        }
+                    } catch (error) {
+                        console.error("Error fetching translation:", error);
+                    }
+                }
+            }
+
+            else if (selectedLanguage === "kanada") {
+                const targetLanguage = "ka"; // Kannada language code
+
+                // Traverse and translate each text node
+                for (const [node, originalText] of originalTextContent.entries()) {
+                    const translateUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLanguage}&dt=t&q=${encodeURIComponent(originalText)}`;
+
+                    try {
+                        const response = await fetch(translateUrl);
+                        const data = await response.json();
+                        if (data && data[0] && data[0][0] && typeof data[0][0][0] === 'string') {
+                            const translatedText = data[0][0][0];
+                            node.nodeValue = translatedText; // Update the text node with the translated text
+                            langEnglish.textContent="English";
+                            langTamil.textContent="Tamil";
+                            langTelugu.textContent="Telugu";
+                            langHindi.textContent="Hindi";
+                            langKanada.textContent="Kanada";
                         } else {
                             console.error("Unexpected format in translation data:", data);
                         }

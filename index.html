@@ -15,21 +15,22 @@
             <h2>Safe<span class="spanname">Path</span></h2>
         </div>
         <div class="navbar">
-            <ul>
+            <ul id="handling-logout">
                 <div class="nav">
                 <li><a href="#Justice">Justice</a></li>
                 <li><a href="#Learn">Learn</a></li>
                 <li><a href="#Footer">Footer</a></li>
                 </div>
+                <li><button id="login-button">Login</button></li>
                 <div><i class="fa-sharp fa-solid fa-globe languagebtn"></i>
                     <select class="translate">
                         <option id="lang-english" value="english">English</option>
                         <option id="lang-tamil" value="tamil">Tamil</option>
                         <option id="lang-telugu" value="telugu">Telugu</option>
                         <option id="lang-hindi" value="hindi">Hindi</option>
+                        <option id="lang-kanada" value="kanada">Kanadam</option>
                     </select>
                 </div>
-                <li><div class="favicon"></div></li>
             </ul>
         </div>
     </nav>
@@ -49,7 +50,7 @@
         <div class="head-and-btn">
             <h2>Learn</h2>
             <p class="main-topic">A comprehensive guide to your rights as a woman, including laws and policies that protect you from harassment, discrimination and violence.</p>
-            <div class="read-btn"><a href="assets/pages/html-pages/Law.html"><button>Read...</button></a></div>
+            <div class="read-btn"><a href="assets/pages/html-pages/Law.html"><button id="laws" >Read...</button></a></div>
         </div>
     </div>
 
@@ -58,7 +59,7 @@
         <div class="head-and-btn">
             <h2 >Prevent</h2>
             <p class="main-topic">Learn how to spot and avoid common forms of harassment , plus practical tools and strategies for staying safe and feeling empowered in public spaces.</p>
-        <div class="read-btn"><button>Read...</button></div>
+        <div class="read-btn"><button id="prevent">Read...</button></div>
         </div>
     </div>
 
@@ -67,7 +68,7 @@
         <div class="head-and-btn">
             <h2 >Heal</h2>
             <p class="main-topic">Find self-care practices to help you heal from trauma and build resilience, including guided meditations, journaling prompts and other wellness resources.</p>
-        <div class="read-btn"><button>Read...</button></div>
+        <div class="read-btn"><button id="resilient">Read...</button></div>
     </div>
     </div>
 </div>
@@ -76,6 +77,7 @@
         <div class="footer"></div>
     </footer>
 </div>
+
 
 <form novalidate>
     <div class="login-page">
@@ -90,9 +92,9 @@
             <input type="password" id="PASSWORD" placeholder="PASSWORD" required><br>
             <span id="passwordError"></span>
         </div>
-        <div class="sign-up-link">Don’t have an account ?<span style="color:#0097b2;" id="sign-up">Sign up</span></div>
+        <div class="sign-up-link">Don’t have an account ?<div style="color:#0097b2;" id="sign-up">Sign up</div></div>
         <div class="Login-btn">
-            <button id="login-btn">Login</button>
+            <button id="login-btn" style="color: white;">Login</button>
         </div>
     </div>
 </form>
@@ -100,6 +102,11 @@
 <form novalidate>
     <div class="sign-up-page" >
         <div class="xmark"><i class="fa-solid fa-xmark" id="x-mark2"></i></div>
+        <div class="name-PH">
+            <label for="Name"></label>
+            <input type="name" id="fullname" placeholder="USERNAME" required ><br>
+            <span id="nameError"></span>
+        </div>
         <div class="email-PH">
             <label for="EMAIL"></label>
             <input type="email" id="Signup-email" placeholder="EMAIL" required ><br>
@@ -116,7 +123,8 @@
             <span id="conPassError"></span>
         </div>
         <div class="Sign-up-btn">
-            <button id="btn">Sign up</button><span id="login-link" style="color:  #0097b2;">Login</span>
+            <button id="btn" style="color: white;">Sign up</button><sapn id="login-link" style="color:  #0097b2;">Login</span>
+            
         </div>
     </div>
 </form>
@@ -124,4 +132,5 @@
 <script type="module" src="/assets/pages/js.pages/signup.js"></script>
 <script type="module" src="/assets/pages/js.pages/login.js"></script>
 <script type="module"  src="/assets/pages/js.pages/translate.js"></script>
+<script type="module" scr="/assets/pages/js.pages/data.js"></script>
 </html>

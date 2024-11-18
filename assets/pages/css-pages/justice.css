@@ -51,7 +51,6 @@ body{
 button {
     transition: transform .5s;
   }
-  
 button:hover {
     transform: scale(1.1);
     box-shadow: black 2px 2px 5px ;

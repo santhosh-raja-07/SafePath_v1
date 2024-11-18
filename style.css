@@ -32,22 +32,27 @@ h1{
 }
 .navbar ul {
     display: flex; 
-    gap: 4rem;
+    gap: 2rem;
     list-style: none;
 }
 .nav{
     display: flex; 
-    gap: 4rem;
+    gap: 2rem;
     list-style: none;
     padding: 5px;
 }
-.favicon{
-    width: 2rem;
-    height: 2rem;
-    background-color: #0097b2;
-    border-radius: 1rem;
-    cursor: pointer;
-}
+/* .favicon{
+     border: black solid;
+     background-color: black;
+     width: 8rem;
+     height: 10rem;
+     text-align: center;
+     color: #0097b2;
+     position: absolute;
+     right: 1rem;
+     top: 3rem;
+     display: none;
+} */
 .main-img img{
     width: 65rem;
     height: 30rem;
@@ -122,6 +127,15 @@ button:hover {
     transform: scale(1.1);
     box-shadow: black 2px 2px 5px ;
   }
+#login-button{
+    color: white;
+    background-color: #0097b2;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px 8px 12px;
+    border-radius: 2rem;
+    display: initial;
+}
 
 /* Login-page */
 
@@ -134,13 +148,14 @@ button:hover {
     z-index: 4;
     position: absolute;
     top: 15rem;
-    left: 35rem;
+    left: 36rem;
     display: none;
     box-shadow: black 3px 3px 10px 1px;
 }
 .body{
     /* filter: brightness(100%); */
 opacity: 1;
+
 }
 #x-mark1{
     cursor: pointer;
@@ -148,12 +163,13 @@ opacity: 1;
 .xmark{
     display: flex;
     justify-content: end;
-    margin-top: 1rem;
+    margin-top: rem;
     margin-right: 1rem;
+    margin-top: 1rem;
     font-size:x-large;
 }
 .login-page input{
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 10px 40px 10px 40px;
     background-color:#e7ecf1;
     border-radius: 1rem;
@@ -177,23 +193,20 @@ opacity: 1;
     text-decoration: none;
     color: black;
 }
-::placeholder{
-    color: black;
-}
+
 #sign-up{
     cursor: pointer;
 }
 span{
     color: red;
 }
-
 /* SIGN-UP PAGE */
 
 .sign-up-page{
     background-color: white;
     box-shadow: black 3px 3px 10px 1px;
-    width: 23rem;
-    height: 23rem; 
+    width: 25rem;
+    height: 25rem; 
     border-radius: 1rem;
     text-align: center;
     z-index: 4;
@@ -209,7 +222,7 @@ span{
     cursor: pointer;
 }
 .sign-up-page input{
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 10px 40px 10px 40px;
     background-color:#e7ecf1;
     border-radius: 1rem;
@@ -223,8 +236,8 @@ span{
     background-color: #0097b2;
     color: black;
     font-weight: bold;
-    margin-top: 1.5rem;
-    margin-left: 3rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
     cursor: pointer;
 }
 #login-link{
@@ -237,11 +250,12 @@ span{
     font-size: x-large;
     margin-top: 5px;
     cursor: pointer;
+    margin-right: 2rem;
 }
 .translate{
     font-size: large;
     position: absolute;
-    right: 4.5rem;
+    right: 0.5rem;
     top: 3rem;
     display: none;
 }
