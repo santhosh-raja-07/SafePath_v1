@@ -11,20 +11,31 @@ document.addEventListener('DOMContentLoaded', () => {
         if (checkbox.checked) {
             document.querySelector(".anonymous-switch").style.display = "none";
             alert("ANONYMOUS ACTIVATED");
-            
         }
         },500)
+        setTimeout(()=>{
+        window.location.href = "/assets/pages/html-pages/report.html";
+    },1000)
     }
+
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) {
-            checkbox.style.backgroundColor = '#0097b2'; // Replace with desired color
-            checkbox.style.borderColor = '#0097b2'; // Optional
-            anonymousActivated(); // Call the function when activated
+            checkbox.style.backgroundColor = '#0097b2'; 
+            checkbox.style.borderColor = '#0097b2';
+            anonymousActivated(); 
 
         } else {
-            // Change the color when toggled off
-            checkbox.style.backgroundColor = 'white'; // Replace with desired color
-            checkbox.style.borderColor = 'white'; // Optional
+            checkbox.style.backgroundColor = 'white'; 
+            checkbox.style.borderColor = 'white'; 
         }
     });
 });
+
+
+// import { showUserName } from "./report.js";
+// const showFace = document.getElementById("showFace");
+// showFace.addEventListener("click", () => {
+//     showUserName();
+//     window.location.href = "/assets/pages/html-pages/report.html";
+// });
+

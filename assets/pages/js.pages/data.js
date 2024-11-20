@@ -1,11 +1,5 @@
 const law = [];
-
-// Get the desired file name from URL parameters
-const urlParams = new URLSearchParams(window.location.search);
-const fileName = urlParams.get("file") || "law.json" ; // Default to "law.json" if no parameter is provided
-
-// Fetch the JSON file dynamically based on the URL parameter
-fetch(`/assets/data/${fileName}`)
+fetch("/assets/data/law.json")
     .then(res => {
         if (!res.ok) throw new Error("File not found");
         return res.json();
@@ -21,7 +15,7 @@ fetch(`/assets/data/${fileName}`)
 
 function displayLaws(laws) {
     const mainDiv = document.getElementById("result");
-    mainDiv.innerHTML = ""; // Clear previous results
+    mainDiv.innerHTML = ""; 
 
     for (let i = 0; i < laws.length; i++) {
         let div1 = document.createElement("div");

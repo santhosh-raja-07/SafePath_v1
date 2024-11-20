@@ -1,9 +1,7 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
 import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-// Your Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBGrcRVf1Kktffn_fYl_CtSvoCsHUK2eTg",
     authDomain: "safepath-87ebf.firebaseapp.com",
@@ -16,33 +14,64 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const auth = getAuth(app);
 
 // DOM Elements
 const loginBtn = document.getElementById('login-btn');
 const passwordError = document.getElementById("passwordError");
-// const loginbutton = document.getElementById("login-button");
+const logEmailError = document.getElementById("logEmailError");
+const loginEmail = document.getElementById('email');
+const loginPassword = document.getElementById('PASSWORD');
 
+// Handle login button click
 loginBtn.addEventListener('click', function (event) {
     event.preventDefault();
+
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value.trim();
+
+    // Clear previous error messages
     passwordError.textContent = "";
+    logEmailError.textContent = "";
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('PASSWORD').value;
+    // Basic validation for non-empty fields
+    if (email === "") {
+        logEmailError.textContent = "Email cannot be empty";
+        return;
+    }
+    if (password === "") {
+        passwordError.textContent = "Password cannot be empty";
+        return;
+    }
 
+    // Attempt to sign in with email and password
     signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-            alert('Login successful');
+        .then((userCredential) => {
+            const user = userCredential.user;
+            alert("Login successful");
             passwordError.textContent = "";
+            logEmailError.textContent = "";
+
             displayLoggedInUI();
         })
         .catch((error) => {
-            if (error.code === 'auth/invalid-email' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-                passwordError.textContent = "Invalid email or password";
-            } 
+            // Clear previous errors
+            passwordError.textContent = "";
+            logEmailError.textContent = "";
+
+            // Handle specific Firebase error codes
+            if (error.code === 'auth/invalid-email' || error.code === 'auth/user-not-found') {
+                logEmailError.textContent = "Invalid email or user not found";
+            } else if (error.code === 'auth/wrong-password') {
+                passwordError.textContent = "Invalid password";
+            } else {
+                console.error(error);
+                passwordError.textContent = "An error occurred. Please try again.";
+            }
         });
 });
+
+
 
 function displayLoggedInUI() {
     let login=document.querySelector(".login-page");

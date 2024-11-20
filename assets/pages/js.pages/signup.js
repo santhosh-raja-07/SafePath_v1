@@ -86,7 +86,12 @@ function validateUsername() {
     const hasNumber = /[0-9]/.test(trimmedValue);
     const isValidLength = trimmedValue.length >= 3 && trimmedValue.length <= 32;
 
-    if ((hasLowercase || hasUppercase || hasNumber) && isValidLength) {
+    if (hasNumber) {
+        usernameError.textContent = "Username should not contain numbers.";
+        return false;
+    } 
+
+    if ((hasLowercase || hasUppercase ) && isValidLength) {
         usernameError.textContent = "";
         return true;
     } 
@@ -103,7 +108,6 @@ function validateUsername() {
 function validateEmail(email) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.com$/;
 
-    // Validate general email format
     if (!emailPattern.test(email)) {
         return { isValid: false, message: "Enter a valid email address." };
     }
@@ -149,20 +153,32 @@ function validateConfirmPassword() {
         conPassError.textContent = "";
         return true;
     }
-    conPassError.textContent = "Passwords do not match.";
+    else{
+        conPassError.textContent = "Passwords do not match.";
     return false;
+    }
 }
 
 // Signup Function
 signupBtn.addEventListener("click", (event) => {
     event.preventDefault();
 
+    if(email.value===""){
+        emailError.textContent ="Enter a valid email address";
+    }
+    if(password.value===""){
+        passError.textContent = "Enter valid password";
+    }
+    if(conPassword.value===""){
+        conPassError.textContent = "Passwords do not match";
+    }
     // Reset errors
-    emailError.textContent = "";
+    else {
+        emailError.textContent = "";
     passError.textContent = "";
     conPassError.textContent = "";
     usernameError.textContent = "";
-
+    }
     const isValid = validateUsername() && validateEmail() && validatePassword() && validateConfirmPassword();
 
     if (isValid) {
@@ -230,3 +246,11 @@ function updateUIOnLogout() {
     alert("You have successfully logged out.");
     window.location.reload()
 }
+
+
+// email.addEventListener("input", () => {
+
+// });
+// password.addEventListener("input",()=>{
+//     if()
+// })
