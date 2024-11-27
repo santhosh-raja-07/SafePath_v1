@@ -2,7 +2,6 @@
     margin: 0%;
     padding: 0%;
     box-sizing: border-box;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .header{
     display: flex;
@@ -41,22 +40,16 @@ h1{
     list-style: none;
     padding: 5px;
 }
-.favicon{
-    width: 2rem;
-    height: 2rem;
-    background-color: #0097b2;
-    border-radius: 1rem;
-    cursor: pointer;
-}
 .languagebtn{
     font-size: x-large;
     margin-top: 5px;
     cursor: pointer;
+    margin-right: 2rem;
 }
 .translate{
     font-size: large;
     position: absolute;
-    right: 4.5rem;
+    right: 0.5rem;
     top: 3rem;
     display: none;
 }
@@ -67,8 +60,25 @@ h1{
 }
 .main-container{
     text-align: center;
+    line-height: 2rem;
+    margin-top: 5rem;
 }
-.start-check div input[type=checkbox] {
-    width: 20px;
-    height: 20px;
+.start-check div input{
+    width: 15px;
+    height: 15px;
+}
+.username{
+    display: none;
+    color: #0097b2;
+    padding-top: 5px;
+}
+.start-check{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+.end-check{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }

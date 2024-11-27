@@ -22,11 +22,12 @@ const passwordError = document.getElementById("passwordError");
 const logEmailError = document.getElementById("logEmailError");
 const loginEmail = document.getElementById('email');
 const loginPassword = document.getElementById('PASSWORD');
-
+const body = document.querySelector("body");
+const overlay = document.getElementById("overlay");
+const login = document.querySelector(".login-page");
 // Handle login button click
 loginBtn.addEventListener('click', function (event) {
     event.preventDefault();
-
     const email = loginEmail.value.trim();
     const password = loginPassword.value.trim();
 
@@ -48,11 +49,15 @@ loginBtn.addEventListener('click', function (event) {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
+
+            // Store the user in localStorage for future use
+            localStorage.setItem("user", JSON.stringify(user));
+
             alert("Login successful");
             passwordError.textContent = "";
             logEmailError.textContent = "";
-
             displayLoggedInUI();
+
         })
         .catch((error) => {
             // Clear previous errors
@@ -64,49 +69,52 @@ loginBtn.addEventListener('click', function (event) {
                 logEmailError.textContent = "Invalid email or user not found";
             } else if (error.code === 'auth/wrong-password') {
                 passwordError.textContent = "Invalid password";
-            } else {
-                console.error(error);
-                passwordError.textContent = "An error occurred. Please try again.";
-            }
+            } 
+            // else {
+            //     // Log the error for debugging purposes
+            //     console.error("Firebase error:", error);
+            //     passwordError.textContent = "An error occurred. Please try again.";
+            // }
         });
 });
 
-
-
 function displayLoggedInUI() {
-    let login=document.querySelector(".login-page");
-    let bodyPage=document.querySelector(".body");
+    
     login.style.display = "none";
-    bodyPage.style.opacity=1
+    body.style.overflow = "initial";
+    overlay.style.display = "none";
+    
+    // Retrieve user data from localStorage
     const user = JSON.parse(localStorage.getItem("user"));
     const loginButton = document.getElementById("login-button");
-    const handlingLogout = document.getElementById("handling-logout");
 
     if (user) {
+        
         loginButton.style.display = "none";
-        const userDiv = document.createElement("div");
-        userDiv.textContent = `Welcome, ${user.displayName || user.email}`;
-        userDiv.style.color="#0097b2";
-        const logoutButton = document.createElement("button");
+        const userDiv = document.querySelector(".username");
+        userDiv.textContent = user.displayName || user.email;
+        userDiv.style.color = "#0097b2";
+
+        const logoutButton = document.querySelector(".loginout");
         logoutButton.textContent = "Logout";
-        logoutButton.style.backgroundColor="#0097b2";
-        logoutButton.style.color="white";
-        logoutButton.style.border="none";
-        logoutButton.style.cursor="pointer";
-        logoutButton.style.paddingRight="3px";
-        logoutButton.style.paddingLeft="3px";
+        logoutButton.style.backgroundColor = "#0097b2";
+        logoutButton.style.color = "white";
+        logoutButton.style.border = "none";
+        logoutButton.style.cursor = "pointer";
+        logoutButton.style.paddingRight = "3px";
+        logoutButton.style.paddingLeft = "3px";
+
         logoutButton.addEventListener("click", () => {
             signOut(auth).then(() => {
-                logoutButton.style.display="none";
-                userDiv.style.display="none";
-                loginButton.style.display="block"
+                // Clear localStorage on logout
+                localStorage.removeItem("user");
+                loginButton.style.display = "block";
                 updateUIOnLogout();
             });
         });
-        handlingLogout.appendChild(userDiv);
-        handlingLogout.appendChild(logoutButton);
     }
 }
+
 function updateUIOnLogout() {
     alert("You have successfully logged out.");
     window.location.reload();
