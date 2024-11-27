@@ -17,6 +17,7 @@
         <div class="navbar">
             <ul>
                 <div class="nav">
+                    <div class="username">X</div>
                     <div><i class="fa-sharp fa-solid fa-globe languagebtn"></i>
                         <select class="translate">
                             <option id="lang-english" value="english">English</option>
@@ -37,8 +38,8 @@
                     <form class="main-container" >
                         <div><h3>incident details</h3></div>
                       <div class="start-check">
-                        <div><input type="checkbox" id="minor" required>MINOR</div>
-                        <div><input type="checkbox" id="Major" required>MAJOR</div>
+                        <div><input type="radio" id="minor" required>MINOR</div>
+                        <div><input type="radio" id="Major" required>MAJOR</div>
                     </div>
                         <div class="reporting">
                             <div><input type="text" placeholder="Where did this happen ?" required></div>
@@ -54,5 +55,5 @@
                 </main>
             </body>
             <script type="module" src="/assets/pages/js.pages/translate.js"></script>
-<script type="module" src="/assets/pages/js.pages/report.js"></script>
+            <script type="module" src="/assets/pages/js.pages/report.js"></script>
             </html>

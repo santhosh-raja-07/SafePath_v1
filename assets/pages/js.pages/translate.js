@@ -64,6 +64,14 @@ language.addEventListener("click", () => {
         const langTelugu=document.getElementById("lang-telugu");
         const langHindi=document.getElementById("lang-hindi");
         const langKanada=document.getElementById("lang-kanada");
+        
+function defaultTranslate(){
+        langEnglish.textContent="English";
+        langTamil.textContent="Tamil";
+        langTelugu.textContent="Telugu";
+        langHindi.textContent="Hindi";
+        langKanada.textContent="Kanada";
+}
 
         const selectedLanguage = languageSelect.value;
         setTimeout(async () => {
@@ -87,12 +95,7 @@ language.addEventListener("click", () => {
                         if (data && data[0] && data[0][0] && typeof data[0][0][0] === 'string') {
                             const translatedText = data[0][0][0];
                             node.nodeValue = translatedText; // Update the text node with the translated text
-                            langEnglish.textContent="English";
-                            langTamil.textContent="Tamil";
-                            langTelugu.textContent="Telugu";
-                            langHindi.textContent="Hindi";
-                            langKanada.textContent="Kanada";
-
+                            defaultTranslate();
                         } else {
                             console.error("Unexpected format in translation data:", data);
                         }
@@ -115,11 +118,7 @@ language.addEventListener("click", () => {
                         if (data && data[0] && data[0][0] && typeof data[0][0][0] === 'string') {
                             const translatedText = data[0][0][0];
                             node.nodeValue = translatedText; // Update the text node with the translated text
-                            langEnglish.textContent="English";
-                            langTamil.textContent="Tamil";
-                            langTelugu.textContent="Telugu";
-                            langHindi.textContent="Hindi";
-                            langKanada.textContent="Kanada";
+                            defaultTranslate()
                         } else {
                             console.error("Unexpected format in translation data:", data);
                         }
@@ -142,11 +141,7 @@ language.addEventListener("click", () => {
                         if (data && data[0] && data[0][0] && typeof data[0][0][0] === 'string') {
                             const translatedText = data[0][0][0];
                             node.nodeValue = translatedText; // Update the text node with the translated text
-                            langEnglish.textContent="English";
-                            langTamil.textContent="Tamil";
-                            langTelugu.textContent="Telugu";
-                            langHindi.textContent="Hindi";
-                            langKanada.textContent="Kanada";
+                            defaultTranslate()
                         } else {
                             console.error("Unexpected format in translation data:", data);
                         }
@@ -169,11 +164,7 @@ language.addEventListener("click", () => {
                         if (data && data[0] && data[0][0] && typeof data[0][0][0] === 'string') {
                             const translatedText = data[0][0][0];
                             node.nodeValue = translatedText; // Update the text node with the translated text
-                            langEnglish.textContent="English";
-                            langTamil.textContent="Tamil";
-                            langTelugu.textContent="Telugu";
-                            langHindi.textContent="Hindi";
-                            langKanada.textContent="Kanada";
+                            defaultTranslate()
                         } else {
                             console.error("Unexpected format in translation data:", data);
                         }

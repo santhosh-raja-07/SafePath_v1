@@ -1,3 +1,4 @@
+import { showUserName } from "./report.js";
 
 const anonymousbtn = document.getElementById("anonymous");
 anonymousbtn.addEventListener("click", () => {
@@ -32,10 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// import { showUserName } from "./report.js";
-// const showFace = document.getElementById("showFace");
-// showFace.addEventListener("click", () => {
-//     showUserName();
-//     window.location.href = "/assets/pages/html-pages/report.html";
-// });
+const showFace = document.getElementById("showFace");
+showUserName()
+    showFace.addEventListener("click", () => {
+    window.location.href = "/assets/pages/html-pages/report.html";
+    showUserName()
+});
 

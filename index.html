@@ -3,58 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
     <title>SafePath</title>
 </head>
-<body >
+<body>
+
     <div class="body">
-    <header>
-    <nav class="header">
-        <div>
-            <h2>Safe<span class="spanname">Path</span></h2>
-        </div>
-        <div class="navbar">
-            <ul id="handling-logout">
-                <div class="nav">
-                <li><a href="#Justice">Justice</a></li>
-                <li><a href="#Learn">Learn</a></li>
-                <li><a href="#Footer">Footer</a></li>
+        <header>
+            <nav class="header">
+                <div>
+                    <h2>Safe<span class="spanname">Path</span></h2>
                 </div>
-                <li><button id="login-button">Login</button></li>
-                <div><i class="fa-sharp fa-solid fa-globe languagebtn"></i>
-                    <select class="translate">
-                        <option id="lang-english" value="english">English</option>
-                        <option id="lang-tamil" value="tamil">Tamil</option>
-                        <option id="lang-telugu" value="telugu">Telugu</option>
-                        <option id="lang-hindi" value="hindi">Hindi</option>
-                        <option id="lang-kanada" value="kanada">Kanadam</option>
-                    </select>
+                <div class="navbar">
+                    <ul id="handling-logout">
+                        <div class="nav">
+                            <li><a href="#Justice">Home</a></li>
+                            <li><a href="">About</a></li>
+                            <li><a href="#Learn">Laws</a></li>
+                            <li><a href="/assets/pages/html-pages/justice.html">issues</a></li>
+                            <li>
+                                <div>
+                                    <i class="fa-sharp fa-solid fa-globe languagebtn"></i>
+                                    <select class="translate">
+                                        <option selected>Languages</option>
+                                        <option id="lang-english" value="english">English</option>
+                                        <option id="lang-tamil" value="tamil">Tamil</option>
+                                        <option id="lang-telugu" value="telugu">Telugu</option>
+                                        <option id="lang-hindi" value="hindi">Hindi</option>
+                                        <option id="lang-kanada" value="kanada">Kanadam</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li><button id="login-button">Login</button></li>
+                            <li>
+                                <div type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                    <i class="fa-solid fa-circle-user favicon"></i>
+                                </div>
+                            </li>
+                        </div>
+                    </ul>
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title  username" id="offcanvasRightLabel">null</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body loginout"></div>
+                    </div>
                 </div>
-            </ul>
-        </div>
-    </nav>
-</header>
-<h1 id="Justice">We believe in a world where all women are safe and free</h1>
+            </nav>
+        </header>
+    </div>
+    
+
+       <!-- <div class="justice-btn">
+       <a href="/assets/pages/html-pages/justice.html"><button>Find the justice</button></a> -->
+<!-- </div> -->
     <main>
     <div class="main-img">
-       <img src="assets/img/main_img.jpeg">
-       <div class="justice-btn">
-       <a href="/assets/pages/html-pages/justice.html"><button>Find the justice</button></a>
+        <h3 >Find Your Lawyer For Women's Rights</h3>
     </div>
-    </div>
-
-    <div class="main-container" id="Learn">
+<div class="center-container">
+    <h1>We Believe In A World Where All Women Are Safe And Free</h1>
+</div>
+    <div class="main-container" >
     <div class="sub-container">
-        <div class="images"><img src="assets/img/law_img.jpg"></div>
+        <div class="images" id="Learn"><img src="assets/img/law_img.jpg"></div>
         <div class="head-and-btn">
             <h2>Learn</h2>
-            <p class="main-topic">A comprehensive guide to your rights as a woman, including laws and policies that protect you from harassment, discrimination and violence.</p>
+            <h4 class="main-topic">A comprehensive guide to your rights as a woman, including laws and policies that protect you from harassment, discrimination and violence.</h4>
             <div class="read-btn"><a href="assets/pages/html-pages/Law.html"><button id="laws" >Read...</button></a></div>
         </div>
     </div>
+    
 
-    <div class="sub-container">
+    <!-- <div class="sub-container">
         <div class="images"><img src="assets/img/prevention_img.jpg"></div>
         <div class="head-and-btn">
             <h2 >Prevent</h2>
@@ -71,34 +96,37 @@
         <div class="read-btn"><button id="resilient">Read...</button></div>
     </div>
     </div>
-</div>
+</div> -->
     </main>
     <footer id="Footer">
         <div class="footer"></div>
     </footer>
 </div>
 
-
-<form novalidate>
-    <div class="login-page">
-        <div class="xmark"><i class="fa-solid fa-xmark" id="x-mark1"></i></div>
-        <div class="email-PH">
-            <label for="email"></label>
-            <input type="email" id="email" placeholder="EMAIL" required ><br>
-            <span id="logEmailError"></span>
+<div class="loggedInPage" class="modal"  tabindex="-1">
+    <form novalidate autocomplete="off">
+        <div class="login-page">
+            <div class="xmark"><i class="fa-solid fa-xmark" id="x-mark1"></i></div>
+            <div class="email-PH">
+                <label for="email"></label>
+                <input type="email" id="email" placeholder="EMAIL" required ><br>
+                <span id="logEmailError"></span>
+            </div>
+            <div class="password-PH">
+                <label for="PASSWORD"></label>
+                <input type="password" id="PASSWORD" placeholder="PASSWORD" required><br>
+                <span id="passwordError"></span>
+            </div>
+            <div class="sign-up-link">Don’t have an account ?<div style="color:rgb(9, 98, 9);;" id="sign-up">Sign up</div></div>
+            <div class="Login-btn">
+                <button id="login-btn" style="color: white;">Login</button>
+            </div>
+            <div class="lawyer_signin"><a href="/assets/pages/html-pages/lawyerfom.html"><h5>Are you lawyer? Sign in</h5></a></div>
         </div>
-        <div class="password-PH">
-            <label for="PASSWORD"></label>
-            <input type="password" id="PASSWORD" placeholder="PASSWORD" required><br>
-            <span id="passwordError"></span>
-        </div>
-        <div class="sign-up-link">Don’t have an account ?<div style="color:#0097b2;" id="sign-up">Sign up</div></div>
-        <div class="Login-btn">
-            <button id="login-btn" style="color: white;">Login</button>
-        </div>
+    </form>
     </div>
-</form>
 
+<div id="overlay">
 <form novalidate>
     <div class="sign-up-page" >
         <div class="xmark"><i class="fa-solid fa-xmark" id="x-mark2"></i></div>
@@ -123,11 +151,16 @@
             <span id="conPassError"></span>
         </div>
         <div class="Sign-up-btn">
-            <button id="btn" style="color: white;">Sign up</button><span id="login-link" style="color:  #0097b2;">Login</span>
-            
+            <button id="btn" style="color: white;">Sign up</button><span id="login-link" style="color: rgb(9, 98, 9);;">Login</span>
         </div>
     </div>
 </form>
+</div>
+
+<div>
+
+</div>
+
 </body>
 <script type="module" src="/assets/pages/js.pages/signup.js"></script>
 <script type="module" src="/assets/pages/js.pages/login.js"></script>
