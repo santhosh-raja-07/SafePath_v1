@@ -1,110 +1,56 @@
-*{
-    margin: 0%;
-    padding: 0%;
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
-}
-.header{
-    display: flex;
-    justify-content: space-between;
-    background-color: #e7ecf1;
-    color: black;
-    padding: 10px;
-    box-shadow: black 2px 4px 15px 0px;
-}
-header{
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}
-.spanname{
-    color: #0097b2;
-}
-h1{
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
-}
-.header a{
-    text-decoration: none;
-    color: black;
-    font-weight: bolder;
-}
-.navbar ul {
-    display: flex; 
-    gap: 2rem;
-    list-style: none;
-}
-.nav{
-    display: flex; 
-    gap: 2rem;
-    list-style: none;
-    padding: 5px;
-}
-#login-button{
-    color: white;
-    background-color: #0097b2;
-    border: none;
-    cursor: pointer;
-    padding: 8px 12px 8px 12px;
-    border-radius: 2rem;
-    display: initial;
-}
-/* Translate */
-.languagebtn{
-    font-size: x-large;
-    margin-top: 5px;
-    cursor: pointer;
-    margin-right: 2rem;
-}
-.translate{
-    font-size: large;
-    position: absolute;
-    right: 0.5rem;
-    top: 3rem;
-    display: none;
+    font-family: Arial, sans-serif;
 }
 
-body{
-   background-color: white;
-   color: #0097b2;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
 }
-button {
-    transition: transform .5s;
-  }
-  
-button:hover {
-    transform: scale(1.1);
-    box-shadow: black 2px 2px 5px ;
-  }
-.homebtn{
-    font-size: xx-large;
-    margin-left: 1rem;
-    margin-top: 0.7rem;
-    color: black;
-}
-.homebtn:hover{
-    opacity: 0.5;
-}
-.law-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-}
-strong{
-    color: black;
-}
-.container{
+
+header h1 {
+    flex: 1;
     text-align: center;
-    margin-top: 100px;
+    color: rgb(9, 98, 9);
 }
-.result{
-    border: white solid;
-    box-shadow: black 3px 3px 12px ;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+
+header .homebtn {
+    font-size: xx-large;
+    color: black;
+    margin: 0 10px;
 }
-.result h3,h4{
+
+header .homebtn:hover {
+    opacity: 0.7;
+}
+
+body {
+    background-color: white;
+    color: rgb(9, 98, 9);
+}
+
+.container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.result {
+    border: 1px solid #ddd;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, 
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, 
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+    margin: 15px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.result h3,
+.result h5 {
+    margin: 10px 0;
     color: black;
 }

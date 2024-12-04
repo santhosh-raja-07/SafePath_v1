@@ -7,53 +7,97 @@
     <link rel="stylesheet" href="/assets/pages/css-pages/report.css">
     <title>SafePath</title>
 </head>
-<body >
-    <div class="body">
-    <header>
-    <nav class="header">
+<body>
+<header>
+    <nav class="side-navbar">
+        <div id="home-page"><i class="fa-solid fa-house"></i></div>
+        <div id="profile-page"><i class="fa-solid fa-circle-user"></i></div>
+    </nav>
+</header>
+
+    <div class="main_container">
         <div>
-            <h2>Safe<span class="spanname">Path</span></h2>
+            <h1>Issues</h1>
+        <div class="sub-container">  
+            <div class="userdetails">
+                <i class="fa-solid fa-circle-user"></i>
+                <h2 id="username"></h2>
+            </div>
+            <!-- <div class="userId">
+                <h2>UserId : </h2>
+                <h2 id="userid">101</h2>
+            </div> -->
         </div>
-        <div class="navbar">
-            <ul>
-                <div class="nav">
-                    <div class="username">X</div>
-                    <div><i class="fa-sharp fa-solid fa-globe languagebtn"></i>
-                        <select class="translate">
-                            <option id="lang-english" value="english">English</option>
-                            <option id="lang-tamil" value="tamil">Tamil</option>
-                            <option id="lang-telugu" value="telugu">Telugu</option>
-                            <option id="lang-hindi" value="hindi">Hindi</option>
-                            <option id="lang-kanada" value="kanada">Kanadam</option>
-                        </select>
-                    </div>
+
+        <div class="issuesDetails">
+            <label for="title"><h2>Title</h2></label>
+            <input id="title" type="text" placeholder="Enter the issue title">
+        </div>
+        <div class="issuesDetails">
+            <label for="description"><h2>Description</h2></label>
+            <textarea id="description" placeholder="Enter the issue description"></textarea>
+        </div>
+
+        </div>
+        
+        <div>
+            <button id="submit-btn" type="submit">Submit Issues</button>
+            <div class="aside-container">
+
+                <div class="moreIssuesDet">
+                    <h3>Category</h3>
+                    <select id="category" class="category">
+                        <option value="" selected>Issues</option>
+                        <option value="Gender-Based Violence">Gender-Based Violence</option>
+                        <option value="Health and Reproductive Rights">Health and Reproductive Rights</option>
+                        <option value="Economic Inequality">Economic Inequality</option>
+                        <option value="Political Underrepresentation">Political Underrepresentation</option>
+                        <option value="Education and Literacy">Education and Literacy</option>
+                        <option value="Legal Inequality">Legal Inequality</option>
+                        <option value="Intersectional Issues">Intersectional Issues</option>
+                        <option value="Digital Inequality">Digital Inequality</option>
+                        <option value="Other Issues">Other Issues</option>
+                    </select>
                 </div>
-            </ul>
+    
+
+                <div class="moreIssuesDet">
+                    <h3>Priority</h3>
+                    <select id="priority" class="Priority">
+                        <option value="" selected>Set Urgency</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+    
+
+                <div class="moreIssuesDet">
+                    <h3>Age Category</h3>
+                    <select id="ageCategory" class="Category">
+                        <option value="" selected>Category</option>
+                        <option value="major">Major</option>
+                        <option value="minor">Minor</option>
+                    </select>
+                </div>
+
+                <div class="moreIssuesDet">
+                    <label for="title"><h3>Attachments</h3></label>
+                    <input id="Attachments" type="file" placeholder="Upload file">
+                </div>
+
+            </div>
         </div>
-        </nav>
-    </header>
-</div>
-                <main >
-                    <div class="head"><h2>Report an incident</h2></div>
-                    <form class="main-container" >
-                        <div><h3>incident details</h3></div>
-                      <div class="start-check">
-                        <div><input type="radio" id="minor" required>MINOR</div>
-                        <div><input type="radio" id="Major" required>MAJOR</div>
-                    </div>
-                        <div class="reporting">
-                            <div><input type="text" placeholder="Where did this happen ?" required></div>
-                            <div><input type="text" placeholder="When did this happen ?" required></div>
-                            <div><textarea placeholder="Describe what happen..." required></textarea></div>
-                        </div>
-                        <div class="end-check">
-                            <div><h4><input type="checkbox" id="anonymous-checkbox" required>ANONYMOUS</h4></div>
-                            <div><button type="reset">CANCEL</button></div>
-                            <div><button type="submit">SEND</button></div>
-                        </div>
-                    </form>
-                </main>
-            </body>
-            <script type="module" src="/assets/pages/js.pages/translate.js"></script>
-            <script type="module" src="/assets/pages/js.pages/report.js"></script>
-            </html>
+    </div>
+    <div id="error-popup" class="popup hidden">
+        <div class="popup-content">
+            <div><p id="popup-message">Please fill in all required fields!</p></div>
+            <div><button id="close-popup">Close</button></div>
+        </div>
+    </div>
+    
+    <!-- Include your script at the bottom of the body -->
+    <script type="module" src="/assets/pages/js.pages/report.js"></script>
+</body>
+
+</html>
