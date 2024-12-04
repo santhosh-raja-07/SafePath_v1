@@ -15,7 +15,7 @@
         <header>
             <nav class="header">
                 <div>
-                    <h2>Safe<span class="spanname">Path</span></h2>
+                    <h2>Safe<span class="spanname" style="font-size: 2rem;">Path</span></h2>
                 </div>
                 <div class="navbar">
                     <ul id="handling-logout">
@@ -23,7 +23,7 @@
                             <li><a href="#Justice">Home</a></li>
                             <li><a href="">About</a></li>
                             <li><a href="#Learn">Laws</a></li>
-                            <li><a href="/assets/pages/html-pages/justice.html">issues</a></li>
+                            <li><a id="issuespage" style="cursor: pointer;">issues</a></li>
                             <li>
                                 <div>
                                     <i class="fa-sharp fa-solid fa-globe languagebtn"></i>
@@ -37,7 +37,7 @@
                                     </select>
                                 </div>
                             </li>
-                            <li><button id="login-button">Login</button></li>
+                            <li class="appendloginbtn"><button id="login-button">Login</button></li>
                             <li>
                                 <div type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                     <i class="fa-solid fa-circle-user favicon"></i>
@@ -47,10 +47,10 @@
                     </ul>
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                         <div class="offcanvas-header">
-                            <h5 class="offcanvas-title  username" id="offcanvasRightLabel">null</h5>
+                            <h5 class="offcanvas-title  username" id="offcanvasRightLabel" style="font-weight: bolder;">null</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body loginout"></div>
+                        <div class="loginout"><button class="offcanvas-body" id="loginout"></button></div>
                     </div>
                 </div>
             </nav>

@@ -1,43 +1,56 @@
 const law = [];
 fetch("/assets/data/law.json")
-    .then(res => {
-        if (!res.ok) throw new Error("File not found");
+    .then((res) => {
+        if (!res.ok) {
+            throw new Error("Failed to fetch laws data.");
+        }
         return res.json();
     })
-    .then(datas => {
-        law.push(datas);
-        displayLaws(law[0].laws);
+    .then((data) => {
+        law.push(data);
+        displayLaws(law[0]?.laws || []);
     })
-    .catch(err => {
-        console.error(err);
-        document.getElementById("result").innerHTML = "<p>Error loading laws data.</p>";
+    .catch((error) => {
+        console.error("Error fetching data:", error);
+        document.getElementById("result").innerHTML = `
+            <div class="result">
+                <h3>Error</h3>
+                <p>Could not load laws data. Please try again later.</p>
+            </div>`;
     });
 
 function displayLaws(laws) {
     const mainDiv = document.getElementById("result");
-    mainDiv.innerHTML = ""; 
+    mainDiv.innerHTML = ""; // Clear previous content
 
-    for (let i = 0; i < laws.length; i++) {
-        let div1 = document.createElement("div");
-        div1.innerHTML = `
-            <h3>Name: ${laws[i].name} Year: ${laws[i].year}</h3>
-            <h5>Description: ${laws[i].description}</h5>`;
-        let sectionsDiv = document.createElement("div");
-
-        for (let j = 0; j < laws[i].sections.length; j++) {
-            let sectionDiv = document.createElement("div");
-            sectionDiv.innerHTML = `
-                <h4>Section: ${laws[i].sections[j].section}</h4>
-                <h5>Description: ${laws[i].sections[j].description}</h5>`;
-            sectionsDiv.appendChild(sectionDiv);
-        }
-
-        div1.classList.add("result");
-        div1.appendChild(sectionsDiv);
-        mainDiv.appendChild(div1);
+    if (!laws.length) {
+        mainDiv.innerHTML = `
+            <div class="result">
+                <h3>No Laws Found</h3>
+                <p>There are currently no laws to display.</p>
+            </div>`;
+        return;
     }
+
+    laws.forEach((lawItem) => {
+        const lawDiv = document.createElement("div");
+        lawDiv.classList.add("result");
+
+        lawDiv.innerHTML = `
+            <h3>${lawItem.name} (Year: ${lawItem.year})</h3>
+            <h5>${lawItem.description}</h5>`;
+
+        const sectionsDiv = document.createElement("div");
+
+        lawItem.sections.forEach((section) => {
+            const sectionDiv = document.createElement("div");
+            sectionDiv.innerHTML = `
+                <h4>Section: ${section.section}</h4>
+                <p>${section.description}</p>`;
+            sectionsDiv.appendChild(sectionDiv);
+        });
+
+        lawDiv.appendChild(sectionsDiv);
+        mainDiv.appendChild(lawDiv);
+    });
 }
-
-
-
-

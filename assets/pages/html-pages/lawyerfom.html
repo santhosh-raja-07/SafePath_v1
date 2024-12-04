@@ -4,58 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/pages/css-pages/lawyerform.css">
+    
     <title>Document</title>
 </head>
 <body>
+    
 <div class="main-container">
     <div class="sub-container">
         <form novalidate class="form">
             <h1>Lawyer Login Page</h1>
         <div>
-            <h4><label for="name"></label>
-            <input type="text" placeholder= "Full Name" required></h4><br>
-            <span></span>
+            <h4><label for="name" ></label>
+            <input type="text" id="lawyername" placeholder= "Full Name" required></h4><br>
+            <span id="lawyernameError" ></span>
         </div>
         <div>
             <h4><label for="email"></label>
-            <input type="email" placeholder="Email Address" required></h4><br>
-            <span></span>
+            <input type="email" id="lawyermail" placeholder="Email Address" required></h4><br>
+            <span id="lawyermailError"></span>
         </div>
         <div>
             <h4><label for=" lawyer's ID code"></label>
-            <input type="text" placeholder="lawyer's ID code"></h4><br>
-            <span></span>
-             <!-- "D/1984/2021 -->
-        </div>
-        <div>
-            <h4><label for="Office Address"></label>
-            <input type="text" placeholder="Office Location/Address" required></h4><br>
-            <span></span>
+            <input type="text" id="lawyersId" placeholder="lawyer's ID code"></h4><br>
+            <span id="lawyersIdError" ></span>
+             <!-- D/1984/2021 -->
         </div>
         <div>
        
-            <select class="translate">
+            <select class="category of law">
                 <option selected>Areas of Legal Expertise </option>
-                <option id="lang-english" value="english">Family Law</option>
-                <option id="lang-tamil" value="tamil">Criminal Law</option>
-                <option id="lang-telugu" value="telugu">Corporate/Business Law</option>
-                <option id="lang-hindi" value="hindi">Real Estate Law</option>
-                <option id="lang-kanada" value="kanada">Immigration Law</option>
-                <option id="lang-kanada" value="kanada">Other </option>
+                <option id="FamilyLaw" value="Family Law">Family Law</option>
+                <option id="CriminalLaw" value="Criminal Law">Criminal Law</option>
+                <option id="Corporate/BusinessLaw" value="Corporate/Business Law">Corporate/Business Law</option>
+                <option id="RealEstateLaw" value="Real Estate Law">Real Estate Law</option>
+                <option id="ImmigrationLaw" value="Immigration Law">Immigration Law</option>
+                <option value="other">Other </option>
             </select>
-            <span></span>
+            <div id="otherCategory"></div>
+            <span id="lawCategoryError"></span>
         </div>
         <div>
             <h4><label for="Years of Experience"></label>
-            <input type="number" placeholder="Years of Experience" required></h4><br>
-            <span></span>
+            <input type="number" id="YearsOfExp" placeholder="Years of Experience"  required></h4><br>
+            <span id="YearsOfExpError"></span>
         </div>
         <div class="buttons"> 
-            <div><button type="reset">Cancel</button></div>
-            <div><button type="submit">Login</button></div>
+            <div class="reset"><button type="reset">Cancel</button></div>
+            <div class="submit"><button type="submit" id="signIn">Login</button></div>
         </div>
         </form>
     </div>
 </div>
 </body>
+<script type="module" src="/assets/pages/js.pages/lawyerlogin.js"></script>
 </html>
