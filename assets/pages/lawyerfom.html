@@ -3,34 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/pages/css-pages/lawyerform.css">
+    <link rel="stylesheet" href="/assets/css/lawyerform.css">
     
-    <title>Document</title>
+    <title>CaseAssist</title>
 </head>
 <body>
     
 <div class="main-container">
     <div class="sub-container">
         <form novalidate class="form">
-            <h1>Lawyer Login Page</h1>
-        <div>
+            <h1>Lawyer SignUp Page</h1>
+        
             <h4><label for="name" ></label>
             <input type="text" id="lawyername" placeholder= "Full Name" required></h4><br>
             <span id="lawyernameError" ></span>
-        </div>
-        <div>
+    
             <h4><label for="email"></label>
             <input type="email" id="lawyermail" placeholder="Email Address" required></h4><br>
             <span id="lawyermailError"></span>
-        </div>
-        <div>
+        
+            <h4><label for="password"></label>
+            <input type="password" id="password" placeholder="Password" required></h4><br>
+            <span id="passwordError"></span>
+        
+            <h4><label for="Confirm Password"></label>
+            <input type="password" id="con-password" placeholder="Confirm Password" required></h4><br>
+            <span id="con-passwordError"></span>
+        
             <h4><label for=" lawyer's ID code"></label>
             <input type="text" id="lawyersId" placeholder="lawyer's ID code"></h4><br>
             <span id="lawyersIdError" ></span>
              <!-- D/1984/2021 -->
-        </div>
-        <div>
-       
+        
             <select class="category of law">
                 <option selected>Areas of Legal Expertise </option>
                 <option id="FamilyLaw" value="Family Law">Family Law</option>
@@ -42,19 +46,19 @@
             </select>
             <div id="otherCategory"></div>
             <span id="lawCategoryError"></span>
-        </div>
-        <div>
+        
+        
             <h4><label for="Years of Experience"></label>
             <input type="number" id="YearsOfExp" placeholder="Years of Experience"  required></h4><br>
             <span id="YearsOfExpError"></span>
-        </div>
-        <div class="buttons"> 
-            <div class="reset"><button type="reset">Cancel</button></div>
-            <div class="submit"><button type="submit" id="signIn">Login</button></div>
+        
+        <div class="buttons">
+            <div class="submit"><button type="submit" id="signIn">SignUp</button></div> 
+            <div class="redic-Login">Have an account ? <strong id="loginpage">Login</strong></div>
         </div>
         </form>
     </div>
 </div>
 </body>
-<script type="module" src="/assets/pages/js.pages/lawyerlogin.js"></script>
+<script type="module" src="/assets/scripts/lawyerlogin.js"></script>
 </html>
