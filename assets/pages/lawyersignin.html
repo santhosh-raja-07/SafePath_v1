@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/lawyersignin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>CaseAssist</title>
+</head>
+<body>
+    <div class="loading"><i class="fa-solid fa-spinner fa-spin" style="color: #2d6920;"></i></div>
+    <div class="main-container">
+    <form novalidate autocomplete="off">
+        <h1>Lawyer Login Page</h1>
+        <div class="sub-container">
+            <div>
+                <label for="email"></label>
+                <input type="email" id="email" placeholder="Enter the email" required ><br>
+                <span id="emailError"></span>
+            </div>
+            <div>
+                <label for="PASSWORD"></label>
+                <input type="password" id="PASSWORD" placeholder="Enter the password" required><br>
+                <span id="passwordError"></span>
+            </div>
+            <div class="sign-up-link">Don’t have an account ? <strong style="color:rgb(9, 98, 9);" id="sign-up">Sign up</strong></div>
+                <button id="login-btn">Login</button>
+        </div>
+    </form>
+</div>
+<script type="module" src="/assets/scripts/lawyerSignin.js"></script>
+</body>
+</html>

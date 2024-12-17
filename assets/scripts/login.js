@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, updateProfile, signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
 import { getUsername} from "./signup.js";
 import {firebaseConfig } from "./config.js"
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -21,7 +21,7 @@ const loginPage = document.querySelector(".login-page");
 /* <button id="login-button">Login</button> */
 const appendloginbtn = document.querySelector(".appendloginbtn")
 
-
+// export let check = false
 // Handle Login Button Click
 loginBtn.addEventListener("click", (event) => {
     event.preventDefault();
@@ -50,6 +50,7 @@ loginBtn.addEventListener("click", (event) => {
             const user = userCredential.user;
             alert("Login successful!");
             displayLoggedInUI();
+            // check = true
         })
         .catch((error) => {
             // Handle Firebase errors
@@ -81,7 +82,7 @@ function validateEmail(email) {
     body.style.overflow = "initial";
     overlay.style.display = "none";
 
-    const logoutButton = document.querySelector("#loginout"); // Declare logoutButton here globally
+    const logoutButton = document.querySelector("#loginout"); 
     const loginButton = document.getElementById("login-button");
 
     onAuthStateChanged(auth, (user) => {
@@ -108,20 +109,19 @@ function validateEmail(email) {
                     console.error('Error fetching user details:', error);
                 });
 
-            // Attach logout listener here, inside the onAuthStateChanged callback
             logoutButton.addEventListener("click", () => {
                 if(confirm("Are you want to logout")){
                     signOut(auth).then(() => {
                         userDiv.textContent = ""; // Clear the username div
                         loginButton.style.display = "block";
                         appendloginbtn.style.display = "block"
-                        localStorage.removeItem("user")
                         updateUIOnLogout();
                     }).catch((error) => {
                       alert("Logout error: ", error);
                     });
                   }
             });
+            console.log(userDiv)
         } else {
             loginButton.style.display = "block";
         }
@@ -135,6 +135,18 @@ function updateUIOnLogout() {
     
 }
 
+const issuesPageButton = document.getElementById("issuespage");
+    issuesPageButton.addEventListener("click", () => {
+        const user = auth.currentUser;
+        if(user){
+        window.location.href = "/assets/pages/report.html";
+        }
+        else{
+            alert("Please Login / Signup to access this page.")
+        }
+});
+
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
        displayLoggedInUI();
@@ -142,3 +154,8 @@ onAuthStateChanged(auth, (user) => {
         loginBtn.style.display = "block";
     }
 });
+
+
+// export function goToIssuePage(){
+
+//     }

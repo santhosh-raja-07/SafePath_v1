@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut , onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFirestore, collection, getDocs, doc , updateDoc, addDoc ,query, where} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 import {firebaseConfig } from "./config.js"
+// import {goToIssuePage , check} from './login.js';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -175,46 +175,64 @@ function validateConfirmPassword() {
 }
 
 // Signup Function
-signupBtn.addEventListener("click", (event) => {
+signupBtn.addEventListener("click", async (event) => {
     event.preventDefault();
-    const usernameValue = userNameee.value.trim(); 
-    const isValid = validateUsername() && validateEmail() && validatePassword() && validateConfirmPassword();
-    if (isValid) {
-        createUserWithEmailAndPassword(auth, email.value.trim(), password.value.trim())
-            .then((userCredential) => {
-                const user = userCredential.user;
-                return updateProfile(user, { displayName: userNameee.value.trim() });
-            })
-            .then(() => {
-                localStorage.setItem("user", JSON.stringify({ userNameee: usernameValue }));
-                alert("Account created successfully!");
-                const docref = collection(db, "userDetails" ) ;
-                const obj = {
-                    userName : userNameee.value.trim(),
-                    userEmail : email.value.trim(),
-                    lastSignUp : new Date()
-                }
-                addDoc(docref,obj)
-                .then(() => {
-                    console.log("Document successfully written!");
-                  })
-                displayLoggedInUI();
+    const usernameValue = userNameee.value.trim();
 
-                // Reset the form fields after successful sign-up
-                email.value = "";
-                password.value = "";
-                conPassword.value = "";
-                userNameee.value = "";
-            })
-            .catch((error) => {
-                if (error.code === "auth/email-already-in-use") {
-                    emailError.textContent = "Email is already in use.";
-                } else if (error.code === "auth/invalid-email") {
-                    emailError.textContent = "Invalid email format.";
-                } else {
-                    console.error(error);
-                }
-            });
+    // Validate all fields
+    const isValid =
+        validateUsername() &&
+        validateEmail() &&
+        validatePassword() &&
+        validateConfirmPassword();
+
+    if (isValid) {
+        try {
+            // Create User with Firebase Authentication
+            const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                email.value.trim(),
+                password.value.trim()
+            );
+            const user = userCredential.user;
+
+            // Update user profile with display name
+            await updateProfile(user, { displayName: usernameValue });
+
+            // Save user details to Firestore
+            const userDetailsRef = collection(db, "userDetails");
+            const userDetails = {
+                userName: usernameValue,
+                userEmail: email.value.trim(),
+                lastSignUp: new Date(),
+            };
+
+            // Write to Firestore
+            await addDoc(userDetailsRef, userDetails);
+
+            // Store user details in localStorage
+            localStorage.setItem("user", JSON.stringify({ userNameee: usernameValue }));
+
+            alert("Account created successfully!");
+            console.log("User details saved to Firestore");
+
+            // Reset the form fields after successful sign-up
+            email.value = "";
+            password.value = "";
+            conPassword.value = "";
+            userNameee.value = "";
+        } catch (error) {
+            console.error("Error during signup: ", error);
+
+            // Handle Firebase Auth errors
+            if (error.code === "auth/email-already-in-use") {
+                emailError.textContent = "Email is already in use.";
+            } else if (error.code === "auth/invalid-email") {
+                emailError.textContent = "Invalid email format.";
+            } else {
+                emailError.textContent = "An error occurred. Please try again.";
+            }
+        }
     }
 });
 
@@ -238,24 +256,3 @@ export async function getUsername(email){
     console.error('Error fetching user details: ', error);
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    const issuesPageButton = document.getElementById("issuespage");
-
-    if (issuesPageButton) {
-        issuesPageButton.addEventListener("click", () => {
-            window.location.href = "/assets/pages/html-pages/report.html";
-        });
-    } else {
-        console.error("Element with ID 'issuespage' not found. Check your HTML.");
-    }
-});
-
-//  function issuespage(){
-//     if(check){
-        
-//     }
-//     else{
-//         alert("If you want to rase issues please login")
-//     }
-// }

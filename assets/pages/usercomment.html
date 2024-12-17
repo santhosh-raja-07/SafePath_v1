@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseAssist</title>
+    <link rel="stylesheet" href="/assets/css/usercomment.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header>
+        <nav class="side-navbar">
+            <div><i class="fa-solid fa-circle-left"></i></div>
+            <div id="home-page"><i class="fa-solid fa-house"></i></div>
+            <div type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" id="profile-page"><i class="fa-solid fa-circle-user"></i></div>
+        </nav>
+    </header>
+    <nav class="navbar">
+        <div class="sub-container">
+            <h3>Your Issue</h3>
+            <div class="subCon-sub">
+                <div>
+                    <div>Title : <span>subject</span></div>
+                    
+                </div>
+                <div>
+                    <div>Description : <span>Describe what happen..</span></div>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="rightSide-bar">
+        <h2>Issues Details</h2>
+        <div class="sideBar-container">
+           <div><h3>Status</h3><span>Pending</span></div>
+            <div><h3>Lawyer</h3><span>Pending</span></div>
+            <div><h3>Category</h3><span>Violence</span></div>
+            <div><h3>Priority</h3><span>Pending</span></div>
+            <div><h3>Age Category</h3><span>Major</span></div>
+        </div>
+    </div>
+    <div class="chat-container">
+        <div class="chat-header">Chat With Lawyer</div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message lawyer"></div>
+            <div class="message user"></div>
+        </div>
+        <form class="chat-input-form" id="chat-form">
+            <input type="text" id="message" placeholder="Type your message..." autocomplete="off" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+
+</body>
+</html>

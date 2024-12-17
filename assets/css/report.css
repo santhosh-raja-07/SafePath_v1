@@ -1,0 +1,180 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "poppins", sans-serif;
+}
+
+body {
+    background-color: #f4f7fb;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Navbar Styles */
+.side-navbar {
+    background-color:  rgb(9, 98, 9);
+    width: 55px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.side-navbar div{
+    margin-top: 3rem;
+}
+
+.side-navbar i {
+    color: white;
+    font-size: 1.5rem;
+    padding: 14px;
+    cursor: pointer;
+}
+
+.side-navbar div:hover {
+    background-color: #388E3C;
+}
+
+/* Main Container */
+.main-container {
+    margin-left: 70px; /* Adds space to the left for the navbar */
+    padding-top: 2rem;
+}
+
+.issue-report {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.issue-report h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.user-details {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.user-details i {
+    font-size: 2.5rem;
+    color:  rgb(9, 98, 9);
+}
+
+.user-details h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 5px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #333;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color:  rgb(9, 98, 9);
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* Submit Button */
+button {
+    background-color:  rgb(9, 98, 9);
+    color: white;
+    font-size: 1rem;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #388E3C;
+}
+
+.form-group textarea{
+    resize: none;
+    height: 100px;
+}
+
+/* Popup Styles */
+.popup {
+    display: flex;
+    padding-bottom: 10rem;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 40px 30px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.popup-content p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color:  rgb(9, 98, 9);
+    margin-bottom: 1rem;
+}
+
+.popup-content button {
+    background-color:  rgb(9, 98, 9);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.popup-content button:hover {
+    background-color: #388E3C;
+}
