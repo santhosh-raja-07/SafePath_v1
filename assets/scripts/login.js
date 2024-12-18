@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, updateProfile, signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getUsername} from "./signup.js";
-import {firebaseConfig } from "./config.js"
+import {firebaseConfig } from "../../config.js"
 
 
 // Initialize Firebase

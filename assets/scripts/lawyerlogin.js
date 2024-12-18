@@ -1,14 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFirestore, collection, addDoc , query, where, getDocs , doc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-import { firebaseConfig } from "./config.js";
+import { firebaseConfig } from "../../config.js";
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Form elements
 const lawyerName = document.getElementById("lawyername");
 const lawyerEmail = document.getElementById("lawyermail");
 const lawyersId = document.getElementById("lawyersId");
@@ -18,7 +17,6 @@ const signIn = document.getElementById("signIn");
 const password = document.getElementById("password")
 const conPassword = document.getElementById("con-password")
 
-// Error elements
 const lawyerNameError = document.getElementById("lawyernameError");
 const lawyerEmailError = document.getElementById("lawyermailError");
 const lawyersIdError = document.getElementById("lawyersIdError");
@@ -27,11 +25,6 @@ const YearsOfExpError = document.getElementById("YearsOfExpError");
 const passwordError = document.getElementById("passwordError")
 const conPasswordError = document.getElementById("con-passwordError")
 
-document.getElementById("loginpage").addEventListener("click" , ()=>{
-    window.location.href = "/assets/pages/lawyersignin.html"
-})
-
-// Input Event Listeners
 lawyerName.addEventListener("input", validateUsername);
 lawyerEmail.addEventListener("input", validateEmail);
 lawyersId.addEventListener("input", validatelawyersId);
@@ -149,7 +142,8 @@ function validateLawCategory() {
 // Form Submission
 signIn.addEventListener("click", async (event) => {
     event.preventDefault(); // Prevent default form submission
-
+    const lawyerNameValue = lawyerName.value.trim()
+    const lawCategory = document.querySelector('.category').value.trim()
     // Validation
     const isNameValid = validateUsername();
     const isEmailValid = validateEmail();
@@ -165,21 +159,23 @@ signIn.addEventListener("click", async (event) => {
             const user = userCredential.user;
 
             // Update the user's display name
-            await updateProfile(user, { displayName: lawyerName.value.trim() });
+            await updateProfile(user, { displayName: lawyerNameValue});
 
             // Add lawyer data to Firestore
             const docRef = collection(db, "lawyerDetails");
             const obj = {
-                uid: user.uid, // Use the user's Firebase Auth UID
-                lawyerName: lawyerName.value.trim(),
+                lawyerName: lawyerNameValue,
                 lawyerEmail: lawyerEmail.value.trim(),
                 lawyersId: lawyersId.value.trim(),
-                lawCategory: document.querySelector('.category').value.trim(),
+                lawCategory: lawCategory,
                 experience: YearsOfExp.value
             };
             await addDoc(docRef, obj);
 
-            alert("Form submitted successfully!");
+            localStorage.setItem("user", JSON.stringify({ lawyerName : lawyerNameValue , lawyerEmail : lawyerEmail.value.trim() , lawyersId: lawyersId.value.trim() , lawCategory : lawCategory , experience : YearsOfExp.value }));
+
+            alert("Account created successfully!");
+            console.log("User details saved to Firestore");
             window.location.href = "/assets/pages/lawyerHome.html";
         } catch (error) {
             if (error.code === "auth/email-already-in-use") {
@@ -193,42 +189,5 @@ signIn.addEventListener("click", async (event) => {
     }
 });
 
-// Fetch user details
-export async function getUsername(email) {
-    try {
-        const q = query(collection(db, "lawyerDetails"), where("lawyerEmail", "==", email));
-        const qsnapshot = await getDocs(q);
 
-        if (!qsnapshot.empty) {
-            const userDoc = qsnapshot.docs[0];
-            const userData = userDoc.data();
-            const userId = userDoc.id;
-
-            return { ...userData, id: userId };
-        } else {
-            console.log("No user found with the provided email.");
-            return null;
-        }
-    } catch (error) {
-        console.error("Error fetching user details: ", error);
-        throw error;
-    }
-}
-// Listen for auth state changes
-const logoutButton = document.querySelector("#loginout");
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        console.log("User is signed in:", user.email);
-        const userDetails = await getUserDetails(user.uid);
-        if (userDetails) {
-            // Update the UI with the user's name
-            document.querySelector(".username").textContent = `Welcome, ${userDetails.lawyerName}!`;
-            logoutButton.textContent = "Logout";
-        }
-    } else {
-        console.log("No user is signed in.");
-        document.querySelector(".username").textContent = "Please log in.";
-    }
-});
-
-
+//

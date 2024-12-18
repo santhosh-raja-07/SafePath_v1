@@ -1,15 +1,19 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { firebaseConfig } from "./config.js";
+import { firebaseConfig } from "../../config.js";
 import { 
     getFirestore, 
     collection, 
     getDocs 
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+// import { getUsername } from "./lawyerSignin.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app); 
 const db = getFirestore(app);
 const userIssues = [];
+
 
 async function fetchUserIssues() {
     try {
@@ -98,10 +102,10 @@ function searchIssues() {
         const title = div.querySelector("h4").textContent || div.querySelector("h4").innerText;
 
         if (title.toUpperCase().indexOf(filter) > -1) {
-            div.style.display = ""; // Show the issue if it matches the filter
+            div.style.display = ""; 
             foundMatch = true;
         } else {
-            div.style.display = "none"; // Hide the issue if it doesn't match the filter
+            div.style.display = "none"; 
         }
     });
 
@@ -129,5 +133,46 @@ document.getElementById("clear").addEventListener("click" , ()=>{
 }
 
 document.querySelector(".search-input").addEventListener("input", searchIssues);
-
 fetchUserIssues();
+
+const logoutButton = document.getElementById("loginout");
+const userData = JSON.parse(localStorage.getItem('user'));
+onAuthStateChanged(auth, (user) => {
+        if (user) {
+
+            const userDiv1 = document.querySelector(".lawyername");
+            const userDiv2 = document.getElementById("lawyerEm");
+            const userDiv3 = document.getElementById("LawyerID");
+            const userDiv4 = document.getElementById("lawyerCat");
+            const userDiv5 = document.getElementById("lawyerExp");
+
+            logoutButton.textContent = "Logout";
+
+            userDiv1.textContent = userData.lawyerName
+            userDiv2.textContent = userData.lawyerEmail
+            userDiv3.textContent = userData.lawyersId
+            userDiv4.textContent = userData.lawCategory
+            userDiv5.textContent = userData.experience
+        }
+        else {
+          console.log("No user is signed in.");
+             }
+      logoutButton.addEventListener("click", () => {
+            if (confirm("Are you sure you want to logout?")) {
+                signOut(auth)
+                    .then(() => {
+                        updateUIOnLogout();
+                    })
+                    .catch((error) => {
+                        alert("Logout error: " + error.message);
+                    });
+            }
+    });
+
+})
+
+function updateUIOnLogout() {
+    alert("You have successfully logged out.");
+    window.location.href = "/assets/pages/lawyerfom.html";
+}
+console.log(userData)

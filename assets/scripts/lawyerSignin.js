@@ -1,17 +1,20 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import {firebaseConfig } from "./config.js"
-import { getFirestore, collection, getDocs, doc , updateDoc, addDoc ,query, where} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { firebaseConfig } from "../../config.js";
+// import { getUsername } from "./lawyerlogin.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const loginBtn = document.getElementById("login-btn");
+// Elements
+const loginBtn = document.getElementById("signIn");
 const loginEmail = document.getElementById("email");
 const loginPassword = document.getElementById("PASSWORD");
 const logEmailError = document.getElementById("emailError");
 const passwordError = document.getElementById("passwordError");
+const logoutButton = document.getElementById("loginout");
 
+// Login Button Event
 loginBtn.addEventListener("click", (event) => {
     event.preventDefault();
 
@@ -23,60 +26,81 @@ loginBtn.addEventListener("click", (event) => {
     const password = loginPassword.value.trim();
 
     // Validate email and password
-    if (!validateEmail(email) || email == "") {
+    if (!validateEmail(email)) {
         logEmailError.textContent = "Enter a valid email address.";
-
+        return;
     }
 
-    if (!password || password == "") {
+    if (!password) {
         passwordError.textContent = "Password cannot be empty.";
-
+        return;
     }
 
-    // Attempt Firebase login
+    // Firebase Login
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            const user = userCredential.user;
             alert("Login successful!");
-            redirect()
+            redirect();
         })
         .catch((error) => {
-            // Handle Firebase errors
             switch (error.code) {
                 case "auth/invalid-email":
                 case "auth/user-not-found":
-                    logEmailError.textContent = "Enter a valid email address.";
+                    logEmailError.textContent = "Email not found. Please check your email.";
                     break;
                 case "auth/wrong-password":
                     passwordError.textContent = "Incorrect password.";
                     break;
                 default:
                     console.error("Firebase error:", error);
-                    passwordError.textContent = "An error occurred. Please try again.";
+                    passwordError.textContent = "An unexpected error occurred. Please try again.";
                     break;
             }
         });
 });
 
-// Validate Email
+// Email Validation
 function validateEmail(email) {
     const emailPattern = /^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
     return emailPattern.test(email);
 }
 
-document.querySelector(".loading").style.display = "none";
+async function getUsername(email) {
+    try {
+        const q = query(collection(db, "lawyerDetails"), where("lawyerEmail", "==", email));
+        const qsnapshot = await getDocs(q);
 
-// document.querySelector("body").style.opacity = "1"
+        if (!qsnapshot.empty) {
+            const userDoc = qsnapshot.docs[0];
+            const userData = userDoc.data();
+            const userId = userDoc.id;
+
+            return { ...userData, id: userId };
+        } else {
+            console.log("No user found with the provided email.");
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching user details: ", error);
+        throw error;
+    }
+}
+
+
 function redirect() {
-    // document.querySelector("body").style.opacity = "0.3"
-    document.querySelector(".loading").style.display = "block";
+    const loadingAnimation = document.querySelector(".loading");
+    loadingAnimation.style.display = "block";
+
     setTimeout(() => {
-        document.querySelector(".loading").style.display = "none";
-        window.location.href= "/assets/pages/lawyerHome.html";
+        loadingAnimation.style.display = "none";
+        window.location.href = "/assets/pages/lawyerHome.html";
     }, 3000);
 }
 
-document.getElementById("sign-up").addEventListener("click" , ()=>{
-    window.location.href = "/assets/pages/lawyerfom.html"
-})
+// Signup Redirect
+document.getElementById("sign-up").addEventListener("click", () => {
+    window.location.href = "/assets/pages/lawyerfom.html";
+});
 
+// Hide loading animation on load
+document.querySelector(".loading").style.display = "none";
