@@ -21,10 +21,18 @@
         </nav>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title  username" id="offcanvasRightLabel" style="font-weight: bolder;"></h5>
+                <h5 class="offcanvas-title  lawyername" id="offcanvasRightLabel" style="font-weight: bolder;"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="loginout"><button class="offcanvas-body" id="loginout"></button></div>
+            <div class="offcanvas-body">
+                <h5  id="lawyerEm" ></h5>
+                <h5  id="LawyerID" ></h5>
+                <h5  id="lawyerCat" ></h5>
+                <h5  id="lawyerExp" ></h5>
+                <div class="loginout"><button class="offcanvas-body" id="loginout"></button></div>
+              </div>
+
+
         </div>
     </header>
 
@@ -40,7 +48,5 @@
     </nav>
     <div class="main-container" id="main-div"></div>
     <script type="module" src="/assets/scripts/lawyerhome.js"></script>
-    <script type="module" src="/assets/scripts/lawyerlogin.js"></script>
-    <script type="module" src="/assets/scripts/lawyerSignin.js"></script>
 </body>
 </html>

@@ -212,6 +212,7 @@ signupBtn.addEventListener("click", async (event) => {
 
             // Store user details in localStorage
             localStorage.setItem("user", JSON.stringify({ userNameee: usernameValue }));
+            localStorage.setItem("role" , JSON.stringify({roleName : "user"}))
 
             alert("Account created successfully!");
             console.log("User details saved to Firestore");

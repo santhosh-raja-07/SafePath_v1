@@ -18,44 +18,47 @@
                     <h2>Case<span class="spanname" style="font-size: 2rem;">Assist</span></h2>
                 </div>
                 <div class="navbar">
-                    <ul id="handling-logout">
-                        <div class="nav">
-                            <li><a href="#Justice">Home</a></li>
-                            <li><a href="/assets/pages/about.html">About</a></li>
-                            <li><a href="#Learn">Laws</a></li>
-                            <li><a id="issuespage" style="cursor: pointer;">issues</a></li>
-                            <li>
-                                <div>
-                                    <i class="fa-sharp fa-solid fa-globe languagebtn"></i>
-                                    <select class="translate">
-                                        <option selected>Languages</option>
-                                        <option id="lang-english" value="english">English</option>
-                                        <option id="lang-tamil" value="tamil">Tamil</option>
-                                        <option id="lang-telugu" value="telugu">Telugu</option>
-                                        <option id="lang-hindi" value="hindi">Hindi</option>
-                                        <option id="lang-kanada" value="kanada">Kanadam</option>
-                                    </select>
-                                </div>
-                            </li>
-                            <li class="appendloginbtn"><button id="login-button">Login</button></li>
-                            <li>
-                                <div type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                    <i class="fa-solid fa-circle-user favicon"></i>
-                                </div>
-                            </li>
-                        </div>
+                    <ul id="handling-logout" class="nav">
+                        <li><a href="#Justice">Home</a></li>
+                        <li><a href="/assets/pages/about.html">About</a></li>
+                        <li><a href="#Learn">Laws</a></li>
+                        <li><a id="issuespage" style="cursor: pointer;">Issues</a></li>
+                        <li>
+                            <div>
+                                <i class="fa-sharp fa-solid fa-globe languagebtn"></i>
+                                <select class="translate">
+                                    <option selected>Languages</option>
+                                    <option id="lang-english" value="english">English</option>
+                                    <option id="lang-tamil" value="tamil">Tamil</option>
+                                    <option id="lang-telugu" value="telugu">Telugu</option>
+                                    <option id="lang-hindi" value="hindi">Hindi</option>
+                                    <option id="lang-kanada" value="kanada">Kanadam</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li class="appendloginbtn">
+                            <button id="login-button">Login</button>
+                        </li>
+                        <li>
+                            <div type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                <i class="fa-solid fa-circle-user favicon"></i>
+                            </div>
+                        </li>
                     </ul>
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                         <div class="offcanvas-header">
-                            <h5 class="offcanvas-title  username" id="offcanvasRightLabel" style="font-weight: bolder;">null</h5>
+                            <h5 class="offcanvas-title username" id="offcanvasRightLabel" style="font-weight: bolder;"></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="loginout"><button class="offcanvas-body" id="loginout"></button></div>
+                        <div class="loginout">
+                            <button class="offcanvas-body" id="loginout"></button>
+                        </div>
                     </div>
                 </div>
             </nav>
         </header>
     </div>
+    
     
     <main>
     <div class="main-img">
@@ -66,7 +69,7 @@
 </div>
     <div class="main-container" >
     <div class="sub-container">
-        <div class="images" id="Learn"><img src="assets/img/law_img.jpg"></div>
+        <div class="images" id="Learn"><img src="assets/img/law_img.jpg" draggable="false"></div>
         <div class="head-and-btn">
             <h2>Learn</h2>
             <h4 class="main-topic">A complete guide to all laws and policies for everyone to explore, understand, and learn from.</h4>
@@ -74,25 +77,6 @@
         </div>
     </div>
     
-
-    <!-- <div class="sub-container">
-        <div class="images"><img src="assets/img/prevention_img.jpg"></div>
-        <div class="head-and-btn">
-            <h2 >Prevent</h2>
-            <p class="main-topic">Learn how to spot and avoid common forms of harassment , plus practical tools and strategies for staying safe and feeling empowered in public spaces.</p>
-        <div class="read-btn"><button id="prevent">Read...</button></div>
-        </div>
-    </div>
-
-    <div class="sub-container">
-        <div class="images"><img src="assets/img/resilience_img.jpg"></div>
-        <div class="head-and-btn">
-            <h2 >Heal</h2>
-            <p class="main-topic">Find self-care practices to help you heal from trauma and build resilience, including guided meditations, journaling prompts and other wellness resources.</p>
-        <div class="read-btn"><button id="resilient">Read...</button></div>
-    </div>
-    </div>
-</div> -->
     </main>
     <footer id="Footer">
         <div class="footer"></div>
