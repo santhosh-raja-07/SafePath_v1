@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, updateProfile, signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getUsername} from "./signup.js";
-import {firebaseConfig } from "../../config.js"
+import {firebaseConfig } from "./config.js"
 
 
 // Initialize Firebase
@@ -102,6 +102,7 @@ function validateEmail(email) {
                               userNameee: userDetails.userName
                             })
                           );
+                          localStorage.setItem("role" , JSON.stringify({roleName : "user"}))
                           userDiv.textContent = userDetails.userName;
                     }
                 })
@@ -112,6 +113,7 @@ function validateEmail(email) {
             logoutButton.addEventListener("click", () => {
                 if(confirm("Are you want to logout")){
                     signOut(auth).then(() => {
+                        localStorage.removeItem("role")
                         userDiv.textContent = ""; // Clear the username div
                         loginButton.style.display = "block";
                         appendloginbtn.style.display = "block"
@@ -146,16 +148,18 @@ const issuesPageButton = document.getElementById("issuespage");
         }
 });
 
-
+const checkForlogin  = JSON.parse(localStorage.getItem("role"))
+console.log(checkForlogin)
 onAuthStateChanged(auth, (user) => {
-    if (user) {
+    const checkForlogin  = JSON.parse(localStorage.getItem("role"))
+    if (user && checkForlogin.roleName === "user") {
        displayLoggedInUI();
-    } else {
+    } 
+    else if(checkForlogin.roleName === "lawyer"){
+       window.location.href = "/assets/pages/lawyerHome.html"
+    }
+     else  {
         loginBtn.style.display = "block";
     }
 });
 
-
-// export function goToIssuePage(){
-
-//     }

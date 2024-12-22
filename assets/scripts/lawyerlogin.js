@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFirestore, collection, addDoc , query, where, getDocs , doc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-import { firebaseConfig } from "../../config.js";
+import { firebaseConfig } from "./config.js";
 
 
 const app = initializeApp(firebaseConfig);
@@ -172,7 +172,15 @@ signIn.addEventListener("click", async (event) => {
             };
             await addDoc(docRef, obj);
 
-            localStorage.setItem("user", JSON.stringify({ lawyerName : lawyerNameValue , lawyerEmail : lawyerEmail.value.trim() , lawyersId: lawyersId.value.trim() , lawCategory : lawCategory , experience : YearsOfExp.value }));
+            localStorage.setItem("user", 
+                JSON.stringify({ 
+                lawyerName : lawyerNameValue ,
+                 lawyerEmail : lawyerEmail.value.trim() ,
+                  lawyersId: lawyersId.value.trim() , 
+                  lawCategory : lawCategory , 
+                  experience : YearsOfExp.value }));
+
+            localStorage.setItem("role" , JSON.stringify({roleName : "lawyer"}))
 
             alert("Account created successfully!");
             console.log("User details saved to Firestore");
@@ -189,5 +197,3 @@ signIn.addEventListener("click", async (event) => {
     }
 });
 
-
-//

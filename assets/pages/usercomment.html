@@ -42,17 +42,21 @@
         </div>
     </div>
     <div class="chat-container">
-        <div class="chat-header">Chat With Lawyer</div>
-        <div class="chat-messages" id="chat-messages">
-            <div class="message lawyer"></div>
-            <div class="message user"></div>
+        <div class="chat-messages">
+            <div class="messagelawyer">
+                <div class="msg">Hello, how can I assist you?</div>
+            </div>
+            <div class="messageuser">
+                <div class="msg">I need help with a legal matter.</div>
+                <div class="msg">Can you provide some guidance?</div>
+            </div>
         </div>
-        <form class="chat-input-form" id="chat-form">
+        <form class="chat-input-form" id="chat-form" novalidate>
             <input type="text" id="message" placeholder="Type your message..." autocomplete="off" required>
-            <button type="submit">Send</button>
+            <button id="sendMsg">Send</button>
         </form>
     </div>
 
-
+<script type="module" src="/assets/scripts/usercomment.js"></script>
 </body>
 </html>

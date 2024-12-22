@@ -1,12 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { firebaseConfig } from "../../config.js";
+import { firebaseConfig } from "./config.js";
 import { 
     getFirestore, 
     collection, 
     getDocs 
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-// import { getUsername } from "./lawyerSignin.js";
+import { getAuth, onAuthStateChanged, signOut  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getUsername } from "./forAthu.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -66,7 +66,7 @@ async function fetchUserIssues() {
                 <h4>Age Category</h4>
                 <span>${x.ageCategory}</span>
             </div>
-            <div><button>Open</button></div>`;
+            <div><button class="checkIssue">Open</button></div>`;
 
         mainDiv.appendChild(div1);
         mainDiv.appendChild(div2);
@@ -87,6 +87,13 @@ async function fetchUserIssues() {
                 detailsDiv.classList.remove("hidden");
             }
         });
+
+        // if lawyer click open btn that lawyer go to userissue page
+        const checkIssueButton = div2.querySelector(".checkIssue");
+        checkIssueButton.addEventListener("click", () => {
+            window.location.href = "/assets/pages/userissue.html";
+        });
+
     });
     document.querySelector(".loading").style.display = "none";
 }
@@ -99,9 +106,8 @@ function searchIssues() {
     let foundMatch = false;
 
     issueDivs.forEach(div => {
-        const title = div.querySelector("h4").textContent || div.querySelector("h4").innerText;
-
-        if (title.toUpperCase().indexOf(filter) > -1) {
+        const title = div.querySelector("h4").textContent.toUpperCase() || div.querySelector("h4").innerText.toUpperCase();
+        if (title.includes(filter)) {
             div.style.display = ""; 
             foundMatch = true;
         } else {
@@ -137,42 +143,53 @@ fetchUserIssues();
 
 const logoutButton = document.getElementById("loginout");
 const userData = JSON.parse(localStorage.getItem('user'));
-onAuthStateChanged(auth, (user) => {
-        if (user) {
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        const email = user.email; 
+        try {
+            const lawyerDetails = await getUsername(email);
+            if (lawyerDetails) {
+                const userDiv1 = document.querySelector(".lawyername");
+                const userDiv2 = document.getElementById("lawyerEm");
+                const userDiv3 = document.getElementById("LawyerID");
+                const userDiv4 = document.getElementById("lawyerCat");
+                const userDiv5 = document.getElementById("lawyerExp");
 
-            const userDiv1 = document.querySelector(".lawyername");
-            const userDiv2 = document.getElementById("lawyerEm");
-            const userDiv3 = document.getElementById("LawyerID");
-            const userDiv4 = document.getElementById("lawyerCat");
-            const userDiv5 = document.getElementById("lawyerExp");
+                logoutButton.textContent = "Logout";
 
-            logoutButton.textContent = "Logout";
-
-            userDiv1.textContent = userData.lawyerName
-            userDiv2.textContent = userData.lawyerEmail
-            userDiv3.textContent = userData.lawyersId
-            userDiv4.textContent = userData.lawCategory
-            userDiv5.textContent = userData.experience
-        }
-        else {
-          console.log("No user is signed in.");
-             }
-      logoutButton.addEventListener("click", () => {
-            if (confirm("Are you sure you want to logout?")) {
-                signOut(auth)
-                    .then(() => {
-                        updateUIOnLogout();
-                    })
-                    .catch((error) => {
-                        alert("Logout error: " + error.message);
-                    });
+                userDiv1.textContent = lawyerDetails.lawyerName;
+                userDiv2.textContent = lawyerDetails.lawyerEmail;
+                userDiv3.textContent = lawyerDetails.id;
+                userDiv4.textContent = lawyerDetails.lawCategory;
+                userDiv5.textContent = lawyerDetails.experience;
+            } else {
+                console.log("No lawyer details found.");
             }
-    });
+        } catch (error) {
+            console.error("Error fetching lawyer details:", error);
+        }
+    } else {
+        console.log("No user is signed in.");
+    }
 
-})
+    logoutButton.addEventListener("click", () => {
+        if (confirm("Are you sure you want to logout?")) {
+            localStorage.removeItem("role");
+            signOut(auth)
+                .then(() => {
+                    updateUIOnLogout();
+                })
+                .catch((error) => {
+                    alert("Logout error: " + error.message);
+                });
+        }
+    });
+});
+
 
 function updateUIOnLogout() {
     alert("You have successfully logged out.");
-    window.location.href = "/assets/pages/lawyerfom.html";
+    window.location.href = "/index.html";
 }
 console.log(userData)
+

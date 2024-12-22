@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { firebaseConfig } from "../../config.js";
-// import { getUsername } from "./lawyerlogin.js";
+import { firebaseConfig } from "./config.js";
+import { getUsername } from "./forAthu.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -39,6 +39,7 @@ loginBtn.addEventListener("click", (event) => {
     // Firebase Login
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+            const user = userCredential.user;
             alert("Login successful!");
             redirect();
         })
@@ -65,28 +66,6 @@ function validateEmail(email) {
     return emailPattern.test(email);
 }
 
-async function getUsername(email) {
-    try {
-        const q = query(collection(db, "lawyerDetails"), where("lawyerEmail", "==", email));
-        const qsnapshot = await getDocs(q);
-
-        if (!qsnapshot.empty) {
-            const userDoc = qsnapshot.docs[0];
-            const userData = userDoc.data();
-            const userId = userDoc.id;
-
-            return { ...userData, id: userId };
-        } else {
-            console.log("No user found with the provided email.");
-            return null;
-        }
-    } catch (error) {
-        console.error("Error fetching user details: ", error);
-        throw error;
-    }
-}
-
-
 function redirect() {
     const loadingAnimation = document.querySelector(".loading");
     loadingAnimation.style.display = "block";
@@ -94,7 +73,7 @@ function redirect() {
     setTimeout(() => {
         loadingAnimation.style.display = "none";
         window.location.href = "/assets/pages/lawyerHome.html";
-    }, 3000);
+    }, 1000);
 }
 
 // Signup Redirect
