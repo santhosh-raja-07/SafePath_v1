@@ -1,38 +1,19 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { firebaseConfig } from "./config.js";
-import { 
-    getFirestore, 
-    collection, 
-    getDocs 
-} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signOut  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut  } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+// import { getFirestore, collection, addDoc , doc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { getUsername } from "./forAthu.js";
-
+import { userIssues } from "./allissues.js";
+import { getDatabase, ref, set, get, child ,  update } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+// import {messageStored , msgDocRef} from "./messageStorage.js"
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app); 
-const db = getFirestore(app);
-const userIssues = [];
+const db = getDatabase();
 
 
-async function fetchUserIssues() {
-    try {
-        const userIssuesCollectionRef = collection(db, "userIssues");
-        const userIssuesSnapshot = await getDocs(userIssuesCollectionRef);
 
-        userIssuesSnapshot.forEach((doc) => {
-            const issueData = doc.data();
-            userIssues.push(issueData);
-        });
-
-        console.log("Fetched User Issues:", userIssues);
-
-        // Update the DOM after fetching data
-        displayUserIssues();
-    } catch (error) {
-        console.error("Error fetching user issues:", error);
-    }
-}
+displayUserIssues();
 
  function displayUserIssues() {
     const mainDiv = document.getElementById("main-div");
@@ -40,13 +21,14 @@ async function fetchUserIssues() {
     userIssues.forEach((x, index) => {
         const div1 = document.createElement("div");
         div1.classList.add("details");
+        div1.id = `det-${index}`
 
         div1.innerHTML = `
             <div>
                 <i class="fa-solid fa-circle-user"></i>
-                <h5>${x.Name}</h5>
+                <h5 id="user-${index}">${x.Name}</h5>
             </div>
-            <h4>${x.issuesTitle}</h4>
+            <h4 id = "issuesTit-${index}">${x.issuesTitle}</h4>
             <span class="toggle-view" data-index="${index}">Quick view <i class="fa-solid fa-angle-right arrow" id="arrow-${index}"></i></span>`;
 
         const div2 = document.createElement("div");
@@ -56,17 +38,19 @@ async function fetchUserIssues() {
         div2.innerHTML = `
             <div>
                 <h4>Status</h4>
-                <span>Waiting for lawyer</span>
+                <span id="status-${index}">Unassigned</span>
             </div>
+            <div style="display: none;"  id="issuesDes-${index}">${x.issuesDescription}</div>
+            <div style="display: none;"  id="clientemail-${index}">${x.email}</div>
             <div>
                 <h4>Category</h4>
-                <span>${x.categoryOfIssues}</span>
+                <span id="issuesCat-${index}">${x.categoryOfIssues}</span>
             </div>
             <div>
                 <h4>Age Category</h4>
-                <span>${x.ageCategory}</span>
+                <span id="ageCat-${index}">${x.ageCategory}</span>
             </div>
-            <div><button class="checkIssue">Open</button></div>`;
+            <div><button class="checkIssue" id="checkIssue-${index}">Open</button></div>`;
 
         mainDiv.appendChild(div1);
         mainDiv.appendChild(div2);
@@ -80,7 +64,6 @@ async function fetchUserIssues() {
                 arrow.classList.remove("fa-angle-down");
                 arrow.classList.add("fa-angle-right");
                 detailsDiv.classList.add("hidden");
-                
             } else {
                 arrow.classList.remove("fa-angle-right");
                 arrow.classList.add("fa-angle-down");
@@ -88,13 +71,88 @@ async function fetchUserIssues() {
             }
         });
 
-        // if lawyer click open btn that lawyer go to userissue page
-        const checkIssueButton = div2.querySelector(".checkIssue");
-        checkIssueButton.addEventListener("click", () => {
-            window.location.href = "/assets/pages/userissue.html";
-        });
+
+        const lawyerEmail = JSON.parse(localStorage.getItem("lawyerEmail"));
+
+        // if lawyer click open btn that lawyer go to user page
+const checkIssueButton = div2.querySelector(`#checkIssue-${index}`);
+        
+checkIssueButton.addEventListener("click", async () => {
+    
+    checkIssueButton.addEventListener("click", async () => {
+        const clientName = div1.querySelector(`#user-${index}`);
+        const clientIssue = div1.querySelector(`#issuesTit-${index}`);
+        const clientIssueCat = div2.querySelector(`#issuesCat-${index}`);
+        const clientAge = div2.querySelector(`#ageCat-${index}`);
+        const issuesDes = div2.querySelector(`#issuesDes-${index}`);
+        const clientEmail = div2.querySelector(`#clientemail-${index}`);
+        const statusOfIssue = div2.querySelector(`#status-${index}`)
+        statusOfIssue.textContent = "Assigned";
+    
+        localStorage.setItem("userIssue", JSON.stringify({
+            clientName: clientName.textContent,
+            clientIssue: clientIssue.textContent,
+            clientIssueCat: clientIssueCat.textContent,
+            clientAge: clientAge.textContent,
+            issuesDes: issuesDes.textContent,
+            clientEmail: clientEmail.textContent,
+            lawyerEmail: lawyerEmail.lawyerEmail,
+        }));
+    
+        try {
+            let email = lawyerEmail.lawyerEmail;
+            email = email.replace(/[\.\#\$\[\]]/g, "_");
+    
+            // Update issue status in Firebase
+            const lawyerRef = ref(db, `users/lawyermessage/${email}/issuseOpened`);
+            await set(lawyerRef, { issueStatus: "Submit" });
+    
+            console.log("Issue status set to Submit. Redirecting...");
+            window.location.href = "/assets/pages/usercomment.html";
+        } catch (error) {
+            console.error("Error updating issue status:", error);
+        }
+    });
+    
+    
+    try {
+        let email = userDiv2.textContent;
+        email = email.replace(/[\.\#\$\[\]]/g, "_");
+    
+        const userRef = ref(db, `users/lawyermessage/${email}`);
+        const data = {
+            msg1: "hii"
+        };
+        await set(userRef, data);
+        console.log("Data has been written successfully!");
+    
+    } catch (error) {
+        console.error("Error writing data to Firebase:", error);
+    }
+
+    try {
+        const clientEM = JSON.parse(localStorage.getItem("userIssue"))
+        console.log(clientEM)
+        let email = clientEM.clientEmail;
+        email = email.replace(/[\.\#\$\[\]]/g, "_");
+    
+        const userRef = ref(db, `users/usermessage/${email}`);
+        const data = {
+            msg1: "hii"
+        };
+        await set(userRef, data);
+        console.log("Data has been written successfully!");
+    
+        window.location.href = "/assets/pages/usercomment.html";
+    } catch (error) {
+        console.error("Error writing data to Firebase:", error);
+    }
+   
+});
+
 
     });
+
     document.querySelector(".loading").style.display = "none";
 }
 
@@ -139,18 +197,40 @@ document.getElementById("clear").addEventListener("click" , ()=>{
 }
 
 document.querySelector(".search-input").addEventListener("input", searchIssues);
-fetchUserIssues();
 
+let userDiv2 = ""
 const logoutButton = document.getElementById("loginout");
-const userData = JSON.parse(localStorage.getItem('user'));
+// const userData = JSON.parse(localStorage.getItem('user'));
+let issueStatusinFB = "";
+async function checkIssueStatus(email) {
+
+    email = email.replace(/[\.\#\$\[\]]/g, "_");
+
+    const issuesRef = ref(getDatabase());
+    const issueSubRef = child(issuesRef, `users/lawyermessage/${email}/issuseOpened`);
+    try {
+        const submitData = await get(issueSubRef);
+
+        if (submitData.exists()) {
+            issueStatusinFB = submitData.val().issueStatus;
+            console.log("Issue Status in FB:", issueStatusinFB);
+        } else {
+            console.log("No issue status available");
+        }
+    } catch (error) {
+        console.error("Error fetching data from Firebase:", error);
+    }
+}
+
+// Fetch user details
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-        const email = user.email; 
+        const email = user.email;
         try {
             const lawyerDetails = await getUsername(email);
             if (lawyerDetails) {
                 const userDiv1 = document.querySelector(".lawyername");
-                const userDiv2 = document.getElementById("lawyerEm");
+                userDiv2 = document.getElementById("lawyerEm");
                 const userDiv3 = document.getElementById("LawyerID");
                 const userDiv4 = document.getElementById("lawyerCat");
                 const userDiv5 = document.getElementById("lawyerExp");
@@ -162,6 +242,20 @@ onAuthStateChanged(auth, async (user) => {
                 userDiv3.textContent = lawyerDetails.id;
                 userDiv4.textContent = lawyerDetails.lawCategory;
                 userDiv5.textContent = lawyerDetails.experience;
+
+                localStorage.setItem("lawyerEmail", JSON.stringify({ 
+                    lawyerEmail: userDiv2.textContent,
+                    lawyerName : userDiv1.textContent,
+                    lawyerId : userDiv3.textContent,
+                    lawyerCat : userDiv4.textContent,
+                    lawyerExperience : userDiv5.textContent
+                }));
+
+                await checkIssueStatus(userDiv2.textContent);
+                if (issueStatusinFB === "Submit") {
+                    window.location.href = "/assets/pages/usercomment.html";
+                }
+
             } else {
                 console.log("No lawyer details found.");
             }

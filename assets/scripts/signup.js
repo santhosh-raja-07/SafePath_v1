@@ -1,6 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc , updateDoc, addDoc ,query, where} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, updateProfile , onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc , updateDoc, addDoc ,query, where} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import {firebaseConfig } from "./config.js"
 // import {goToIssuePage , check} from './login.js';
 
@@ -14,6 +14,7 @@ const db = getFirestore(app);
     const password = document.getElementById("Signup-PASSWORD");
     const conPassword = document.getElementById("Signup-ConPASSWORD");
     const userNameee = document.getElementById("fullname");
+    const alertMessage = document.getElementById('alert-message');
   
     const emailError = document.getElementById("emailError");
     const passError = document.getElementById("passError");
@@ -28,6 +29,8 @@ const db = getFirestore(app);
     const loginbutton = document.getElementById("login-button");
     const body = document.querySelector("body");
     const overlay = document.getElementById("overlay");
+
+    const appendloginbtn = document.querySelector(".appendloginbtn")
   
     // Event Listeners
     if (loginbutton) {
@@ -202,6 +205,7 @@ signupBtn.addEventListener("click", async (event) => {
             // Save user details to Firestore
             const userDetailsRef = collection(db, "userDetails");
             const userDetails = {
+                userId : user.uid,
                 userName: usernameValue,
                 userEmail: email.value.trim(),
                 lastSignUp: new Date(),
@@ -211,10 +215,17 @@ signupBtn.addEventListener("click", async (event) => {
             await addDoc(userDetailsRef, userDetails);
 
             // Store user details in localStorage
-            localStorage.setItem("user", JSON.stringify({ userNameee: usernameValue }));
+            localStorage.setItem("user", JSON.stringify({ userNameee: usernameValue , userId :user.uid}));
             localStorage.setItem("role" , JSON.stringify({roleName : "user"}))
 
-            alert("Account created successfully!");
+            alertMessage.style.background = "#4CAF50"
+            alertMessage.textContent = "Account created successfully!"
+            alertMessage.classList.add('show')
+            setTimeout(() => {
+                alertMessage.classList.remove('show');
+
+            }, 2000); 
+            displayLoggedInUI()
             console.log("User details saved to Firestore");
 
             // Reset the form fields after successful sign-up
@@ -256,4 +267,50 @@ export async function getUsername(email){
   } catch (error) {
     console.error('Error fetching user details: ', error);
   }
+}
+
+function displayLoggedInUI() {
+    let sign = document.querySelector(".sign-up-page");
+    sign.style.display = "none";
+    body.style.overflow = "initial";
+    overlay.style.display = "none";
+
+    const logoutButton = document.querySelector("#loginout"); 
+    const loginButton = document.getElementById("login-button");
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in
+            const userDiv = document.querySelector(".username");
+            appendloginbtn.style.display = "none"
+            userDiv.textContent =  user.displayName || "User"
+            userDiv.style.color = "rgb(9, 98, 9)";
+            logoutButton.textContent = "Logout";
+
+
+            logoutButton.addEventListener("click", () => {
+                if(confirm("Are you want to logout")){
+                    signOut(auth).then(() => {
+                        localStorage.removeItem("role")
+                        userDiv.textContent = ""; // Clear the username div
+                        loginButton.style.display = "block";
+                        appendloginbtn.style.display = "block"
+                        updateUIOnLogout();
+                    }).catch((error) => {
+                      alert("Logout error: ", error);
+                    });
+                  }
+            });
+            console.log(userDiv)
+        } else {
+            loginButton.style.display = "block";
+        }
+    });
+
+
+function updateUIOnLogout() {
+   alert("You have successfully logged out.")
+    window.location.reload();
+}
+
 }
