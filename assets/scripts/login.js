@@ -1,7 +1,8 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, updateProfile, signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, updateProfile, signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getUsername} from "./signup.js";
 import {firebaseConfig } from "./config.js"
+import { getDatabase, ref, set, get, child ,  update } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 
 
 // Initialize Firebase
@@ -17,6 +18,7 @@ const passwordError = document.getElementById("passwordError");
 const body = document.querySelector("body");
 const overlay = document.getElementById("overlay");
 const loginPage = document.querySelector(".login-page");
+const alertMessage = document.getElementById('alert-message');
 
 /* <button id="login-button">Login</button> */
 const appendloginbtn = document.querySelector(".appendloginbtn")
@@ -48,7 +50,17 @@ loginBtn.addEventListener("click", (event) => {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            alert("Login successful!");
+            checkIssueStatus()
+            localStorage.setItem("role", JSON.stringify({ roleName: "user" }));
+            alertMessage.style.background = "#4CAF50"
+                alertMessage.textContent = "Login succesfully"
+                alertMessage.classList.add('show')
+                setTimeout(() => {
+                    alertMessage.classList.remove('show');
+
+                }, 2000); 
+
+
             displayLoggedInUI();
             // check = true
         })
@@ -92,17 +104,18 @@ function validateEmail(email) {
             appendloginbtn.style.display = "none"
             userDiv.style.color = "rgb(9, 98, 9)";
             logoutButton.textContent = "Logout";
-            // Fetch user details after login
             getUsername(user.email)
                 .then((userDetails) => {
+                    console.log("User Details:", userDetails);
                     if (userDetails) {
                         localStorage.setItem(
                             "user",
                             JSON.stringify({
-                              userNameee: userDetails.userName
+                              userNameee: userDetails.userName,
+                              useremail : userDetails.userEmail
                             })
                           );
-                          localStorage.setItem("role" , JSON.stringify({roleName : "user"}))
+                          
                           userDiv.textContent = userDetails.userName;
                     }
                 })
@@ -131,28 +144,64 @@ function validateEmail(email) {
 
 
 function updateUIOnLogout() {
-    alert("You have successfully logged out.");
+   alert("You have successfully logged out.")
     window.location.reload();
 }
     
 }
+const user = JSON.parse(localStorage.getItem("user")) ;
+let issueStatusinFB = "";
+let email = user.useremail;
+async function checkIssueStatus() {
+    email = email.replace(/[\.\#\$\[\]]/g, "_");
+
+    const issuesRef = ref(getDatabase());
+    const issueSubRef = child(issuesRef, `users/usermessage/${email}/issuseOpened`);
+    
+    try {
+        const submitData = await get(issueSubRef);
+
+        if (submitData.exists()) {
+            issueStatusinFB = submitData.val().issueStatus;
+            console.log("Issue Status:", issueStatusinFB);
+            // localStorage.setItem("issuesStatus" , issueStatusinFB )
+        } else {
+            console.log("No issue status available");
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
 
 const issuesPageButton = document.getElementById("issuespage");
-    issuesPageButton.addEventListener("click", () => {
+    issuesPageButton.addEventListener("click", async() => {
+        await checkIssueStatus()
         const user = auth.currentUser;
-        if(user){
-        window.location.href = "/assets/pages/report.html";
+        // const checkForIssuesSubmit = JSON.parse(localStorage.getItem("issuesSubmit"))
+        if(user && issueStatusinFB == "Submit"){
+            window.location.href = "/assets/pages/usercomment.html"
         }
-        else{
-            alert("Please Login / Signup to access this page.")
+        else if(user && issueStatusinFB == "" ){
+        window.location.href = "/assets/pages/report.html";
+        }else{
+            alertMessage.style.background = "red"
+            alertMessage.textContent = "Please Login / Signup to access this page."
+            alertMessage.classList.add('show')
+            setTimeout(() => {
+                alertMessage.classList.remove('show');
+        
+            }, 3000); 
         }
 });
 
+
+
 const checkForlogin  = JSON.parse(localStorage.getItem("role"))
 console.log(checkForlogin)
+if (checkForlogin && checkForlogin.roleName) {
 onAuthStateChanged(auth, (user) => {
     const checkForlogin  = JSON.parse(localStorage.getItem("role"))
-    if (user && checkForlogin.roleName === "user") {
+    if (user && checkForlogin.roleName === "user" ) {
        displayLoggedInUI();
     } 
     else if(checkForlogin.roleName === "lawyer"){
@@ -162,4 +211,9 @@ onAuthStateChanged(auth, (user) => {
         loginBtn.style.display = "block";
     }
 });
+} else {
+    console.error('No role found in localStorage.');
+    loginBtn.style.display = "block"; 
+}
+
 
