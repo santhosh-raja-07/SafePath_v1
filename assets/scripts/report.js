@@ -31,8 +31,9 @@ function PreventBack(){
     const description = document.getElementById("description").value.trim();
     const category = document.getElementById("category").value.trim();
     const ageCategory = document.getElementById("ageCategory").value.trim();
-
+let check = true
     if (!title || !description || !category || !ageCategory) {
+      check  =false
       showErrorPopup("Please fill in all required fields!");
     } else {
       console.log("Issue submitted:", { title, description, category, ageCategory });
@@ -53,19 +54,21 @@ function PreventBack(){
           };
   
           await addDoc(userIssuesRef, issuesObj); 
+          check = true
           showErrorPopup("Issue submitted successfully!");
           console.log("Issue successfully submitted!");
-
           // set issuestatus in firebase
-          let email = user.email;
-          email = email.replace(/[\.\#\$\[\]]/g, "_");
-             
-          const userRef = ref(database, `users/usermessage/${email}/issuseOpened`);
-          const submitData = {
-                issueStatus : "Submit"
-          };
+            if(check){
+               let email = user.email;
+               email = email.replace(/[\.\#\$\[\]]/g, "_");
+                  
+               const userRef = ref(database, `users/usermessage/${email}/issuseOpened`);
+               const submitData = {
+                     issueStatus : "Submit"
+            };
           await set(userRef, submitData);
           console.log("Data has been written successfully!");
+            }
 
         } else {
           showErrorPopup("User is not authenticated.");
@@ -92,8 +95,6 @@ function PreventBack(){
                     signOut(auth).then(() => {
                         localStorage.removeItem("role")
                         userDiv.textContent = ""; // Clear the username div
-                        loginButton.style.display = "block";
-                        appendloginbtn.style.display = "block"
                         updateUIOnLogout();
                     }).catch((error) => {
                       alert("Logout error: ", error);
@@ -101,15 +102,13 @@ function PreventBack(){
                   }
             });
             console.log(userDiv)
-        } else {
-            loginButton.style.display = "block";
-        }
+        } 
     });
   
 
 function updateUIOnLogout() {
    alert("You have successfully logged out.")
-    window.location.reload();
+   window.location.href = "/index.html";
 }
 
   function showErrorPopup(message) {
@@ -131,4 +130,8 @@ function updateUIOnLogout() {
     window.location.href = "/index.html";
   });
   console.log(userData)
+
+  document.getElementById("chart-page").addEventListener("click" , ()=>{
+    window.location.href = "/assets/pages/chart.html"
+})
 });

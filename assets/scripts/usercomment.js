@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebas
 import { firebaseConfig } from "./config.js";
 import { getDocs, getFirestore, collection,  query, where } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { getDatabase, ref,  get, child , set , update } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+import { getDatabase, ref,  get, child , set , remove ,update } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -18,7 +18,7 @@ if (checkRole.roleName === "user") {
     header.innerHTML = `<nav class="side-navbar">
         <div id="home-page"><i class="fa-solid fa-circle-left"></i></div>
         <div type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" id="profile-page"><i class="fa-solid fa-circle-user"></i></div>
-        <div><i class="fa-solid fa-chart-simple"></i></div>
+        <div id="chart-page"><i class="fa-solid fa-chart-simple"></i></div>
         <div><i class="fa-solid fa-ticket"></i></div>
     </nav>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
@@ -30,10 +30,10 @@ if (checkRole.roleName === "user") {
         <div class="offcanvas-body">
             <h4>Issues Details</h4>
             <div class="sideBar-container">
-                <div><h5>Status</h5><span>Pending</span></div>
-                <div><h5>Lawyer</h5><span>Unassigned</span></div>
+                <div><h5>Status</h5><span id="status">Pending</span></div>
+                <div><h5>Lawyer</h5><span id="Lawyer">Unassigned</span></div>
                 <div><h5>Category</h5><span id="categoryOfIssues"></span></div>
-                <div><h5>Priority</h5><span>Pending</span></div>
+                <div><h5>Priority</h5><span id="priority">Pending</span></div>
                 <div><h5>Age Category</h5><span id="ageCategory"></span></div>
             </div>
         </div>
@@ -64,6 +64,7 @@ if (checkRole.roleName === "user") {
         <input type="text" id="message" placeholder="Type your message..." autocomplete="off" required>
         <button id="sendMsg">Send</button>
     </form>`;
+
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
@@ -143,6 +144,10 @@ if (checkRole.roleName === "user") {
         window.location.href = "/index.html";
     });
 
+    const setStatus = document.getElementById("status")
+    const setPriority = document.getElementById("priority")
+    const lawyerAssigned = document.getElementById("Lawyer");
+
     fetchAllMessages()
     async function fetchAllMessages() {
         const userEmail = JSON.parse(localStorage.getItem("userEmail"));
@@ -152,6 +157,43 @@ if (checkRole.roleName === "user") {
         const dbRef = ref(getDatabase());
         const userRef = child(dbRef, `users/usermessage/${email}`);
         
+        const database1Ref = ref(getDatabase());
+        const issueStatusRef = child(database1Ref, `users/usermessage/${email}/issuesStatus`); // Fixed path with correct slash
+        const issueStatus = await get(issueStatusRef);
+        if (issueStatus.exists()) {
+            console.log("Issue Status Data:", issueStatus.val());
+            if (setStatus && setStatus.textContent !== "") {
+                setStatus.textContent = issueStatus.val().issuesStatus; // Assuming issueStatus.val() contains the plain text
+            }
+        } else {
+            console.log("No issueStatus available");
+        }
+        
+        const database2Ref = ref(getDatabase());
+        const issuePriorityRef = child(database2Ref, `users/usermessage/${email}/issuePriority`); // Fixed path with correct slash
+        const issuePriority = await get(issuePriorityRef);
+        if (issuePriority.exists()) {
+            console.log("Issue Priority Data:", issuePriority.val());
+            if (setPriority && setPriority.textContent !== "") {
+                setPriority.textContent = issuePriority.val().issuePriority; // Assuming issuePriority.val() contains the plain text
+            }
+        } else {
+            console.log("No issuePriority available");
+        }
+        
+        const database3Ref = ref(getDatabase());
+        const lawyerAssignRef = child(database3Ref, `users/usermessage/${email}/lawyerAssigned`); // Fixed path with correct slash
+        const lawyerAssign = await get(lawyerAssignRef);
+        if (lawyerAssign.exists()) {
+            console.log("Lawyer Assigned Data:", lawyerAssign.val());
+            if (lawyerAssigned && lawyerAssigned.textContent !== "") {
+                lawyerAssigned.textContent = lawyerAssign.val().lawyerAssigned; // Assuming lawyerAssign.val() contains the plain text
+            }
+        } else {
+            console.log("No lawyerAssigned available");
+        }
+        
+
         try {
             const msgSnapshot = await get(userRef);
             if (msgSnapshot.exists()) {
@@ -258,6 +300,10 @@ if (checkRole.roleName === "user") {
         }
     }
 
+    document.getElementById("chart-page").addEventListener("click" , ()=>{
+        window.location.href = "/assets/pages/chart.html"
+    })
+
 }
 else if (checkRole.roleName === "lawyer") {
 
@@ -265,26 +311,71 @@ else if (checkRole.roleName === "lawyer") {
             <div id="home-page"><i class="fa-solid fa-circle-left"></i></div>
             <!-- <div id="home-page"><i class="fa-solid fa-house"></i></div> -->
             <div type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" id="profile-page"><i class="fa-solid fa-circle-user"></i></div>
-            <div><i class="fa-solid fa-chart-simple"></i></div>
-            <div type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1" aria-controls="offcanvasRight"><i class="fa-solid fa-ticket"></i></div>
+            <div id="chart-page"><i class="fa-solid fa-chart-simple"></i></div>
+            <div type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"><i class="fa-solid fa-ticket"></i></div>
         </nav>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasRightLabel" style="font-weight: bolder;"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            
-            <div class="offcanvas-body">
-                <h4>Issues Details</h4>
-                <div class="sideBar-container">
-                    <div><h5>Status</h5><span id="status"></span></div>
-                    <div><h5>Lawyer</h5><span id="lawyer"></span></div>
-                    <div><h5>Category</h5><span id="categoryOfIssues"></span></div>
-                    <div><h5>Priority</h5><span>Pending</span></div>
-                    <div><h5>Age Category</h5><span id="ageCategory"></span></div>
-                </div>
-            </div>
+ <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Issues Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        <div class="offcanvas-body">
+
+            <div class="dropdown mt-3">
+                <h5>Status</h5>
+                <div>
+                <select id="status"  class="form-select">
+                    <option value="" selected>Set the status</option>
+                    <option value="InProgress">In Progress</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Resolved">Resolved</option>
+                    <option value="Closed">Closed</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+            </div>
+
+            <div class="dropdown mt-3">
+                <h5>Priority</h5>
+                <div>
+                <select id="priority"  class="form-select">
+                    <option value = ""  selected>Set the priority</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+            </div>
+
+
+            <div class="dropdown mt-3">
+                <h5>Lawyer</h5>
+                <div>
+                <select id="selectLawyer" class="disabled-select  form-select">
+                    <option id="Lawyer"></option>
+                </select>
+            </div>
+            </div>
+
+            <div class="dropdown mt-3">
+                <h5>Category</h5>
+                <div>
+                <select id="selectCategoryOfIssues" class="disabled-select form-select">
+                    <option id="categoryOfIssues"></option>
+                </select>
+            </div>
+            </div> 
+            
+            <div class="dropdown mt-3">
+                <h5>Age Category</h5>
+                <div>
+                <select id="selectAgeCategory" class="disabled-select form-select">
+                    <option id="ageCategory"></option>
+                </select>
+            </div>
+            </div> 
+        </div>
+    </div>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title  lawyername" id="offcanvasRightLabel" style="font-weight: bolder;"></h5>
@@ -334,7 +425,7 @@ else if (checkRole.roleName === "lawyer") {
     const issuesDescription = document.getElementById("issuesDescription");
     const clientName = document.getElementById("clientName");
     const categoryOfIssues = document.getElementById("categoryOfIssues");
-    const lawyerAssigned = document.getElementById("lawyer");
+    const lawyerAssigned = document.getElementById("Lawyer");
     const clientAge = document.getElementById("ageCategory");
 
     issuesTitle.textContent = userIssuesDetails.clientIssue;
@@ -343,6 +434,72 @@ else if (checkRole.roleName === "lawyer") {
     categoryOfIssues.textContent = userIssuesDetails.clientIssueCat;
     clientAge.textContent = userIssuesDetails.clientAge;
     lawyerAssigned.textContent = "Assigned";
+
+    // let issueStatus = ""
+    // let issuePriority = ""
+    const userEmail = JSON.parse(localStorage.getItem("userEmail"));
+    const lawyerEmail = JSON.parse(localStorage.getItem("lawyerEmail"));
+    let email = lawyerEmail.lawyerEmail;
+    email = email.replace(/[\.\#\$\[\]]/g, "_");
+    async function issueStatusFun(issueStatus){
+        // issueStatus set in firbase 
+        const issuesStatusRef = ref(database, `users/lawyermessage/${email}/issuesStatus`);
+        const issuesStatusData = { issuesStatus: issueStatus };
+        await set(issuesStatusRef, issuesStatusData)
+
+        email = userEmail.clientEmail;
+        email = email.replace(/[\.\#\$\[\]]/g, "_");
+        // issueStatus set in firbase 
+        const statusRef = ref(database, `users/usermessage/${email}/issuesStatus`);
+        const statusData = { issuesStatus: issueStatus };
+        await set(statusRef, statusData)
+    }
+    async function issuePriorityFun(issuePriority){
+        // issueStatus set in firbase
+        const issuePriorityRef = ref(database, `users/lawyermessage/${email}/issuePriority`);
+        const issuePriorityData = { issuePriority: issuePriority };
+        await set(issuePriorityRef, issuePriorityData)
+        
+        email = userEmail.clientEmail;
+        email = email.replace(/[\.\#\$\[\]]/g, "_");
+         // issueStatus set in firbase
+         const priorityRef = ref(database, `users/usermessage/${email}/issuePriority`);
+         const priorityData = { issuePriority: issuePriority };
+         await set(priorityRef , priorityData)
+
+    }
+
+    const selectLawyer = document.getElementById("selectLawyer")
+    const selectCategoryOfIssues = document.getElementById("selectCategoryOfIssues")
+    const selectAgeCategory = document.getElementById("selectAgeCategory")
+
+    selectLawyer.disabled = true;
+    selectCategoryOfIssues.disabled = true;
+    selectAgeCategory.disabled = true;
+
+    const setStatus = document.getElementById("status")
+    const setPriority = document.getElementById("priority")
+
+    setStatus.addEventListener("change" , async (e)=>{
+        if(setStatus.value !== ""){
+            // issueStatus = setStatus.value
+            setStatus.classList.add("disabled-select");
+            setStatus.disabled = true;
+            console.log("Selected Status:", setStatus.value)
+            await issueStatusFun(setStatus.value)
+        }
+    })
+
+    setPriority.addEventListener("change" , async (e)=>{
+        if(setPriority.value !== ""){
+            // issuePriority = setPriority.value
+            setPriority.classList.add("disabled-select");
+            setPriority.disabled = true;
+            console.log("Selected Priority:", setPriority.value)
+            await issuePriorityFun(setPriority.value)
+        }
+    })
+
 
     const logoutButton = document.querySelector(".logout");
     logoutButton.textContent = "Logout";
@@ -375,6 +532,17 @@ else if (checkRole.roleName === "lawyer") {
         modal.style.display = "block";
         document.getElementById("confirmYes").addEventListener("click", () => {
             localStorage.removeItem("userIssue");
+            const lawyerEmail = JSON.parse(localStorage.getItem("lawyerEmail"));
+            let email = lawyerEmail.lawyerEmail;
+            email = email.replace(/[\.\#\$\[\]]/g, "_");
+            const issuesRef = ref(database, `users/lawyermessage/${email}/issuseOpened`);
+            remove(issuesRef)
+            .then(()=>{
+                console.log("key and its value have been removed successfully.")
+            })
+            .catch((error)=>{
+                console.log("error : " , error )
+            })
             window.location.href = "/assets/pages/lawyerHome.html";
             modal.style.display = "none";
         });
@@ -434,7 +602,6 @@ else if (checkRole.roleName === "lawyer") {
                 .catch((error) => {
                     alert("Logout error: ", error);
                 });
-
             }
         });
     });
@@ -444,6 +611,7 @@ else if (checkRole.roleName === "lawyer") {
         localStorage.removeItem("lawyermessageCount")
         window.location.href = "/index.html";
     }
+
     fetchAllMessages()
     async function fetchAllMessages() {
         const lawyerEmail = JSON.parse(localStorage.getItem("lawyerEmail"));
@@ -452,6 +620,63 @@ else if (checkRole.roleName === "lawyer") {
         
         const dbRef = ref(getDatabase());
         const userRef = child(dbRef, `users/lawyermessage/${email}`);
+        
+        const database1Ref = ref(getDatabase());
+const issueStatusRef = child(database1Ref, `users/lawyermessage/${email}/issuesStatus`);
+const issueStatus = await get(issueStatusRef);
+if (issueStatus.exists()) {
+    console.log("Issue Status Data:", issueStatus.val().issuesStatus);
+    const statusValue = issueStatus.val().issuesStatus; // Get the value from Firebase
+    const statusDropdown = document.getElementById("status");
+    setStatus.classList.add("disabled-select");
+    setStatus.disabled = true;
+    if (statusDropdown) {
+        statusDropdown.value = statusValue; // Set the value in the dropdown
+        console.log(`Status set to: ${statusValue}`);
+    } else {
+        console.error("Status dropdown not found");
+    }
+} else {
+    console.log("No issueStatus available");
+}
+
+const database2Ref = ref(getDatabase());
+const issuePriorityRef = child(database2Ref, `users/lawyermessage/${email}/issuePriority`);
+const issuePriority = await get(issuePriorityRef);
+if (issuePriority.exists()) {
+    setPriority.classList.add("disabled-select");
+    setPriority.disabled = true;
+    console.log("Issue Status Data:", issuePriority.val().issuePriority);
+    const priorityValue = issuePriority.val().issuePriority; // Get the value from Firebase
+    const priorityDropdown = document.getElementById("priority");
+    if (priorityDropdown) {
+        priorityDropdown.value = priorityValue; // Set the value in the dropdown
+        console.log(`Priority set to: ${priorityValue}`);
+    } else {
+        console.error("Priority dropdown not found");
+    }
+} else {
+    console.log("No issuePriority available");
+}
+        
+        const database3Ref = ref(getDatabase());
+        const lawyerAssignRef = child(database3Ref, `users/lawyermessage/${email}/lawyerAssigned`);
+        const lawyerAssign = await get(lawyerAssignRef);
+        
+        if (lawyerAssign.exists()) {
+            const assignedLawyer = lawyerAssign.val(); // Extract the assigned lawyer object or value
+            const lawyerAssignedName = assignedLawyer.lawyerAssigned || "No Lawyer Assigned"; // Access a specific property from the object
+            if (lawyerAssigned.textContent !== "") {
+                console.log(lawyerAssignedName)
+                lawyerAssigned.textContent = lawyerAssignedName;
+            }
+            const lawyerAssignedRef = ref(database, `users/lawyermessage/${email}/lawyerAssigned`);
+            await set(lawyerAssignedRef, { lawyerAssigned: lawyerAssignedName }); // Store the lawyer's assigned name
+        } else {
+            console.log("No lawyerAssigned available");
+        }
+        
+        
         
         try {
             const msgSnapshot = await get(userRef);
@@ -489,10 +714,12 @@ else if (checkRole.roleName === "lawyer") {
         
         const dbRefce = ref(getDatabase());
         const userRefce = child(dbRefce, `users/usermessage/${email}`);
-        
+         
+    
         try {
             const msgSnapshot = await get(userRefce);
             if (msgSnapshot.exists()) {
+                console.log("messages available");
                 let count = 1;
                 while (msgSnapshot.val()[`msg${count}`]) {
                     const msg = msgSnapshot.val()[`msg${count}`];
@@ -511,6 +738,12 @@ else if (checkRole.roleName === "lawyer") {
         } catch (error) {
             console.error("Error fetching messages: ", error);
         }
+
+                 // issueStatus set in firbase
+                 const assignedRef = ref(database, `users/usermessage/${email}/lawyerAssigned`);
+                 const assignedData = { lawyerAssigned: lawyerAssign };
+                 set(assignedRef, assignedData)
+        
     }
     
 
@@ -548,7 +781,6 @@ else if (checkRole.roleName === "lawyer") {
         } else {
             count = 1; 
         }
-    
         const updateMessage = {
             [`msg${count}`]: message
         };
@@ -564,7 +796,9 @@ else if (checkRole.roleName === "lawyer") {
     }
     
 }
-
+document.getElementById("chart-page").addEventListener("click" , ()=>{
+    window.location.href = "/assets/pages/chart.html"
+})
 
 const userData = JSON.parse(localStorage.getItem("user")) || { userNameee: "Guest" };
 const logoutButton = document.querySelector(".loginout");
