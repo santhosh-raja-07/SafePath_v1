@@ -215,7 +215,11 @@ signupBtn.addEventListener("click", async (event) => {
             await addDoc(userDetailsRef, userDetails);
 
             // Store user details in localStorage
-            localStorage.setItem("user", JSON.stringify({ userNameee: usernameValue , userId :user.uid}));
+            localStorage.setItem("user", JSON.stringify({
+                userNameee: usernameValue,
+                useremail: email.value.trim(),
+            }));
+            
             localStorage.setItem("role" , JSON.stringify({roleName : "user"}))
 
             alertMessage.style.background = "#4CAF50"

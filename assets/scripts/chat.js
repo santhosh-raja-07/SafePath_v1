@@ -38,3 +38,15 @@ const barChart = new Chart(bar, {
         }
     }
 });
+
+const checkRole = JSON.parse(localStorage.getItem("role"));
+
+document.getElementById("home-page").addEventListener("click" , ()=>{
+    if (checkRole.roleName === "user"){
+       window.location.href = "/index.html"
+    }
+    if (checkRole.roleName === "lawyer"){
+        window.location.href = "/assets/pages/lawyerHome.html"
+     }
+})
+

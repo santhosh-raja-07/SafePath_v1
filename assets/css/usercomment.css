@@ -247,4 +247,9 @@
 #confirmNo:hover{
     background-color: rgb(244, 95, 95);
 }
+.disabled-select {
+    cursor: not-allowed;
+}
 
+
+/* for dropdown */

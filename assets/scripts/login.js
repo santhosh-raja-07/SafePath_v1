@@ -149,9 +149,13 @@ function updateUIOnLogout() {
 }
     
 }
-const user = JSON.parse(localStorage.getItem("user")) ;
+const userdet = JSON.parse(localStorage.getItem("user")) ;
+if (!userdet || !userdet.useremail) {
+    console.error("Error: User or useremail is not defined in localStorage.");// Exit the function to avoid further errors
+}
+
 let issueStatusinFB = "";
-let email = user.useremail;
+let email = userdet.useremail;
 async function checkIssueStatus() {
     email = email.replace(/[\.\#\$\[\]]/g, "_");
 
@@ -192,7 +196,7 @@ const issuesPageButton = document.getElementById("issuespage");
         
             }, 3000); 
         }
-});
+}); 
 
 
 
