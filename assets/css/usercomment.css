@@ -84,7 +84,7 @@
 
 .chat-container {
     width: 95%;
-    height: 80vh;
+    height: 75vh;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -93,42 +93,62 @@
     overflow: hidden;
     margin-left: 4.5rem;
     margin-top: 1rem;
+
 }
-
-
+.loading {
+    display: block;
+    font-size: 5rem; 
+    width: 100vw;
+    height: 100vh; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: 1000; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
 .chat-messages {
     flex-grow: 1;
     padding: 1rem;
     background-color: #f9f9f9;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 100% !important;
+    overflow-y: auto;
 }
 
-.chat-messages .messageuser .msg,
-.chat-messages .messagelawyer .msg {
+.chat-messages .messageContainer{
     display: block;
     padding: 10px;
     border-radius: 8px;
-    max-width: 70%;
     word-wrap: break-word; 
     margin-bottom: 10px;
+
 }
 
-
-.chat-messages .messageuser {
-    align-self: flex-end; 
-}
-.chat-messages .messageuser .msg {
+.messageContainer .mymsg {
+    margin-left: auto;
     background-color: #e1ffc7;
+    width: fit-content;
+    margin-bottom: 1rem;
+    padding: 10px;
+    border-radius: 8px;
 }
-.chat-messages .messagelawyer { 
+.messageContainer .yourmsg {
+    background-color: #ddd;
+    width: fit-content;
+    margin-bottom: 1rem;
+    padding: 10px;
+    border-radius: 8px;
+}
+/* .chat-messages .messagelawyer { 
     align-self: flex-start;
 }
 .chat-messages .messagelawyer .msg {
     background-color: #ddd;
-}
+} */
 .chat-input-form {
     display: flex;
     padding: 1rem;

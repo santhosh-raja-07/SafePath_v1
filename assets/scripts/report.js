@@ -9,9 +9,9 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const database = getDatabase();
 
-
+// document.querySelector(".loading").style.display = "block";
 document.addEventListener("DOMContentLoaded", () => {
-
+  // document.querySelector(".loading").style.display = "none";
   const usernameDisplay = document.getElementById("username");
   const errorPopup = document.getElementById("error-popup");
   const closePopupButton = document.getElementById("close-popup");
@@ -21,10 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const userData = JSON.parse(localStorage.getItem("user")) || { userNameee: "Guest" };
   usernameDisplay.textContent = userData.userNameee;
 
-window.history.forward()
-function PreventBack(){
-  window.history.forward()
-}
+
   // Event listener for submit button
   submitButton.addEventListener("click", async () => {
     const title = document.getElementById("title").value.trim();
@@ -57,6 +54,7 @@ let check = true
           check = true
           showErrorPopup("Issue submitted successfully!");
           console.log("Issue successfully submitted!");
+          
           // set issuestatus in firebase
             if(check){
                let email = user.email;
@@ -67,7 +65,8 @@ let check = true
                      issueStatus : "Submit"
             };
           await set(userRef, submitData);
-          console.log("Data has been written successfully!");
+          console.log("succesfully submited");
+        
             }
 
         } else {
@@ -116,7 +115,6 @@ function updateUIOnLogout() {
     errorPopup.classList.remove("hidden");
     setTimeout(() => {
       window.location.href= "/assets/pages/usercomment.html";
-     PreventBack();
   }, 3000);
   }
 
@@ -135,3 +133,4 @@ function updateUIOnLogout() {
     window.location.href = "/assets/pages/chart.html"
 })
 });
+

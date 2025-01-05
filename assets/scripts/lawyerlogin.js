@@ -2,11 +2,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebas
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getFirestore, collection, addDoc , query, where, getDocs , doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { firebaseConfig } from "./config.js";
+import { getDatabase, ref, set, get, child ,  update  } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const database = getDatabase()
 
 const lawyerName = document.getElementById("lawyername");
 const lawyerEmail = document.getElementById("lawyermail");
@@ -31,7 +33,9 @@ lawyersId.addEventListener("input", validatelawyersId);
 YearsOfExp.addEventListener("input", validateYearsOfExperience);
 conPassword.addEventListener("input" , validateConfirmPassword);
 password.addEventListener("input", validatePassword);
+// document.getElementById("others").addEventListener("input", subCategory)
 
+let em = ""
 // Validation functions
 function validateUsername() {
     const trimmedValue = lawyerName.value.trim();
@@ -128,10 +132,36 @@ function validateYearsOfExperience() {
     }
 }
 
+// Clear error when category is selected
+const othersInput = document.getElementById("others")
+lawCategory.addEventListener("change", () => {
+    if (lawCategory.value !== "Areas of Legal Expertise") {
+        lawCategoryError.textContent = ""; 
+    }
+    if (lawCategory.value === "other" && othersInput.value.trim() === "" ) {
+        otherCategory.style.display = "block";
+        lawCategoryError.textContent = "Please specify the other category.";
+    } else {
+        otherCategory.style.display = "none"; 
+        othersInput.value = "";
+        lawCategoryError.textContent = ""
+    }
+});
+
+othersInput.addEventListener("input", () => {
+    if (othersInput.value.trim() !== "") {
+        lawCategoryError.textContent = ""; 
+    }
+});
+
 function validateLawCategory() {
-    const lawCategory = document.querySelector('.category');
-    if (lawCategory.value === "Areas of Legal Expertise") {
+    const selectedValue = lawCategory.value;
+
+    if (selectedValue === "Areas of Legal Expertise") {
         lawCategoryError.textContent = "Please select a valid area of legal expertise.";
+        return false;
+    } else if (selectedValue === "other" && othersInput.value.trim() === "") {
+        lawCategoryError.textContent = "Please specify the other category.";
         return false;
     } else {
         lawCategoryError.textContent = "";
@@ -139,11 +169,13 @@ function validateLawCategory() {
     }
 }
 
+
+
+
 // Form Submission
 signIn.addEventListener("click", async (event) => {
     event.preventDefault(); // Prevent default form submission
-    const lawyerNameValue = lawyerName.value.trim()
-    const lawCategory = document.querySelector('.category').value.trim()
+
     // Validation
     const isNameValid = validateUsername();
     const isEmailValid = validateEmail();
@@ -159,31 +191,27 @@ signIn.addEventListener("click", async (event) => {
             const user = userCredential.user;
 
             // Update the user's display name
-            await updateProfile(user, { displayName: lawyerNameValue});
+            await updateProfile(user, { displayName: lawyerName.value.trim() });
 
             // Add lawyer data to Firestore
             const docRef = collection(db, "lawyerDetails");
-            const obj = {
-                lawyerName: lawyerNameValue,
+            const selectedCategory = lawCategory.value === "other" ? othersInput.value.trim() : lawCategory.value;
+            const lawyerData = {
+                lawyerName: lawyerName.value.trim(),
                 lawyerEmail: lawyerEmail.value.trim(),
                 lawyersId: lawyersId.value.trim(),
-                lawCategory: lawCategory,
-                experience: YearsOfExp.value
+                lawCategory: selectedCategory,
+                experience: YearsOfExp.value,
             };
-            await addDoc(docRef, obj);
+            await addDoc(docRef, lawyerData);
 
-            localStorage.setItem("user", 
-                JSON.stringify({ 
-                lawyerName : lawyerNameValue ,
-                 lawyerEmail : lawyerEmail.value.trim() ,
-                  lawyersId: lawyersId.value.trim() , 
-                  lawCategory : lawCategory , 
-                  experience : YearsOfExp.value }));
-
-            localStorage.setItem("role" , JSON.stringify({roleName : "lawyer"}))
+            // Store data in localStorage and Realtime Database
+            localStorage.setItem("lawyerEmail..", JSON.stringify(lawyerData));
+            localStorage.setItem("userEmail", JSON.stringify({ clientEmail: lawyerEmail.value.trim() }));
+            const sanitizedEmail = lawyerEmail.value.trim().replace(/[\.\#\$\[\]]/g, "_");
+            await set(ref(database, `role/${sanitizedEmail}`), { roleName: "lawyer" });
 
             alert("Account created successfully!");
-            console.log("User details saved to Firestore");
             window.location.href = "/assets/pages/lawyerHome.html";
         } catch (error) {
             if (error.code === "auth/email-already-in-use") {
@@ -196,4 +224,3 @@ signIn.addEventListener("click", async (event) => {
         }
     }
 });
-

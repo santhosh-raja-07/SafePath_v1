@@ -39,11 +39,62 @@
         <div class="sub-container">
             <h3> All Issues</h3>
             <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search...">
+                <input type="text" class="search-input" placeholder="Search Issues...">
                 <button type="reset" id="clear"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
     </nav>
+
+    <div class="rightSide-container">
+        <div class="rightSide-Subcontainer">
+            <h3>Fliter</h3>
+            <div>
+                <h5>Issue Status</h5>
+                <select id="issueStatus" class=" filterItems">
+                    <option selected disabled value="">Select Issue Status</option>
+                    <option value="Assigned">Assigned</option>
+                    <option value="Unassigned">Unassigned</option>
+                </select>
+            </div>
+            <div>
+                <h5>Issue Category</h5>
+                <select id="categoryOfIssues" class=" filterItems">
+                    <option selected disabled value="">Select Issue Category</option>
+                    <option value="Gender-Based Violence">Gender-Based Violence</option>
+                    <option value="Health and Reproductive Rights">Health and Reproductive Rights</option>
+                    <option value="Economic Inequality">Economic Inequality</option>
+                    <option value="Political Underrepresentation">Political Underrepresentation</option>
+                    <option value="Education and Literacy">Education and Literacy</option>
+                    <option value="Legal Inequality">Legal Inequality</option>
+                    <option value="Intersectional Issues">Intersectional Issues</option>
+                    <option value="Digital Inequality">Digital Inequality</option>
+                    <option value="Other Issues">Other Issues</option>
+                </select>
+            </div>
+            <div>
+                <h5>Age Category</h5>
+                <select id="ageCategory" class="filterItems">
+                    <option selected disabled value="">Select Age Category</option>
+                    <option value="major">Major</option>
+                    <option value="minor">Minor</option>
+                </select>
+            </div>
+            <div>
+                <h5>Issue Stage</h5>
+                <select id="checkIssue" class="filterItems ">
+                    <option selected disabled value="">Select Issue Stage</option>
+                    <option value="Open">Open</option>
+                    <option value="Closed">Close</option>
+                    <option value="Inprogress">Inprogress</option>
+                </select>
+            </div>
+            <p id="error"></p>
+            <div class="btns">
+            <button id="filter-btn">Apply filter</button>
+            <button id="can-filter">Cancel the filter</button>
+            </div>
+        </div>
+    </div>
     <div class="main-container" id="main-div"></div>
     <script type="module" src="/assets/scripts/lawyerhome.js"></script>
 </body>
