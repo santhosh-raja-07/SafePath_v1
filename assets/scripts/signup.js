@@ -3,11 +3,14 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile , onAuthStateCha
 import { getFirestore, collection, getDocs, doc , updateDoc, addDoc ,query, where} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import {firebaseConfig } from "./config.js"
 // import {goToIssuePage , check} from './login.js';
+import { getDatabase, ref, set, get, child ,  update , remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app =  initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const database = getDatabase()
+
 
     // Selectors
     const email = document.getElementById("Signup-email");
@@ -15,7 +18,8 @@ const db = getFirestore(app);
     const conPassword = document.getElementById("Signup-ConPASSWORD");
     const userNameee = document.getElementById("fullname");
     const alertMessage = document.getElementById('alert-message');
-  
+    const favicon = document.querySelector(".favicon")
+
     const emailError = document.getElementById("emailError");
     const passError = document.getElementById("passError");
     const conPassError = document.getElementById("conPassError");
@@ -165,7 +169,7 @@ function validatePassword() {
         return false;
     }
 }
-
+let em = ""
 // Confirm Password Validation
 function validateConfirmPassword() {
     if (password.value === conPassword.value) {
@@ -220,8 +224,16 @@ signupBtn.addEventListener("click", async (event) => {
                 useremail: email.value.trim(),
             }));
             
-            localStorage.setItem("role" , JSON.stringify({roleName : "user"}))
+            // localStorage.setItem("role" , JSON.stringify({roleName : "user"}))
 
+            // set role in firebase
+            localStorage.setItem("userEmail", JSON.stringify({ clientEmail: email.value.trim() }));
+            em = email.value.trim()
+            em = em.replace(/[\.\#\$\[\]]/g, "_");
+            
+                const roleRef = ref(database , `role/${em}`) 
+                await set(roleRef , {roleName : "user"})
+            em = email.value.trim()
             alertMessage.style.background = "#4CAF50"
             alertMessage.textContent = "Account created successfully!"
             alertMessage.classList.add('show')
@@ -231,7 +243,6 @@ signupBtn.addEventListener("click", async (event) => {
             }, 2000); 
             displayLoggedInUI()
             console.log("User details saved to Firestore");
-
             // Reset the form fields after successful sign-up
             email.value = "";
             password.value = "";
@@ -257,7 +268,6 @@ export async function getUsername(email){
     try{
         const q = query(collection(db,"userDetails"), where("userEmail", "==" , email));
         const qsnapshot = await getDocs(q);
-
         if(!qsnapshot.empty){
             const userDoc = qsnapshot.docs[0];
             const userData = userDoc.data();
@@ -290,15 +300,21 @@ function displayLoggedInUI() {
             userDiv.textContent =  user.displayName || "User"
             userDiv.style.color = "rgb(9, 98, 9)";
             logoutButton.textContent = "Logout";
-
-
+            favicon.style.cursor = "pointer"
+            favicon.disabled = false
+            localStorage.setItem("userEmail", JSON.stringify({ clientEmail: em }));
             logoutButton.addEventListener("click", () => {
                 if(confirm("Are you want to logout")){
                     signOut(auth).then(() => {
-                        localStorage.removeItem("role")
+                        // localStorage.removeItem("role")
+                        em = em.replace(/[\.\#\$\[\]]/g, "_");
+                        const roleRef = ref(database , `role/${em}`) 
+                        remove(roleRef);
                         userDiv.textContent = ""; // Clear the username div
                         loginButton.style.display = "block";
                         appendloginbtn.style.display = "block"
+                        favicon.style.cursor = "not-allowed"
+                        favicon.disabled = true
                         updateUIOnLogout();
                     }).catch((error) => {
                       alert("Logout error: ", error);
@@ -308,6 +324,8 @@ function displayLoggedInUI() {
             console.log(userDiv)
         } else {
             loginButton.style.display = "block";
+            favicon.style.cursor = "not-allowed"
+            favicon.disabled = true
         }
     });
 

@@ -43,5 +43,32 @@ body {
 }
 .main-container{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    padding-left: 15rem;
+    padding-top: 5rem;
+}
+.main-container div{
+    width:  540px;
+    height: auto;
+}
+.chartDetails{
+    margin-top: 12rem;
+}
+.chartDetails div{
+    padding-bottom: 1rem;
+    font-weight: bold;
+}
+.chartDetails span{
+   padding: 1px 15px 1px 15px;
+   margin-right: 10px;
+}
+.loginout button {
+    background-color: rgb(9, 98, 9);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+}
+.loginout button:hover{
+    background-color: green;
 }

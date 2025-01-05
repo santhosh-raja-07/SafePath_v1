@@ -4,14 +4,15 @@ import { getAuth, onAuthStateChanged, signOut  } from "https://www.gstatic.com/f
 // import { getFirestore, collection, addDoc , doc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { getUsername } from "./forAthu.js";
 import { userIssues } from "./allissues.js";
-import { getDatabase, ref, set, get, child ,  update } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+import { getDatabase, ref, set, get, child ,  update , remove} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 // import {messageStored , msgDocRef} from "./messageStorage.js"
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app); 
 const db = getDatabase();
 
-const lawyerDetAfterSUp = JSON.parse(localStorage.getItem("user"))
+const lawyerDetAfterSUp = JSON.parse(localStorage.getItem("userEmail"))
+
 
 displayUserIssues();
 
@@ -38,17 +39,17 @@ displayUserIssues();
         div2.innerHTML = `
             <div>
                 <h4>Status</h4>
-                <span id="status-${index}">Unassigned</span>
+                <span id="status-${index}" class="issueStatus">Unassigned</span>
             </div>
-            <div style="display: none;"  id="issuesDes-${index}">${x.issuesDescription}</div>
+            <div style="display: none;"   id="issuesDes-${index}">${x.issuesDescription}</div>
             <div style="display: none;"  id="clientemail-${index}">${x.email}</div>
             <div>
                 <h4>Category</h4>
-                <span id="issuesCat-${index}">${x.categoryOfIssues}</span>
+                <span class="categoryOfIssues" id="issuesCat-${index}">${x.categoryOfIssues}</span>
             </div>
             <div>
                 <h4>Age Category</h4>
-                <span id="ageCat-${index}">${x.ageCategory}</span>
+                <span class="ageCategory" id="ageCat-${index}">${x.ageCategory}</span>
             </div>
             <div><button class="checkIssue" id="checkIssue-${index}">Open</button></div>`;
 
@@ -60,7 +61,6 @@ displayUserIssues();
         let lawyercheck = "";
 let email = "";
 let foundId = "";
-
 if (userEmail) {
     const dbRef = ref(getDatabase());
     const getUserEmailRef = child(dbRef, "users/usermessage");
@@ -69,13 +69,13 @@ if (userEmail) {
         .then(async (snapshot) => {
             if (snapshot.exists()) {
                 const userEm = snapshot.val();
+                let buttonDisabled = false; // Track if the button should be disabled
 
                 for (const key in userEm) {
                     const replacedKey = key.replace("_", ".");
-                    email = replacedKey.replace(/[\.\#\$\[\]]/g, "_");  
-                    
+                    email = replacedKey.replace(/[\.\#\$\[\]]/g, "_");
+
                     const emailPath = `users/usermessage/${email}/lawyerAssigned`;
-                    console.log("Checking path:", emailPath);  
 
                     const getlawyerAssignRef = child(dbRef, emailPath);
 
@@ -84,33 +84,69 @@ if (userEmail) {
 
                         if (getlawyerAssignSnapshot.exists()) {
                             const lawyerAssignedData = getlawyerAssignSnapshot.val();
-                            console.log("lawyerAssigned Data:", lawyerAssignedData);
 
-                            // Access the nested lawyerAssigned field and check if it is "Assigned"
-                            if (lawyerAssignedData && lawyerAssignedData.lawyerAssigned && lawyerAssignedData.lawyerAssigned === "Assigned") {
+                            if (
+                                lawyerAssignedData &&
+                                lawyerAssignedData.lawyerAssigned &&
+                                lawyerAssignedData.lawyerAssigned === "Assigned"
+                            ) {
                                 lawyercheck = "Assigned";
                             }
                         } else {
-                            console.log("Snapshot does not exist for email:", email);
+                            // Handle case where lawyerAssigned does not exist
+                            lawyercheck = "Not Assigned";
                         }
 
-                        // Check condition after fetching the data
                         if (replacedKey === userEmail && lawyercheck === "Assigned") {
                             findIdByValue(userEmail);
-                            break;  // Exit the loop once the condition is met
+                            buttonDisabled = true; // Mark button as disabled
+                            break; // Exit the loop once the condition is met
                         }
 
                     } catch (error) {
                         console.error("Error fetching lawyerAssigned data:", error);
                     }
                 }
-            } else {
-                console.log("No user messages available.");
+
+                // Handle the button state if no match is found or lawyerAssigned is missing
+                if (!buttonDisabled) {
+                    notFindValue(userEmail);
+                }
             }
         })
         .catch((error) => {
             console.error("Error fetching user messages:", error);
         });
+        const closedRef = ref(db , `closedIssues`)
+        get(closedRef).then((x)=>{
+            if(x.exists()){
+                if(x.val().userEmail === userEmail){
+                    const allDivs = div2.querySelectorAll("div");
+                    for (const div of allDivs) {
+                        if (div.textContent.trim() === userEmail) {
+                            foundId = div.id;
+                            break;
+                        }
+                    }
+                    if (foundId) {
+                        const idIndex = foundId.split("-").pop();
+                        const foundBtn = div2.querySelector(`#checkIssue-${idIndex}`);
+                        if (foundBtn) {
+                            console.log(foundBtn);
+                            foundBtn.style.backgroundColor = "#af2608";
+                            foundBtn.textContent = "Closed"
+                            foundBtn.style.cursor = "not-allowed";
+                            foundBtn.disabled = true;
+                            console.log("Button updated successfully:", foundBtn);
+                        }
+                    }
+                }
+            }
+            else{
+            console.log("closed issues not found")
+            }
+        })
+
 } else {
     console.log("No user email found in the element.");
 }
@@ -127,8 +163,9 @@ function findIdByValue(valueToFind) {
     if (foundId) {
         const idIndex = foundId.split("-").pop();
         const foundBtn = div2.querySelector(`#checkIssue-${idIndex}`);
-        if (foundBtn) {
+        if (foundBtn && foundBtn.textContent != "Closed") {
             console.log(foundBtn);
+            foundBtn.textContent = "Inprogress"
             foundBtn.style.backgroundColor = "#7c7d7d";
             foundBtn.style.cursor = "not-allowed";
             foundBtn.disabled = true;
@@ -136,9 +173,29 @@ function findIdByValue(valueToFind) {
     }
 }
 
+function notFindValue(valueToFind) {
+    const allDivs = div2.querySelectorAll("div");
+    for (const div of allDivs) {
+        if (div.textContent.trim() === valueToFind) {
+            foundId = div.id;
+            break;
+        }
+    }
+
+    if (foundId) {
+        const idIndex = foundId.split("-").pop();
+        const foundBtn = div2.querySelector(`#checkIssue-${idIndex}`);
+        if (foundBtn) {
+            console.log(foundBtn);
+            foundBtn.style.backgroundColor = "rgb(9, 98, 9)";
+            foundBtn.style.cursor = "pointer";
+            foundBtn.disabled = false;
+        }
+    }
+}
+
+
         
-
-
         div1.querySelector(".toggle-view").addEventListener("click", () => {
             const arrow = document.getElementById(`arrow-${index}`);
             const detailsDiv = document.getElementById(`details-${index}`);
@@ -156,8 +213,6 @@ function findIdByValue(valueToFind) {
 
         });
 
-
-   
 const lawyerEmail = JSON.parse(localStorage.getItem("lawyerEmail"));
 
         // if lawyer click open btn that lawyer go to user page
@@ -172,8 +227,8 @@ checkIssueButton.addEventListener("click", async () => {
         const statusOfIssue = div2.querySelector(`#status-${index}`)
         statusOfIssue.textContent = "Assigned";
         
-
-        const lawyerEmailValue = lawyerEmail?.lawyerEmail || lawyerDetAfterSUp?.lawyerEmail;
+let clinetEmail = clientEmail.textContent
+        const lawyerEmailValue = lawyerDetAfterSUp.clientEmail;
         const userIssue = {
             clientName: clientName.textContent,
             clientIssue: clientIssue.textContent,
@@ -185,16 +240,32 @@ checkIssueButton.addEventListener("click", async () => {
         };
         console.log("Saving userIssue to localStorage:", userIssue);
         localStorage.setItem("userIssue", JSON.stringify(userIssue));
-        console.log("Stored userIssue in localStorage:", localStorage.getItem("userIssue"));
 
+        let em = lawyerEmailValue
+        em = em.replace(/[\.\#\$\[\]]/g, "_")
+        const issueRef = ref(db , `OpendIssues/${em}/userIssue`)
+        set (issueRef,{
+            clientName: clientName.textContent,
+            clientIssue: clientIssue.textContent,
+            clientIssueCat: clientIssueCat.textContent,
+            clientAge: clientAge.textContent,
+            issuesDes: issuesDes.textContent,
+            clientEmail: clientEmail.textContent,
+            lawyerEmail: lawyerEmailValue,
+            status : "Submit"
+        })
+
+        
+        console.log("Stored userIssue in localStorage:", localStorage.getItem("userIssue"));
+        console.log("Stored userIssue in Fb below the lawyeremail:", em);
     
         try {
             let email = "";
             let email1 = null;
             let email2 = null;
         
-            if (lawyerDetAfterSUp && lawyerDetAfterSUp.lawyerEmail) {
-                email1 = lawyerDetAfterSUp.lawyerEmail;
+            if (clinetEmail) {
+                email1 = clinetEmail;
             }
             if (lawyerEmail && lawyerEmail.lawyerEmail) {
                 email2 = lawyerEmail.lawyerEmail;
@@ -202,13 +273,13 @@ checkIssueButton.addEventListener("click", async () => {
             if (email1 && email1 !== "") {
                 email = email1.replace(/[\.\#\$\[\]]/g, "_");
             } else if (email2 && email2 !== "") {
-                email = email2.replace(/[\.\#\$\[\]]/g, "_");
+                email2 = email2.replace(/[\.\#\$\[\]]/g, "_");
             }
         
-            if (!email) {
+            if (!email2) {
                 throw new Error("Email is invalid or undefined.");
             }
-            const lawyerRef = ref(db, `users/lawyermessage/${email}/issuseOpened`);
+            const lawyerRef = ref(db, `users/lawyermessage/${email2}/issuseOpened`);
             await set(lawyerRef, { issueStatus: "Submit" });
         
             console.log("Issue status set to Submit. Redirecting...");
@@ -218,12 +289,12 @@ checkIssueButton.addEventListener("click", async () => {
     
     
     try {
-        let email = "";
+        
             let email1 = null;
             let email2 = null;
         
-            if (lawyerDetAfterSUp && lawyerDetAfterSUp.lawyerEmail) {
-                email1 = lawyerDetAfterSUp.lawyerEmail;
+            if (clinetEmail) {
+                email1 = clinetEmail;
             }
             if (userDiv2.textContent) {
                 email2 = userDiv2.textContent;
@@ -231,14 +302,20 @@ checkIssueButton.addEventListener("click", async () => {
             if (email1 && email1 !== "") {
                 email = email1.replace(/[\.\#\$\[\]]/g, "_");
             } else if (email2 && email2 !== "") {
-                email = email2.replace(/[\.\#\$\[\]]/g, "_");
+                email2 = email2.replace(/[\.\#\$\[\]]/g, "_");
             }
     
-        const userRef = ref(db, `users/lawyermessage/${email}`);
+        const userRef = ref(db, `users/lawyermessage/${email2}`);
         const data = {
             msg1: "hii"
         };
         await set(userRef, data);
+
+        const userRefcence = ref(db, `users/usermessage/${email2}/issuseOpened`);
+        const submitData = {
+            issueStatus : "Submit"
+        };
+        await set(userRefcence, submitData);
         console.log("Data has been written successfully!");
     
     } catch (error) {
@@ -246,7 +323,8 @@ checkIssueButton.addEventListener("click", async () => {
     }
 
     try {
-        const clientEM = JSON.parse(localStorage.getItem("userIssue"));
+        const clientEM = clinetEmail;
+
         console.log("Stored userIssue in localStorage:", clientEM); // Debugging line
     
         if (!clientEM) {
@@ -256,7 +334,7 @@ checkIssueButton.addEventListener("click", async () => {
     
         console.log(clientEM);
     
-        const email1 = clientEM.clientEmail;
+        const email1 = clientEM;
         if (!email1) {
             console.error("Error: clientEmail is missing in the stored user issue.");
             return; // Exit if clientEmail is missing
@@ -341,59 +419,126 @@ document.getElementById("clear").addEventListener("click" , ()=>{
 
 document.querySelector(".search-input").addEventListener("input", searchIssues);
 
-let userDiv2 = ""
+let valCount = 0;
+function filter(){
+    let filterItems = document.querySelectorAll(".filterItems");
+    filterItems.forEach((e)=>{
+        if(e.value != ""){
+            valCount++
+        }
+    })
+
+    if(valCount === 0){
+        document.getElementById("error").textContent = "Select atleast one filter"
+        document.getElementById("error").style.color = "red"
+        document.getElementById("error").style.marginLeft = "3rem"
+        return;
+    }
+    let filterArr= [];
+    filterItems.forEach((element)=>{
+        document.getElementById("error").textContent = ""
+        if(element.value.trim() !== ""){
+            filterArr.push({[element.id] : element.value})
+        }
+    })
+    let cardArr = document.querySelectorAll(".moredetails");
+
+    cardArr.forEach((element)=>{
+        let count = 0;
+        filterArr.forEach((e)=>{
+           let key = Object.keys(e);
+           let value = e[key[0]];
+           let content = element.querySelector(`.${key[0]}`);
+           if(content.textContent === value){
+            count++
+           }
+        })
+        console.log(count);
+        
+        if(count === filterArr.length){
+            element.previousElementSibling.style.display = "block"
+        }
+        else{
+            element.previousElementSibling.style.display = "none"
+        }
+    })
+
+}
+
+function cancelFilter(){
+      if(valCount != 0){
+        window.location.reload()
+      }
+}
+
+document.getElementById("filter-btn").addEventListener("click" , filter)
+document.getElementById("can-filter").addEventListener("click",cancelFilter)
+
+
+const userDiv1 = document.querySelector(".lawyername");
+ let userDiv2 = document.getElementById("lawyerEm");
+const userDiv3 = document.getElementById("LawyerID");
+const userDiv4 = document.getElementById("lawyerCat");
+const userDiv5 = document.getElementById("lawyerExp");
 const logoutButton = document.getElementById("loginout");
 // const userData = JSON.parse(localStorage.getItem('user'));
-let issueStatusinFB = "";
+let clientEmailInIssues = "";
 async function checkIssueStatus(email) {
 
     email = email.replace(/[\.\#\$\[\]]/g, "_");
-
     const issuesRef = ref(getDatabase());
-    const issueSubRef = child(issuesRef, `users/lawyermessage/${email}/issuseOpened`);
+    const issueSubRef = child(issuesRef, `OpendIssues/${email}/userIssue`);
     try {
         const submitData = await get(issueSubRef);
-    
+
         if (submitData.exists()) {
-            issueStatusinFB = submitData.val().issueStatus;
-            console.log("Issue Status in FB:", issueStatusinFB);
+            const data = submitData.val();
+            clientEmailInIssues = data.clientEmail || "";
+            console.log("Issue Status in FB:", clientEmailInIssues);
+            if (clientEmailInIssues && clientEmailInIssues !== "") {
+                console.log("clientData stored in localStorage:", clientEmailInIssues);
+                window.location.href = "/assets/pages/usercomment.html";
+            } else {
+                console.log("Client email is empty or invalid.");
+            }
         } else {
-            console.log("No issue status available");
+            console.log("No issue status available.");
         }
     } catch (error) {
         console.error("Error fetching data from Firebase:", error);
     }
-    
 }
 
-
-
-const userDiv1 = document.querySelector(".lawyername");
- userDiv2 = document.getElementById("lawyerEm");
-const userDiv3 = document.getElementById("LawyerID");
-const userDiv4 = document.getElementById("lawyerCat");
-const userDiv5 = document.getElementById("lawyerExp");
-
-// Check if lawyer details exist in localStorage
-if (lawyerDetAfterSUp && lawyerDetAfterSUp.lawyerName) {
-    populateLawyerDetails(lawyerDetAfterSUp);
-} else {
-    console.log("No lawyer details found in localStorage or lawyerName is empty.");
-}
-
-// Monitor authentication state
+// Inside the onAuthStateChanged callback
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         const email = user.email;
-        console.log("User is signed in:", email)
+        console.log("User is signed in:", email);
         try {
             const lawyerDetails = await getUsername(email);
+            console.log("User is signed in:", lawyerDetails.lawyerEmail);
             if (lawyerDetails) {
-                populateLawyerDetails(lawyerDetails);
+                console.log(lawyerDetails.lawyerName)
+                userDiv1.textContent = lawyerDetails.lawyerName || "N/A";
+                userDiv2.textContent = lawyerDetails.lawyerEmail || "N/A";
+                userDiv3.textContent = lawyerDetails.lawyersId || lawyerDetails.id || "N/A";
+                userDiv4.textContent = lawyerDetails.lawCategory || "N/A";
+                userDiv5.textContent = lawyerDetails.experience || "N/A";
+                userDiv1.style.color = "rgb(9, 98, 9)"
+                logoutButton.textContent = "Logout"
+                localStorage.setItem("lawyerEmail", JSON.stringify({
+                    lawyerEmail: lawyerDetails.lawyerEmail,
+                    lawyerName: lawyerDetails.lawyerName,
+                    lawyerId: lawyerDetails.lawyersId || lawyerDetails.id,
+                    lawyerCat: lawyerDetails.lawCategory,
+                    lawyerExperience: lawyerDetails.experience,
+                }));
 
-                await checkIssueStatus(lawyerDetails.lawyerEmail);
-                if (issueStatusinFB === "Submit") {
-                    window.location.href = "/assets/pages/usercomment.html";
+                const lawEm = JSON.parse(localStorage.getItem("lawyerEmail"));
+                if (lawEm && lawEm.lawyerEmail) {
+                    await checkIssueStatus(lawEm.lawyerEmail);
+                } else {
+                    console.log("No lawyer email found in localStorage.");
                 }
             } else {
                 console.log("No lawyer details found for the user.");
@@ -401,40 +546,50 @@ onAuthStateChanged(auth, async (user) => {
         } catch (error) {
             console.error("Error fetching lawyer details:", error);
         }
-    } else {  
+    } else {
         console.log("No user is signed in.");
     }
 });
 
-// Function to populate lawyer details in the UI and localStorage
-function populateLawyerDetails(details) {
-    if (!details) {
-        console.error("Cannot populate lawyer details: Details are null or undefined.");
-        return;
-    }
 
-    userDiv1.textContent = details.lawyerName || "N/A";
-    userDiv2.textContent = details.lawyerEmail || "N/A";
-    userDiv3.textContent = details.lawyersId || details.id || "N/A";
-    userDiv4.textContent = details.lawCategory || "N/A";
-    userDiv5.textContent = details.experience || "N/A";
-    userDiv1.style.color = "rgb(9, 98, 9)"
-    logoutButton.textContent = "Logout"
-    localStorage.setItem("lawyerEmail", JSON.stringify({
-        lawyerEmail: details.lawyerEmail,
-        lawyerName: details.lawyerName,
-        lawyerId: details.lawyersId || details.id,
-        lawyerCat: details.lawCategory,
-        lawyerExperience: details.experience,
-    }));
+// if (lawyerDetAfterSUp && lawyerDetAfterSUp.lawyerName) {
+//     populateLawyerDetails(lawyerDetAfterSUp);
+// } else {
+//     console.log("No lawyer details found in localStorage or lawyerName is empty.");
+// }
 
-    console.log("Lawyer details populated in UI and localStorage.");
-}
+
+// async function populateLawyerDetails(details) {
+//     if (!details) {
+//         console.error("Cannot populate lawyer details: Details are null or undefined.");
+//         return;
+//     }
+//     console.log(details.lawyerName)
+//     userDiv1.textContent = details.lawyerName || "N/A";
+//     userDiv2.textContent = details.lawyerEmail || "N/A";
+//     userDiv3.textContent = details.lawyersId || details.id || "N/A";
+//     userDiv4.textContent = details.lawCategory || "N/A";
+//     userDiv5.textContent = details.experience || "N/A";
+//     userDiv1.style.color = "rgb(9, 98, 9)"
+//     logoutButton.textContent = "Logout"
+//     localStorage.setItem("lawyerEmail", JSON.stringify({
+//         lawyerEmail: details.lawyerEmail,
+//         lawyerName: details.lawyerName,
+//         lawyerId: details.lawyersId || details.id,
+//         lawyerCat: details.lawCategory,
+//         lawyerExperience: details.experience,
+//     }));
+
+//     console.log("Lawyer details populated in UI and localStorage.");
+// }
 
 // Logout functionality
 logoutButton.addEventListener("click", () => {
     if (confirm("Are you sure you want to logout?")) {
-        localStorage.removeItem("role");
+        let em = userDiv2.textContent 
+        em = em.replace(/[\.\#\$\[\]]/g, "_")
+        const roleRef = ref(db, `role/${em}`);
+        remove(roleRef);
         signOut(auth)
             .then(() => {
                 updateUIOnLogout();

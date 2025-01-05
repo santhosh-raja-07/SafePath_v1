@@ -33,19 +33,21 @@
             <input type="text" id="lawyersId" placeholder="lawyer's ID code"></h4><br>
             <span id="lawyersIdError" ></span>
              <!-- D/1984/2021 -->
-            <select class="category of law">
-                <option selected>Areas of Legal Expertise </option>
+             <select class="category-of-law" id="lawCategory">
+                <option selected>Areas of Legal Expertise</option>
                 <option id="FamilyLaw" value="Family Law">Family Law</option>
                 <option id="CriminalLaw" value="Criminal Law">Criminal Law</option>
                 <option id="Corporate/BusinessLaw" value="Corporate/Business Law">Corporate/Business Law</option>
                 <option id="RealEstateLaw" value="Real Estate Law">Real Estate Law</option>
                 <option id="ImmigrationLaw" value="Immigration Law">Immigration Law</option>
-                <option value="other">Other </option>
+                <option value="other" id="otherCat">Other</option>
             </select>
-            <div id="otherCategory"></div>
+            <div id="otherCategory" style="display: none;">
+                <input type="text" id="others" placeholder="Specify other category" />
+            </div>
             <span id="lawCategoryError"></span>
-        
-        
+            
+            
             <h4><label for="Years of Experience"></label>
             <input type="number" id="YearsOfExp" placeholder="Years of Experience"  required></h4><br>
             <span id="YearsOfExpError"></span>

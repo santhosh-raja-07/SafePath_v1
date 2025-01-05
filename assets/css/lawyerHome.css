@@ -37,14 +37,13 @@
 }
 
 .navbar {
-    position: sticky;
+    position: fixed !important;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 4;
     background-color: #fff;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 
 .sub-container {
@@ -54,6 +53,72 @@
     width: 100%;
     max-width: 1200px;
     margin: auto;
+}
+
+.rightSide-container{
+    background-color:white;
+    width: 310px;
+    height: 100vh;
+    position: fixed;
+    right : 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1rem;
+    z-index: 3;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+.rightSide-Subcontainer{
+    margin-top: 5rem;
+}
+
+.rightSide-Subcontainer h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 2rem;
+    margin-left: 2rem;
+}
+
+.rightSide-Subcontainer h5 {
+    font-size: 20px;
+    color: #555;
+}
+.rightSide-Subcontainer div{
+    margin-bottom: 3rem;
+    margin-left: 25px;
+}
+
+.rightSide-Subcontainer select {
+    width: 90%;
+    padding: 8px 8px;
+    font-size: 1rem;
+    color: #333;
+    border-radius: 8px;
+    outline: none;
+    
+}
+
+.rightSide-Subcontainer select:focus {
+    border-color: rgb(9, 98, 9);
+    box-shadow: 0 0 4px green;
+}
+
+#filter-btn , #can-filter{
+    background-color: rgb(9, 98, 9);
+    font-size: 15px;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+#filter-btn:hover , #can-filter:hover {
+    background-color: green;
+}
+
+.btns{
+    display: flex;
+    gap: 14px;
 }
 
 .search-container {
@@ -83,16 +148,15 @@
     background-color: green;
 }
 .main-container{
-    display: flexbox;
-    justify-content: center;
-    margin: auto;
-    max-width: 1300px;
+    width: 70%;
     padding: 1.5rem;
+    margin-left: 100px;
+    padding-top: 1rem;
 }
 .details{
     display: flex;
     justify-content: space-between;
-    margin-top: 2rem;
+    margin-top: 3.5rem;
     width: 100%;
     height: auto;
     padding: 1.5rem;
