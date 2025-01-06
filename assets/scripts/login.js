@@ -166,13 +166,16 @@ function updateUIOnLogout() {
 }
     
 }
+let issueStatusinFB = "";
+let email =""
 const userdet = JSON.parse(localStorage.getItem("userEmail")) ;
 if (!userdet || !userdet.clientEmail) {
     console.log("Error: User or useremail is not defined in localStorage.");// Exit the function to avoid further errors
 }
 
-let issueStatusinFB = "";
-let email = userdet.clientEmail;
+else{
+  email = userdet.clientEmail;
+}
 console.log(email)
 async function checkIssueStatus() {
     if(!email){
@@ -212,14 +215,8 @@ const issuesPageButton = document.getElementById("issuespage");
         if(user && issueStatusinFB == "Submit"){
             window.location.href = "/assets/pages/usercomment.html"
         }
-        
-        else if(user && issueStatusinFB == "Closed" || issueStatusinFB == "" ){
-        window.location.href = "/assets/pages/report.html";
-        }
-        else if(user && issueStatusinFB == "Closed"){
-            window.location.href = "/assets/pages/report.html";
-        }
-        else if(!user){
+    
+        else if(!user || !email){
             alertMessage.style.background = "red"
             alertMessage.textContent = "Please Login / Signup to access this page."
             alertMessage.classList.add('show')
@@ -227,6 +224,9 @@ const issuesPageButton = document.getElementById("issuespage");
                 alertMessage.classList.remove('show')
             }, 3000); 
         }
+        else if(user && issueStatusinFB == "Closed" || issueStatusinFB == "" ){
+            window.location.href = "/assets/pages/report.html";
+            }
         else{
             alertMessage.style.background = "red"
             alertMessage.textContent = "Please Login / Signup to access this page."
@@ -239,8 +239,9 @@ const issuesPageButton = document.getElementById("issuespage");
 
 
 const userEm = JSON.parse(localStorage.getItem("userEmail"));
-em = userEm.clientEmail;
-
+if(userEm){
+    em = userEm.clientEmail;
+}
 // Replace invalid characters for Firebase keys
 if(!em){
     console.log("email not found")
