@@ -1,11 +1,16 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { firebaseConfig } from "./config.js";
-import { getDatabase, ref,  get} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 import {getAuth , signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getDatabase, ref, set, get, child ,  update , remove} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
 const app = initializeApp(firebaseConfig);
 const database = getDatabase();
 const auth = getAuth(app);
 
+
+const getiusseCountRef = ref(database , "allIssues")
+get(getiusseCountRef).then((x)=>{
+    console.log(x.val().issuesCount)
 const bar = document.getElementById("barChart");
 console.log(typeof Chart)
 const barChart = new Chart(bar, {
@@ -13,7 +18,7 @@ const barChart = new Chart(bar, {
     data: {
         labels: ["All Issues", "Solved Issues", "Unsolved Issues", "In Progress"],
         datasets: [{
-            data: [50, 30, 20, 30],
+            data: [x.val().issuesCount, x.val().closedIssues, x.val().openedIssues, x.val().ProgressIssues],
             backgroundColor: [
                 'rgba(128, 0, 0, 0.8)',   // Dark Red for "All Issues"
                 'rgba(0, 128, 0, 0.8)',  // Dark Green for "Solved Issues"
@@ -44,7 +49,7 @@ const barChart = new Chart(bar, {
         }
     }
 });
-
+})
 
 const userEm = JSON.parse(localStorage.getItem("userEmail"));
 let em = userEm.clientEmail;

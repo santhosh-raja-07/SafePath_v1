@@ -13,13 +13,21 @@ const db = getDatabase();
 
 const lawyerDetAfterSUp = JSON.parse(localStorage.getItem("userEmail"))
 
+const allIsuuesRef = ref(db , "allIssues")
+update(allIsuuesRef , {
+    issuesCount : userIssues.length
+})
 
+let closedIssuesCount = 0;
+let ProgressIssuesCount = 0;
+let openedIssuesCount = 0;
 displayUserIssues();
 
  function displayUserIssues() {
     const mainDiv = document.getElementById("main-div");
 
     userIssues.forEach((x, index) => {
+
         const div1 = document.createElement("div");
         div1.classList.add("details");
         div1.id = `det-${index}`
@@ -55,13 +63,13 @@ displayUserIssues();
 
         mainDiv.appendChild(div1);
         mainDiv.appendChild(div2);
-
         const getuserEmailElement = div2.querySelector(`#clientemail-${index}`);
         const userEmail = getuserEmailElement?.textContent.trim();
         let lawyercheck = "";
 let email = "";
 let foundId = "";
 if (userEmail) {
+
     const dbRef = ref(getDatabase());
     const getUserEmailRef = child(dbRef, "users/usermessage");
 
@@ -133,6 +141,15 @@ if (userEmail) {
                         const foundBtn = div2.querySelector(`#checkIssue-${idIndex}`);
                         if (foundBtn) {
                             console.log(foundBtn);
+                            closedIssuesCount++
+                            const IsuuesRef = ref(db, "allIssues");
+                            console.log( "allIssuesCount" , closedIssuesCount , openedIssuesCount , ProgressIssuesCount)
+                            update(IsuuesRef, {
+                                     openedIssues: openedIssuesCount,
+                                    ProgressIssues: ProgressIssuesCount,
+                                     closedIssues: closedIssuesCount,
+                             });
+                            console.log( "closedIssuesCount" , closedIssuesCount)
                             foundBtn.style.backgroundColor = "#af2608";
                             foundBtn.textContent = "Closed"
                             foundBtn.style.cursor = "not-allowed";
@@ -164,6 +181,14 @@ function findIdByValue(valueToFind) {
         const idIndex = foundId.split("-").pop();
         const foundBtn = div2.querySelector(`#checkIssue-${idIndex}`);
         if (foundBtn && foundBtn.textContent != "Closed") {
+            ProgressIssuesCount++
+            const IsuuesRef = ref(db, "allIssues");
+           console.log( "allIssuesCount" , closedIssuesCount , openedIssuesCount , ProgressIssuesCount)
+           update(IsuuesRef, {
+                    openedIssues: openedIssuesCount,
+                   ProgressIssues: ProgressIssuesCount,
+                    closedIssues: closedIssuesCount,
+            });
             console.log(foundBtn);
             foundBtn.textContent = "Inprogress"
             foundBtn.style.backgroundColor = "#7c7d7d";
@@ -187,14 +212,27 @@ function notFindValue(valueToFind) {
         const foundBtn = div2.querySelector(`#checkIssue-${idIndex}`);
         if (foundBtn) {
             console.log(foundBtn);
+            openedIssuesCount++
+            const IsuuesRef = ref(db, "allIssues");
+            console.log( "allIssuesCount" , closedIssuesCount , openedIssuesCount , ProgressIssuesCount)
+            update(IsuuesRef, {
+                     openedIssues: openedIssuesCount,
+                    ProgressIssues: ProgressIssuesCount,
+                     closedIssues: closedIssuesCount,
+             });
+            console.log( "openedIssuesCount" , openedIssuesCount)
             foundBtn.style.backgroundColor = "rgb(9, 98, 9)";
             foundBtn.style.cursor = "pointer";
             foundBtn.disabled = false;
         }
     }
 }
-
-
+// const IsuuesRef = ref(db , "allIssues")
+// update(IsuuesRef , {
+//     openedIssues :openedIssuesCount,
+//     ProgressIssues : ProgressIssuesCount,
+//     closedIssues : closedIssuesCount
+// })
         
         div1.querySelector(".toggle-view").addEventListener("click", () => {
             const arrow = document.getElementById(`arrow-${index}`);
@@ -212,6 +250,7 @@ function notFindValue(valueToFind) {
             }
 
         });
+
 
 const lawyerEmail = JSON.parse(localStorage.getItem("lawyerEmail"));
 
@@ -457,6 +496,12 @@ function filter(){
         
         if(count === filterArr.length){
             element.previousElementSibling.style.display = "block"
+        }
+        else if(count === 0){
+            element.previousElementSibling.style.display = "none"
+            const head = document.querySelector(".notfound")
+            head.style.display = "block"
+
         }
         else{
             element.previousElementSibling.style.display = "none"
