@@ -497,6 +497,12 @@ function filter(){
         if(count === filterArr.length){
             element.previousElementSibling.style.display = "block"
         }
+        else if(count === 0){
+            element.previousElementSibling.style.display = "none"
+            const head = document.querySelector(".notfound")
+            head.style.display = "block"
+
+        }
         else{
             element.previousElementSibling.style.display = "none"
         }
