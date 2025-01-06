@@ -212,14 +212,22 @@ const issuesPageButton = document.getElementById("issuespage");
         if(user && issueStatusinFB == "Submit"){
             window.location.href = "/assets/pages/usercomment.html"
         }
- 
+        
         else if(user && issueStatusinFB == "Closed" || issueStatusinFB == "" ){
         window.location.href = "/assets/pages/report.html";
         }
         else if(user && issueStatusinFB == "Closed"){
             window.location.href = "/assets/pages/report.html";
         }
-        else {
+        else if(!user){
+            alertMessage.style.background = "red"
+            alertMessage.textContent = "Please Login / Signup to access this page."
+            alertMessage.classList.add('show')
+            setTimeout(() => {
+                alertMessage.classList.remove('show')
+            }, 3000); 
+        }
+        else{
             alertMessage.style.background = "red"
             alertMessage.textContent = "Please Login / Signup to access this page."
             alertMessage.classList.add('show')
