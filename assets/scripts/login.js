@@ -215,7 +215,6 @@ const issuesPageButton = document.getElementById("issuespage");
         if(user && issueStatusinFB == "Submit"){
             window.location.href = "/assets/pages/usercomment.html"
         }
-    
         else if(!user || !email){
             alertMessage.style.background = "red"
             alertMessage.textContent = "Please Login / Signup to access this page."
