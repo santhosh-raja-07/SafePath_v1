@@ -625,10 +625,12 @@ else if (checkRole == "lawyer") {
             //closed the issues
             const removeRef = ref(database , `OpendIssues/${email}`);
             remove(removeRef)
+            usEmail = usEmail.replace(/[\.\#\$\[\]]/g, "_")
             const deleteRef = ref(database , `users/usermessage/${usEmail}/issuseOpened`)
             update(deleteRef , {
                 issueStatus : "Closed"
             })
+            usEmail = usEmail.replace("_", ".")
             const closeissueRef = ref(database , `closedIssues`)
             update(closeissueRef , {
                 userEmail : usEmail
@@ -795,8 +797,7 @@ if (issuePriority.exists()) {
             localStorage.setItem("lawyermessageCount" , msgSnapshot.val().msgCount)
         } else {
             localStorage.setItem("lawyermessageCount" , 1)
-            console.log("No messagescount available");
-            
+            console.log("No messagescount available"); 
         }
 
        

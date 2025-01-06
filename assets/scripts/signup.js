@@ -196,11 +196,7 @@ signupBtn.addEventListener("click", async (event) => {
     if (isValid) {
         try {
             // Create User with Firebase Authentication
-            const userCredential = await createUserWithEmailAndPassword(
-                auth,
-                email.value.trim(),
-                password.value.trim()
-            );
+            const userCredential = await createUserWithEmailAndPassword(auth, email.value.trim(), password.value.trim());
             const user = userCredential.user;
 
             // Update user profile with display name
@@ -260,6 +256,14 @@ signupBtn.addEventListener("click", async (event) => {
                 emailError.textContent = "An error occurred. Please try again.";
             }
         }
+    }
+    else if(conPassword.value != password.value){
+        conPassError.textContent = "Passwords do not match.";
+    }
+    else{
+        usernameError.textContent = "Enter a userNameee with 3 to 32 characters";
+        emailError.textContent = "Enter a valid email address."
+        passError.textContent = "Password must have at least"
     }
 });
 

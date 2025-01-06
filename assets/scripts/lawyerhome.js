@@ -92,7 +92,6 @@ if (userEmail) {
 
                         if (getlawyerAssignSnapshot.exists()) {
                             const lawyerAssignedData = getlawyerAssignSnapshot.val();
-
                             if (
                                 lawyerAssignedData &&
                                 lawyerAssignedData.lawyerAssigned &&
