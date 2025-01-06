@@ -97,6 +97,7 @@ if (checkRole == "user") {
         <button id="sendMsg">Send</button>
     </form>`;
 
+
     const logoutButton = document.querySelector(".loginout")
     onAuthStateChanged(auth, async (user) => {
         if (user) {
@@ -161,6 +162,9 @@ if (checkRole == "user") {
     const lawyerAssigned = document.getElementById("Lawyer");
 
  let lawEmail = ""
+function getMsg(){
+        fetchAllMessages()
+}
     async function fetchAllMessages() {
         const userEmail = JSON.parse(localStorage.getItem("userEmail"));
         let email = userEmail.clientEmail;
@@ -283,6 +287,7 @@ if (checkRole == "user") {
     }
     }
 }
+let getmessage = false
     const messageInput = document.getElementById("message");
     document.getElementById("sendMsg").addEventListener("click", (e) => {
         e.preventDefault();
@@ -292,12 +297,12 @@ if (checkRole == "user") {
         }
     });
 
-     function sendMessage(message) {
+   function sendMessage(message) {
         const msgDiv = document.createElement("div");
         msgDiv.classList.add("mymsg");
         msgDiv.textContent = message;
         document.querySelector(".messageContainer").append(msgDiv);
-        msgStored(message);
+         msgStored(message);
     }
 
     async function msgStored(message) {
@@ -329,7 +334,10 @@ if (checkRole == "user") {
         try {
             await set(child(userRef, "messageCount"), msgCount);
             await update(userRef, updateMessage);
-
+            getmessage = true
+            if(getmessage){
+                getMsg()
+            }
             console.log("Data has been written successfully!");
             localStorage.setItem("usermessageCount", JSON.stringify(count + 1));
         } catch (error) {
@@ -458,6 +466,8 @@ else if (checkRole == "lawyer") {
             <input type="text" id="message" placeholder="Type your message..." autocomplete="off" required>
             <button id="sendMsg">Send</button>
         </form>`;
+
+
         const issuesTitle = document.getElementById("issuesTitle");
         const issuesDescription = document.getElementById("issuesDescription");
         const clientName = document.getElementById("clientName");
@@ -683,6 +693,10 @@ else if (checkRole == "lawyer") {
         window.location.href = "/index.html";
     }
 
+    function getMsg(){
+            fetchAllMessages()
+    }
+
     async function fetchAllMessages() {
         const lawyerEmail = JSON.parse(localStorage.getItem("userEmail"));
         let email = lawyerEmail.clientEmail;
@@ -849,6 +863,7 @@ if (issuePriority.exists()) {
         
         
     }
+    let  getmessage = false
     // Handle sending messages
     const sendMsgButton = document.getElementById("sendMsg");
     const messageInput = document.getElementById("message");
@@ -866,7 +881,9 @@ if (issuePriority.exists()) {
         msgDiv.classList.add("mymsg");
         msgDiv.textContent = message;
         document.querySelector(".messageContainer").append(msgDiv);
+        console.log("function calling")
         msgStored(message);
+
     }
     
     // Store message in Firestore
@@ -906,6 +923,10 @@ if (issuePriority.exists()) {
         try {
             await set(child(userRef, "messageCount"), msgCount);
             await update(userRef, updateMessage);
+            getmessage = true
+            if(getmessage){
+                getMsg()
+            }
             console.log("Data has been written successfully!");
             console.log(count)
             localStorage.setItem("lawyermessageCount", count + 1);
