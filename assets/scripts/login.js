@@ -68,7 +68,6 @@ loginBtn.addEventListener("click", (event) => {
                 setTimeout(() => {
                     alertMessage.classList.remove('show');
                 }, 2000); 
-                window.location.reload()
                displayLoggedInUI();
             // check = true
         })
@@ -209,7 +208,6 @@ const issuesPageButton = document.getElementById("issuespage");
         const user = auth.currentUser;
 
         console.log(issueStatusinFB)
-
         // const checkForIssuesSubmit = JSON.parse(localStorage.getItem("issuesSubmit"))
         if(user && issueStatusinFB == "Submit"){
             window.location.href = "/assets/pages/usercomment.html"
