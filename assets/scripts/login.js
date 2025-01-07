@@ -212,16 +212,17 @@ const issuesPageButton = document.getElementById("issuespage");
 
         console.log(issueStatusinFB)
         // const checkForIssuesSubmit = JSON.parse(localStorage.getItem("issuesSubmit"))
-        if(user && issueStatusinFB == "Submit"){
-            window.location.href = "/assets/pages/usercomment.html"
-        }
-        else if(!user || !email){
+       
+        if(!user && !email){
             alertMessage.style.background = "red"
             alertMessage.textContent = "Please Login / Signup to access this page."
             alertMessage.classList.add('show')
             setTimeout(() => {
                 alertMessage.classList.remove('show')
             }, 3000); 
+        }
+        else if(user && issueStatusinFB == "Submit"){
+            window.location.href = "/assets/pages/usercomment.html"
         }
         else if(user && issueStatusinFB == "Closed" || issueStatusinFB == "" ){
             window.location.href = "/assets/pages/report.html";
