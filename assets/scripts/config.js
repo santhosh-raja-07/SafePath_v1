@@ -1,6 +1,6 @@
 export const firebaseConfig = {
   apiKey: "AIzaSyBGrcRVf1Kktffn_fYl_CtSvoCsHUK2eTg",
-  authDomain: "safepath-87ebf.firebaseapp.com",
+  authDomain: "caseassist.netlify.app",
   databaseURL: "https://safepath-87ebf-default-rtdb.firebaseio.com",
   projectId: "safepath-87ebf",
   storageBucket: "safepath-87ebf.firebasestorage.app",

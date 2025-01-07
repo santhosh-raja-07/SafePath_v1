@@ -327,8 +327,9 @@ let getmessage = false
             [`msg${count}`]: message
         };
         const msgCount = {
-            msgCount : count
+            msgCount : count+1
         }
+        
     
         // Update the message in Firebase
         try {
@@ -792,8 +793,6 @@ if (issuePriority.exists()) {
         const msgCountUserRef = child(msgCountDbRef, `users/lawyermessage/${email}/messageCount`);
         const msgSnapshot = await get(msgCountUserRef);
         if (msgSnapshot.exists()) {
-           
-            
             localStorage.setItem("lawyermessageCount" , msgSnapshot.val().msgCount)
         } else {
             localStorage.setItem("lawyermessageCount" , 1)
