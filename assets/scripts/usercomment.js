@@ -162,9 +162,9 @@ if (checkRole == "user") {
     const lawyerAssigned = document.getElementById("Lawyer");
 
  let lawEmail = ""
-function getMsg(){
-        fetchAllMessages()
-}
+// function getMsg(){
+//         fetchAllMessages()
+// }
     async function fetchAllMessages() {
         const userEmail = JSON.parse(localStorage.getItem("userEmail"));
         let email = userEmail.clientEmail;
@@ -335,10 +335,10 @@ let getmessage = false
         try {
             await set(child(userRef, "messageCount"), msgCount);
             await update(userRef, updateMessage);
-            getmessage = true
-            if(getmessage){
-                getMsg()
-            }
+            // getmessage = true
+            // if(getmessage){
+            //     getMsg()
+            // }
             console.log("Data has been written successfully!");
             localStorage.setItem("usermessageCount", JSON.stringify(count + 1));
         } catch (error) {
@@ -696,9 +696,9 @@ else if (checkRole == "lawyer") {
         window.location.href = "/index.html";
     }
 
-    function getMsg(){
-            fetchAllMessages()
-    }
+    // function getMsg(){
+    //         fetchAllMessages()
+    // }
 
     async function fetchAllMessages() {
         const lawyerEmail = JSON.parse(localStorage.getItem("userEmail"));
@@ -923,10 +923,10 @@ if (issuePriority.exists()) {
         try {
             await set(child(userRef, "messageCount"), msgCount);
             await update(userRef, updateMessage);
-            getmessage = true
-            if(getmessage){
-                getMsg()
-            }
+            // getmessage = true
+            // if(getmessage){
+            //     getMsg()
+            // }
             console.log("Data has been written successfully!");
             console.log(count)
             localStorage.setItem("lawyermessageCount", count + 1);

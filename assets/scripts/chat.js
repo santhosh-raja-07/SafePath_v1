@@ -20,10 +20,10 @@ const barChart = new Chart(bar, {
         datasets: [{
             data: [x.val().issuesCount, x.val().closedIssues, x.val().openedIssues, x.val().ProgressIssues],
             backgroundColor: [
-                'rgba(128, 0, 0, 0.8)',   // Dark Red for "All Issues"
-                'rgba(0, 128, 0, 0.8)',  // Dark Green for "Solved Issues"
-                'rgba(128, 128, 0, 0.8)', // Dark Yellow/Olive for "Unsolved Issues"
-                'rgba(0, 0, 128, 0.8)'  //Dark Blue for "In Progress"
+                'rgba(255, 128, 128, 0.5)',   // Lite Red for "All Issues"
+                'rgba(128, 255, 128, 0.5)',  // Lite Green for "Solved Issues"
+                'rgba(255, 255, 128, 0.5)', // Lite Yellow/Olive for "Unsolved Issues"
+                'rgba(128, 128, 255, 0.5)'  //Lite Blue for "In Progress"
             ],
             borderColor: [
                 'rgba(128, 0, 0, 1)',  // Matching Dark Red for "All Issues"
@@ -89,8 +89,9 @@ document.getElementById("home-page").addEventListener("click" , ()=>{
         window.location.href = "/assets/pages/lawyerHome.html"
      }
 })
-})
 
+
+console.log(checkRole)
 const logoutButton = document.querySelector("#loginout");
  onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -102,7 +103,17 @@ const logoutButton = document.querySelector("#loginout");
             logoutButton.addEventListener("click", () => {
                 if(confirm("Are you want to logout")){
                     signOut(auth).then(() => {
-                        localStorage.removeItem("role")
+                        if(checkRole === "user"){
+                            localStorage.removeItem("usermessageCount")
+                        }
+                        else if(checkRole === "lawyer"){
+                            localStorage.removeItem("lawyermessageCount")
+                        }
+                        else{
+                            return;
+                        }
+                        const roleRef = ref(database, "role");
+                        remove(roleRef);
                         userDiv.textContent = ""; // Clear the username div
                         updateUIOnLogout();
                     }).catch((error) => {
@@ -113,7 +124,7 @@ const logoutButton = document.querySelector("#loginout");
             console.log(userDiv)
         } 
     });
-  
+})
 
 function updateUIOnLogout() {
    alert("You have successfully logged out.")

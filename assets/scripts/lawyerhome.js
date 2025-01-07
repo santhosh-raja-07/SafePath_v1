@@ -26,7 +26,7 @@ displayUserIssues();
  function displayUserIssues() {
     const mainDiv = document.getElementById("main-div");
 
-    userIssues.forEach((x, index) => {6
+    userIssues.forEach((x, index) => {
 
         const div1 = document.createElement("div");
         div1.classList.add("details");
@@ -63,6 +63,7 @@ displayUserIssues();
 
         mainDiv.appendChild(div1);
         mainDiv.appendChild(div2);
+        const statusOfAssigned = div2.querySelector(`#status-${index}`)
         const getuserEmailElement = div2.querySelector(`#clientemail-${index}`);
         const userEmail = getuserEmailElement?.textContent.trim();
         let lawyercheck = "";
@@ -149,7 +150,8 @@ if (userEmail) {
                                      closedIssues: closedIssuesCount,
                              });
                             console.log( "closedIssuesCount" , closedIssuesCount)
-                            foundBtn.style.backgroundColor = "#af2608";
+                            statusOfAssigned.textContent = "Closed"
+                            foundBtn.style.backgroundColor = "#7c7d7d";
                             foundBtn.textContent = "Closed"
                             foundBtn.style.cursor = "not-allowed";
                             foundBtn.disabled = true;
@@ -189,8 +191,9 @@ function findIdByValue(valueToFind) {
                     closedIssues: closedIssuesCount,
             });
             console.log(foundBtn);
+            statusOfAssigned.textContent = "Assigned"
             foundBtn.textContent = "Inprogress"
-            foundBtn.style.backgroundColor = "#7c7d7d";
+            foundBtn.style.backgroundColor = "#007bff" ;
             foundBtn.style.cursor = "not-allowed";
             foundBtn.disabled = true;
         }
@@ -220,6 +223,7 @@ function notFindValue(valueToFind) {
                      closedIssues: closedIssuesCount,
              });
             console.log( "openedIssuesCount" , openedIssuesCount)
+            statusOfAssigned.textContent = "Unassigned"
             foundBtn.style.backgroundColor = "rgb(9, 98, 9)";
             foundBtn.style.cursor = "pointer";
             foundBtn.disabled = false;
