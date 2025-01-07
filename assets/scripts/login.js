@@ -213,7 +213,7 @@ const issuesPageButton = document.getElementById("issuespage");
         console.log(issueStatusinFB)
         // const checkForIssuesSubmit = JSON.parse(localStorage.getItem("issuesSubmit"))
        
-        if(!user && !email){
+        if(!user && !email || !user || !email){
             alertMessage.style.background = "red"
             alertMessage.textContent = "Please Login / Signup to access this page."
             alertMessage.classList.add('show')
