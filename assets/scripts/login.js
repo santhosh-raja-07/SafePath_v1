@@ -140,6 +140,7 @@ function validateEmail(email) {
             logoutButton.addEventListener("click", () => {
                 if(confirm("Are you want to logout")){
                     signOut(auth).then(() => {
+                        localStorage.removeItem("userEmail")
                         const roleRef = ref(database, `role/${em}`);
                         remove(roleRef);
                         userDiv.textContent = ""; // Clear the username div
@@ -166,7 +167,7 @@ function updateUIOnLogout() {
 }
     
 }
-let issueStatusinFB = "";
+// let issueStatusinFB = "";
 let email =""
 const userdet = JSON.parse(localStorage.getItem("userEmail")) ;
 if (!userdet || !userdet.clientEmail) {
@@ -192,9 +193,7 @@ async function checkIssueStatus() {
         const submitData = await get(issueSubRef);
 
         if (submitData.exists()) {
-            issueStatusinFB = submitData.val().issueStatus;
-            console.log("Issue Status:", issueStatusinFB);
-            // localStorage.setItem("issuesStatus" , issueStatusinFB )
+            return submitData.val().issueStatus;
         } else {
             console.log("No issue status available");
         }
@@ -202,39 +201,28 @@ async function checkIssueStatus() {
         console.error("Error fetching data:", error);
     }
 }
-console.log(issueStatusinFB)
 
 
 const issuesPageButton = document.getElementById("issuespage");
     issuesPageButton.addEventListener("click", async() => {
-        await checkIssueStatus()
+        const issueStatusinFB = await checkIssueStatus()
         const user = auth.currentUser;
-
-        console.log(issueStatusinFB)
-        // const checkForIssuesSubmit = JSON.parse(localStorage.getItem("issuesSubmit"))
        
-        if(!user && !email || !user || !email){
+        if(!user){
             alertMessage.style.background = "red"
             alertMessage.textContent = "Please Login / Signup to access this page."
             alertMessage.classList.add('show')
             setTimeout(() => {
                 alertMessage.classList.remove('show')
             }, 3000); 
+            return;
         }
-        else if(user && issueStatusinFB == "Submit"){
+        if(issueStatusinFB == "Submit"){
             window.location.href = "/assets/pages/usercomment.html"
         }
-        else if(user &&  issueStatusinFB == "" || issueStatusinFB == "Closed" ){
+        else{
             window.location.href = "/assets/pages/report.html";
             }
-        else{
-            alertMessage.style.background = "red"
-            alertMessage.textContent = "Please Login / Signup to access this page."
-            alertMessage.classList.add('show')
-            setTimeout(() => {
-                alertMessage.classList.remove('show')
-            }, 3000); 
-        }
 }); 
 
 

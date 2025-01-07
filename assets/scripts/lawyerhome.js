@@ -26,7 +26,7 @@ displayUserIssues();
  function displayUserIssues() {
     const mainDiv = document.getElementById("main-div");
 
-    userIssues.forEach((x, index) => {
+    userIssues.forEach((x, index) => {6
 
         const div1 = document.createElement("div");
         div1.classList.add("details");
