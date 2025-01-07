@@ -224,7 +224,7 @@ const issuesPageButton = document.getElementById("issuespage");
         else if(user && issueStatusinFB == "Submit"){
             window.location.href = "/assets/pages/usercomment.html"
         }
-        else if(user && issueStatusinFB == "Closed" || issueStatusinFB == "" ){
+        else if(user &&  issueStatusinFB == "" || issueStatusinFB == "Closed" ){
             window.location.href = "/assets/pages/report.html";
             }
         else{
