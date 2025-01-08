@@ -87,9 +87,6 @@ if (checkRole == "user") {
 
     chatContainer.innerHTML = `<div class="chat-messages">
         <div class="messageContainer">
-            <div class="yourmsg">Hello, how can I assist you?</div>
-            <div class="mymsg">I need help with a legal matter.</div>
-            <div class="mymsg">Can you provide some guidance?</div>
         </div>
     </div>
     <form class="chat-input-form" id="chat-form" novalidate>
@@ -458,9 +455,6 @@ else if (checkRole == "lawyer") {
 
     chatContainer.innerHTML = ` <div class="chat-messages">
         <div class="messageContainer">
-            <div class="mymsg">Hello, how can I assist you?</div>
-            <div class="yourmsg">I need help with a legal matter.</div>
-            <div class="yourmsg">Can you provide some guidance?</div>
         </div>
         </div>
         <form class="chat-input-form" id="chat-form" novalidate>
