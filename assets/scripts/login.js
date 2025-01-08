@@ -68,7 +68,11 @@ loginBtn.addEventListener("click", (event) => {
                 setTimeout(() => {
                     alertMessage.classList.remove('show');
                 }, 2000); 
+                
                displayLoggedInUI();
+               setTimeout(()=>{
+               window.location.reload()
+            },3000)
             // check = true
         })
         .catch((error) => {
@@ -132,6 +136,7 @@ function validateEmail(email) {
                           
                           userDiv.textContent = userDetails.userName;
                     }
+                    
                 })
                 .catch((error) => {
                     console.error('Error fetching user details:', error);
