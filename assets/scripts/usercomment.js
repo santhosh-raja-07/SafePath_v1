@@ -41,7 +41,7 @@ async function getRoleName() {
     }
 }
 console.log(checkRole)
-const check = getRoleName().then((x)=>{
+getRoleName().then((x)=>{
     checkRole = x
     console.log( "find the role  "+checkRole)
 
@@ -205,151 +205,75 @@ if (checkRole == "user") {
             console.log("No lawyerAssigned available");
         }
         
+    }
 
-        try {
-            const msgSnapshot = await get(userRef);
-            if (msgSnapshot.exists()) {
-                let count = 1;
-                while (msgSnapshot.val()[`msg${count}`]) {
-                    const msg = msgSnapshot.val()[`msg${count}`];
-                    
-                    // Create a new div for each message
-                    const msgDiv = document.createElement("div");
-                    msgDiv.classList.add("mymsg");
-                    msgDiv.textContent = msg; 
-                    document.querySelector(".messageContainer").append(msgDiv);
-                    count++;
-                }
-            } else {
-                console.log("No messages available");
-            }
-        } catch (error) {
-            console.error("Error fetching messages: ", error);
-        }
-
-        const msgCountDbRef = ref(getDatabase());
-        const msgCountUserRef = child(msgCountDbRef, `users/usermessage/${email}/messageCount`);
-        const msgSnapshot = await get(msgCountUserRef);
-        if (msgSnapshot.exists()) {
-            
-            
-            localStorage.setItem("usermessageCount" , msgSnapshot.val().msgCount)
-        } else {
-            
-            
-            localStorage.setItem("usermessageCount" , 1)
-            console.log("No messagescount available");
-           
-        }
-
-        // email = userEmail.clientEmail;
-        // email = email.replace(/[\.\#\$\[\]]/g, "_");
-        getlawyerMsg()
-       async function getlawyerMsg(){
-        const lawyerEmailRef  = ref(database , `users/usermessage/${email}/lawyerAssigned`)
-        const getemailData = await get(lawyerEmailRef)
-        console.log(`users/usermessages/${email}/lawyerAssigned`)
-        if(getemailData.exists()){
-            lawEmail = getemailData.val().lawyerEmail
-        // const lawyerEmail = JSON.parse(localStorage.getItem("userIssue"));
-        email = lawEmail;
+       const useremail = JSON.parse(localStorage.getItem("userEmail"));
+        let email = useremail.clientEmail;
         email = email.replace(/[\.\#\$\[\]]/g, "_");
-        console.log(email )
-        const dbRefce = ref(getDatabase());
-        const userRefce = child(dbRefce, `users/lawyermessage/${email}`);
-        try {
-            const msgSnapshot = await get(userRefce);
-            if (msgSnapshot.exists()) {
-                console.log("Messages available");
-                const messages = msgSnapshot.val();
-                let count = 1;
-                while (messages[`msg${count}`]) {
-                    const msg = messages[`msg${count}`];
-                    // Create a new div for each message
-                    const msgDiv = document.createElement("div");
-                    msgDiv.classList.add("yourmsg");
-                    msgDiv.textContent = msg; 
-                    document.querySelector(".messageContainer").append(msgDiv);
-                    count++;
-                }
-            } else {
-                console.log("No messages available");
+        
+        const lawyerEmailRef  = ref(database , `users/usermessage/${email}/lawyerAssigned`)
+        get(lawyerEmailRef).then((x)=>{
+            if(x.exists()){
+                lawEmail = x.val().lawyerEmail
             }
-        } catch (error) {
-            console.error("Error fetching messages: ", error);
-        }
-    }
-    else{
-        console.log("no lawyer msg found")
-    }
-    }
-}
-let getmessage = false
+            else{
+                console.log("no lawyeremail found")
+            }
+
+        console.log(lawEmail)
+       
+    const sendMsgButton = document.getElementById("sendMsg");
     const messageInput = document.getElementById("message");
-    document.getElementById("sendMsg").addEventListener("click", (e) => {
+    let  userEmaill= useremail.clientEmail
+    userEmaill = userEmaill.replace(/[\.\#\$\[\]]/g, "_");
+    email = lawEmail.replace(/[\.\#\$\[\]]/g, "_")
+    let emailArr = [email, userEmaill].sort().join("_")
+   console.log(emailArr)
+    const userRefec = ref(database, `chats/${emailArr}/usermessages`);
+    const msgRef = ref(database , `chats/${emailArr}/Lawyermessages`);
+    
+    onChildAdded(msgRef , (msg)=>{
+        const message = msg.val();
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("yourmsg");
+        msgDiv.textContent = `${message.text}`;
+        document.querySelector(".messageContainer").append(msgDiv);
+    })
+    
+    sendMsgButton.addEventListener("click", (e) => {
         e.preventDefault();
         if (messageInput.value !== "") {
-            sendMessage(messageInput.value);
-            messageInput.value = "";
-        }
-    });
-
-   function sendMessage(message) {
-        const msgDiv = document.createElement("div");
-        msgDiv.classList.add("mymsg");
-        msgDiv.textContent = message;
-        document.querySelector(".messageContainer").append(msgDiv);
-         msgStored(message);
-    }
-
-    async function msgStored(message) {
-        const userEmail = JSON.parse(localStorage.getItem("userEmail"));
-        let email = userEmail.clientEmail;
-        email = email.replace(/[\.\#\$\[\]]/g, "_");
-        const userRef = ref(database, `users/usermessage/${email}`);
-        let count = localStorage.getItem("usermessageCount");
-        if (count) {
-            count = Number(count);
-        } else {
+            const message = {
+                text: messageInput.value,
+                senderId: lawEmail,
+                timestamp: Date.now(),
+            };
             try {
-                const snapshot = await get(child(userRef, "messageCount"));
-                count = snapshot.exists() ? Number(snapshot.val().msgCount) : 1;
+                push(userRefec, message); 
+                messageInput.value = ""; 
             } catch (error) {
-                console.error("Error fetching message count: ", error);
-                count = 1;
+                console.error("Error sending message:", error);
             }
         }
+    });
+    onChildAdded(userRefec, (snapshot) => {
+        const message = snapshot.val();
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("mymsg");
+        msgDiv.textContent = `${message.text}`;
+        document.querySelector(".messageContainer").append(msgDiv);
+    });
+
     
-        const updateMessage = {
-            [`msg${count}`]: message
-        };
-        const msgCount = {
-            msgCount : count+1
-        }
-        
     
-        // Update the message in Firebase
-        try {
-            await set(child(userRef, "messageCount"), msgCount);
-            await update(userRef, updateMessage);
-            // getmessage = true
-            // if(getmessage){
-            //     getMsg()
-            // }
-            console.log("Data has been written successfully!");
-            localStorage.setItem("usermessageCount", JSON.stringify(count + 1));
-        } catch (error) {
-            console.error("Error writing data: ", error);
-        }
-    }
+})
+
+        fetchAllMessages();
 
     document.getElementById("chart-page").addEventListener("click" , ()=>{
         window.location.href = "/assets/pages/chart.html"
     })
 
-    // window.setInterval(() => {
-        fetchAllMessages();
-    // }, 3000);
     document.querySelector(".loading").style.display = "none"
 
 }
@@ -497,29 +421,32 @@ else if (checkRole == "lawyer") {
 
     // let issueStatus = ""
     // let issuePriority = ""
-    // const userEmail = JSON.parse(localStorage.getItem("userEmail"));
+    const userEmail = JSON.parse(localStorage.getItem("userEmail"));
     // const lawyerEmail = JSON.parse(localStorage.getItem("lawyerEmail"));
     const setStatus = document.getElementById("status")
     const setPriority = document.getElementById("priority")
-    let email =  userEm.clientEmail;
-    email = email.replace(/[\.\#\$\[\]]/g, "_");
-    let usEmail = "";
+   let email= userEmail.clientEmail; 
+   email = email.replace(/[\.\#\$\[\]]/g, "_");
+   let usEmail = ""; 
+// console.log(email)
+(async () => {
+    try {
+        let email= userEmail.clientEmail; 
+        email = email.replace(/[\.\#\$\[\]]/g, "_");
+        console.log("Fetching user email...", email);
+        const getemailRef = ref(database, `OpendIssues/${email}/userIssue`);
+        const getuseremailData = await get(getemailRef);
 
-    (async () => {
-        try {
-            const getemailRef = ref(database, `OpendIssues/${email}/userIssue`);
-            const getuseremailData = await get(getemailRef);
-    
-            if (getuseremailData.exists()) {
-                usEmail = getuseremailData.val().clientEmail;
-                console.log("User email retrieved successfully:", usEmail);
-            } else {
-                console.log("userIssue not found");
-            }
-        } catch (error) {
-            console.error("Error fetching userIssue data:", error);
+        if (getuseremailData.exists()) {
+            usEmail = getuseremailData.val().clientEmail; 
+            console.log("User email retrieved successfully:", usEmail);
+        } else {
+            console.log("userIssue not found in database.");
         }
-             
+    } catch (error) {
+        console.error("Error fetching userIssue data:", error);
+    }
+        
     console.log(usEmail)
    
     console.log(usEmail)
@@ -693,6 +620,7 @@ else if (checkRole == "lawyer") {
     // function getMsg(){
     //         fetchAllMessages()
     // }
+    console.log(usEmail)
 
     async function fetchAllMessages() {
         const lawyerEmail = JSON.parse(localStorage.getItem("userEmail"));
@@ -757,41 +685,6 @@ if (issuePriority.exists()) {
             console.log("No lawyerAssigned available");
         }
         
-        
-        
-        try {
-            const msgSnapshot = await get(userRef);
-            if (msgSnapshot.exists()) {
-                let count = 1;
-                while (msgSnapshot.val()[`msg${count}`]) {
-                    const msg = msgSnapshot.val()[`msg${count}`];
-                    
-                    // Create a new div for each message
-                    const msgDiv = document.createElement("div");
-                    msgDiv.classList.add("mymsg");
-                    msgDiv.textContent = msg; 
-                    // I should use messagelawyer but i use messageuser due to css styling
-                    document.querySelector(".messageContainer").append(msgDiv);
-                    count++;
-                }
-            } else {
-                console.log("No messages available");
-            }
-        } catch (error) {
-            console.error("Error fetching messages: ", error);
-        }
-
-        email = userEm.clientEmail;
-        email = email.replace(/[\.\#\$\[\]]/g, "_");
-        const msgCountDbRef = ref(getDatabase());
-        const msgCountUserRef = child(msgCountDbRef, `users/lawyermessage/${email}/messageCount`);
-        const msgSnapshot = await get(msgCountUserRef);
-        if (msgSnapshot.exists()) {
-            localStorage.setItem("lawyermessageCount" , msgSnapshot.val().msgCount)
-        } else {
-            localStorage.setItem("lawyermessageCount" , 1)
-            console.log("No messagescount available"); 
-        }
 
        
         const userEmail = JSON.parse(localStorage.getItem("userEmail"));
@@ -813,35 +706,12 @@ if (issuePriority.exists()) {
                     console.log("No userIssue available");
                 }
                 email = email.replace(/[\.\#\$\[\]]/g, "_")
-                // Fetch user messages
-                const userRefce = ref(database, `users/usermessage/${email}`);
-                const msgSnapshot = await get(userRefce);
-        
-                if (msgSnapshot.exists()) {
-                    console.log("Messages available");
-                    const messages = msgSnapshot.val();
-                    let count = 1;
-        
-                    while (messages[`msg${count}`]) {
-                        const msg = messages[`msg${count}`];
-        
-                        // Create a new div for each message
-                        const msgDiv = document.createElement("div");
-                        msgDiv.classList.add("yourmsg");
-                        msgDiv.textContent = msg;
-        
-                        // Append to the message container (using "messagelawyer" for styling)
-                        document.querySelector(".messageContainer").append(msgDiv);
-                        count++;
-                    }
-                } else {
-                    console.log("No messages available");
-                }
         
                 // Update issue status
                 email = usEmail
                 // console.log(email , "userEmail")
                 email = email.replace(/[\.\#\$\[\]]/g, "_");
+
                 // console.log(email , "userEmail")
                 const assignedRef = ref(database, `users/usermessage/${email}/lawyerAssigned`);
                 const assignedData = { 
@@ -857,77 +727,49 @@ if (issuePriority.exists()) {
         
         
     }
-    let  getmessage = false
     // Handle sending messages
+    console.log(usEmail)
     const sendMsgButton = document.getElementById("sendMsg");
     const messageInput = document.getElementById("message");
+    let email = usEmail;
+    let lawEmail = userEm.clientEmail
+    email = email.replace(/[\.\#\$\[\]]/g, "_");
+    lawEmail = lawEmail.replace(/[\.\#\$\[\]]/g, "_")
+    let emailArr = [email, lawEmail].sort().join("_")
+   
+    const userRef = ref(database, `chats/${emailArr}/Lawyermessages`);
+    const msgRef = ref(database , `chats/${emailArr}/usermessages`)
     
     sendMsgButton.addEventListener("click", (e) => {
         e.preventDefault();
         if (messageInput.value !== "") {
-            sendMessage(messageInput.value);
-            messageInput.value = "";
+            const message = {
+                text: messageInput.value,
+                senderId: lawEmail,
+                timestamp: Date.now(),
+            };
+            try {
+                push(userRef, message); 
+                messageInput.value = ""; 
+            } catch (error) {
+                console.error("Error sending message:", error);
+            }
         }
     });
-    
-    function sendMessage(message) {
+    onChildAdded(userRef, (snapshot) => {
+        const message = snapshot.val();
         const msgDiv = document.createElement("div");
         msgDiv.classList.add("mymsg");
-        msgDiv.textContent = message;
+        msgDiv.textContent = `${message.text}`;
         document.querySelector(".messageContainer").append(msgDiv);
-        console.log("function calling")
-        msgStored(message);
-
-    }
-    
-    // Store message in Firestore
-    async function msgStored(message) {
-        // const lawyerEmail = JSON.parse(localStorage.getItem("lawyerEmail"));
-        let email = userEm.clientEmail;
-        email = email.replace(/[\.\#\$\[\]]/g, "_");
-        const userRef = ref(database, `users/lawyermessage/${email}`);
-        
-        let count = localStorage.getItem("lawyermessageCount");
-        if (count) {
-            count = Number(count);
-        } else {
-            count = 1;
-        }
-            try {
-                const snapshot = await get(child(userRef, "messageCount"));
-                console.log(snapshot.exists())
-                console.log(snapshot.val())
-                count = snapshot.exists() ? Number(snapshot.val().msgCount) : 1;
-            } catch (error) {
-                console.error("Error fetching message count: ", error);
-                count = 1;
-            } 
-
-        if (isNaN(count)) {
-            console.error("Invalid count detected. Resetting to 1.");
-            count = 1; // Reset to 1 if the value is invalid
-        }
-        const updateMessage = {
-            [`msg${count}`]: message
-        };
-        const msgCount= {
-            msgCount : count + 1
-        }
-        // Update the message in Firebase
-        try {
-            await set(child(userRef, "messageCount"), msgCount);
-            await update(userRef, updateMessage);
-            // getmessage = true
-            // if(getmessage){
-            //     getMsg()
-            // }
-            console.log("Data has been written successfully!");
-            console.log(count)
-            localStorage.setItem("lawyermessageCount", count + 1);
-        } catch (error) {
-            console.error("Error writing data: ", error);
-        }
-    }
+    });
+    onChildAdded(msgRef, (msg) => {
+        const message = msg.val();
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("yourmsg");
+        msgDiv.textContent = `${message.text}`;
+        document.querySelector(".messageContainer").append(msgDiv);
+    });
 
     // window.setInterval(() => {
         fetchAllMessages();
