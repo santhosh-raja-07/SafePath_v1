@@ -13,8 +13,9 @@ const loginPassword = document.getElementById("PASSWORD");
 const logEmailError = document.getElementById("emailError");
 const passwordError = document.getElementById("passwordError");
 const logoutButton = document.getElementById("loginout");
+const alertMessage = document.getElementById('alert-message');
 
-let em =""
+let em = ""
 // Login Button Event
 loginBtn.addEventListener("click", (event) => {
     event.preventDefault();
@@ -42,7 +43,13 @@ loginBtn.addEventListener("click", (event) => {
         .then((userCredential) => {
             const user = userCredential.user;
             localStorage.setItem("userEmail", JSON.stringify({ clientEmail: loginEmail.value.trim() }));
-            alert("Login successful!");
+            alertMessage.style.background = "#4CAF50"
+            alertMessage.textContent = "Login successfully!"
+            alertMessage.classList.add('show')
+            setTimeout(() => {
+                alertMessage.classList.remove('show');
+
+            }, 1000);
             redirect();
         })
         .catch((error) => {
@@ -69,12 +76,9 @@ function validateEmail(email) {
 }
 
 function redirect() {
-    // const loadingAnimation = document.querySelector(".loading");
-    // loadingAnimation.style.display = "block";
-    // setTimeout(() => {
-        // loadingAnimation.style.display = "none";
-        window.location.href = "/assets/pages/lawyerHome.html";
-    // }, 1000);
+    setTimeout(() => {
+    window.location.href = "/assets/pages/lawyerHome.html";
+}, 2000);
 }
 
 // Signup Redirect

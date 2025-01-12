@@ -48,6 +48,9 @@
     list-style: none;
     padding: 5px;
 }
+#login-button:hover{
+      background-color: #4CAF50;
+}
 .favicon{
      font-size: 30px;
      margin-right: 10px;
