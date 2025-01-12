@@ -16,19 +16,19 @@ console.log(typeof Chart)
 const barChart = new Chart(bar, {
     type: "bar",
     data: {
-        labels: ["All Issues", "Solved Issues", "Unsolved Issues", "In Progress"],
+        labels: ["All Issues", "Closed Issues", "Opend Issues", "In Progress"],
         datasets: [{
             data: [x.val().issuesCount, x.val().closedIssues, x.val().openedIssues, x.val().ProgressIssues],
             backgroundColor: [
                 'rgba(255, 128, 128, 0.5)',   // Lite Red for "All Issues"
-                'rgba(128, 255, 128, 0.5)',  // Lite Green for "Solved Issues"
-                'rgba(255, 255, 128, 0.5)', // Lite Yellow/Olive for "Unsolved Issues"
+                'rgba(128, 255, 128, 0.5)',  // Lite Green for "Closed Issues"
+                'rgba(255, 255, 128, 0.5)', // Lite Yellow/Olive for "Opend Issues"
                 'rgba(128, 128, 255, 0.5)'  //Lite Blue for "In Progress"
             ],
             borderColor: [
                 'rgba(128, 0, 0, 1)',  // Matching Dark Red for "All Issues"
-                'rgba(0, 128, 0, 1)',  // Matching Dark Green for "Solved Issues"
-                'rgba(128, 128, 0, 1)', // Matching Dark Yellow/Olive for "Unsolved Issues"
+                'rgba(0, 128, 0, 1)',  // Matching Dark Green for "Closed Issues"
+                'rgba(128, 128, 0, 1)', // Matching Dark Yellow/Olive for "Opend Issues"
                 'rgba(0, 0, 128, 1)'   // Matching Dark Blue for "In Progress"
             ],
             borderWidth: 1
@@ -131,8 +131,5 @@ function updateUIOnLogout() {
    window.location.href = "/index.html";
 }
 
-// document.getElementById("pervious-page").addEventListener("click", () => {
-//     window.location.href="../pages/report.html"
-// });
 
 
