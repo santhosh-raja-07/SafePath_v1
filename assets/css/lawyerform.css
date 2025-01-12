@@ -42,6 +42,36 @@ h4 {
     color: #555;
     font-size: 14px;
 }
+.alert {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    z-index: 30;
+  }
+  
+  @keyframes showAlert {
+    0% {
+      top: -50px;
+      opacity: 0;
+    }
+    100% {
+      top: 20px;
+      opacity: 1;
+    }
+  }
+
+  .alert.show {
+    display: block;
+    animation: showAlert 1s ease-out forwards; /* Apply keyframe animation */
+  }
 
 input[type="text"],
 input[type="email"],

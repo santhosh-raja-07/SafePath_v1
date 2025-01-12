@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut , onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { getFirestore, collection, addDoc , query, where, getDocs , doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, where, getDocs, doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { firebaseConfig } from "./config.js";
-import { getDatabase, ref, set, get, child ,  update  } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+import { getDatabase, ref, set, get, child, update } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 
 
 const app = initializeApp(firebaseConfig);
@@ -18,6 +18,7 @@ const YearsOfExp = document.getElementById("YearsOfExp");
 const signIn = document.getElementById("signIn");
 const password = document.getElementById("password")
 const conPassword = document.getElementById("con-password")
+const alertMessage = document.getElementById('alert-message');
 
 const lawyerNameError = document.getElementById("lawyernameError");
 const lawyerEmailError = document.getElementById("lawyermailError");
@@ -31,7 +32,7 @@ lawyerName.addEventListener("input", validateUsername);
 lawyerEmail.addEventListener("input", validateEmail);
 lawyersId.addEventListener("input", validatelawyersId);
 YearsOfExp.addEventListener("input", validateYearsOfExperience);
-conPassword.addEventListener("input" , validateConfirmPassword);
+conPassword.addEventListener("input", validateConfirmPassword);
 password.addEventListener("input", validatePassword);
 // document.getElementById("others").addEventListener("input", subCategory)
 
@@ -85,7 +86,7 @@ function validatePassword() {
         return true;
     } else {
         let errorMsg = "Password must have at least: ";
-        if(decimalAndNegative) errorMsg ="please use whole numbers, "
+        if (decimalAndNegative) errorMsg = "please use whole numbers, "
         if (!Lowercase) errorMsg = "one lowercase letter, ";
         if (!Uppercase) errorMsg = "one uppercase letter, ";
         if (!Number) errorMsg = "one number, ";
@@ -136,13 +137,13 @@ function validateYearsOfExperience() {
 const othersInput = document.getElementById("others")
 lawCategory.addEventListener("change", () => {
     if (lawCategory.value !== "Areas of Legal Expertise") {
-        lawCategoryError.textContent = ""; 
+        lawCategoryError.textContent = "";
     }
-    if (lawCategory.value === "other" && othersInput.value.trim() === "" ) {
+    if (lawCategory.value === "other" && othersInput.value.trim() === "") {
         otherCategory.style.display = "block";
         lawCategoryError.textContent = "Please specify the other category.";
     } else {
-        otherCategory.style.display = "none"; 
+        otherCategory.style.display = "none";
         othersInput.value = "";
         lawCategoryError.textContent = ""
     }
@@ -150,7 +151,7 @@ lawCategory.addEventListener("change", () => {
 
 othersInput.addEventListener("input", () => {
     if (othersInput.value.trim() !== "") {
-        lawCategoryError.textContent = ""; 
+        lawCategoryError.textContent = "";
     }
 });
 
@@ -211,8 +212,15 @@ signIn.addEventListener("click", async (event) => {
             const sanitizedEmail = lawyerEmail.value.trim().replace(/[\.\#\$\[\]]/g, "_");
             await set(ref(database, `role/${sanitizedEmail}`), { roleName: "lawyer" });
 
-            alert("Account created successfully!");
+            alertMessage.style.background = "#4CAF50"
+            alertMessage.textContent = "Account created successfully!"
+            alertMessage.classList.add('show')
+            setTimeout(() => {
+                alertMessage.classList.remove('show');
+            }, 1000);
+            setTimeout(() => {
             window.location.href = "/assets/pages/lawyerHome.html";
+        }, 2000);
         } catch (error) {
             if (error.code === "auth/email-already-in-use") {
                 lawyerEmailError.textContent = "Email is already in use.";
