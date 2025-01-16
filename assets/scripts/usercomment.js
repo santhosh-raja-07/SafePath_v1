@@ -239,6 +239,19 @@ if (checkRole == "user") {
         msgDiv.textContent = `${message.text}`;
         document.querySelector(".messageContainer").append(msgDiv);
     })
+
+    function updateButtonState() {
+        if (lawyerAssigned.textContent === "Unassigned") {
+            sendMsgButton.style.backgroundColor = "#7c7d7d";
+            sendMsgButton.style.cursor = "not-allowed";
+            sendMsgButton.disabled = true;
+        } else {
+            sendMsgButton.style.backgroundColor = "rgb(9, 98, 9)";
+            sendMsgButton.style.cursor = "pointer"; 
+            sendMsgButton.disabled = false;
+        }
+    }
+    updateButtonState();
     
     sendMsgButton.addEventListener("click", (e) => {
         e.preventDefault();

@@ -66,7 +66,9 @@ let check = true
             };
           await set(userRef, submitData);
           console.log("succesfully submited");
-        
+          setTimeout(() => {
+            window.location.href= "/assets/pages/usercomment.html";
+          }, 1000);
             }
 
         } else {
@@ -113,9 +115,6 @@ function updateUIOnLogout() {
   function showErrorPopup(message) {
     document.getElementById("popup-message").textContent = message;
     errorPopup.classList.remove("hidden");
-    setTimeout(() => {
-      window.location.href= "/assets/pages/usercomment.html";
-  }, 3000);
   }
 
   // Close popup
