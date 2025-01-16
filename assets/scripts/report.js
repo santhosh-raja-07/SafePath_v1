@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closePopupButton = document.getElementById("close-popup");
   const submitButton = document.getElementById("submit-btn");
 
+  
   // Load user data
   const userData = JSON.parse(localStorage.getItem("user")) || { userNameee: "Guest" };
   usernameDisplay.textContent = userData.userNameee;
