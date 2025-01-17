@@ -115,6 +115,11 @@
 #filter-btn:hover , #can-filter:hover {
     background-color: green;
 }
+.filtererror{
+    position: relative;
+    top: 100px;
+    text-align: center;
+ }
 
 .btns{
     display: flex;
