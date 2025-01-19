@@ -399,7 +399,7 @@ else if (checkRole == "lawyer") {
     // const userIssuesDetails = JSON.parse(localStorage.getItem("userIssue"));
     let em = userEm.clientEmail
     em = em.replace(/[\.\#\$\[\]]/g, "_");
-
+    let replaceEmail = ""
     const issuesRef = ref(getDatabase());
     const issueSubRef = child(issuesRef, `OpendIssues/${em}/userIssue`);
     get(issueSubRef)
@@ -537,7 +537,7 @@ else if (checkRole == "lawyer") {
     document.querySelector(".closeBtn").addEventListener("click", () => {
         const modal = document.getElementById("customModal");
         modal.style.display = "block";
-        document.getElementById("confirmYes").addEventListener("click", () => {
+        document.getElementById("confirmYes").addEventListener("click", async() => {
             localStorage.removeItem("userIssue");
             const lawyerEmail = JSON.parse(localStorage.getItem("lawyerEmail"));
             let email =lawyerEmail.lawyerEmail;
@@ -554,9 +554,24 @@ else if (checkRole == "lawyer") {
                 issueStatus : "Closed"
             })
             usEmail = usEmail.replace("_", ".")
-            const closeissueRef = ref(database , `closedIssues`)
+            replaceEmail = usEmail.replace(".", "_");
+            const existRef = ref(database,'closedIssues');
+            const existResponse = await get(existRef);
+            let existArr;
+
+
+            if(existResponse.exists()){
+                existArr = await existResponse.val()
+            }
+            else{
+                existArr = [];
+            }
+            
+            console.log(existArr)
+            let newArr = [...existArr,usEmail]
+            const closeissueRef = ref(database)
             update(closeissueRef , {
-                userEmail : usEmail
+                closedIssues: newArr
             })
             .then(()=>{
                 console.log("key and its value have been removed successfully.")
