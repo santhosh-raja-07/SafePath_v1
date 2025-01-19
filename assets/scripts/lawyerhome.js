@@ -128,37 +128,41 @@ if (userEmail) {
         const closedRef = ref(db , `closedIssues`)
         get(closedRef).then((x)=>{
             if(x.exists()){
-                if(x.val().userEmail === userEmail){
-                    const allDivs = div2.querySelectorAll("div");
-                    for (const div of allDivs) {
-                        if (div.textContent.trim() === userEmail) {
-                            foundId = div.id;
-                            break;
+                let data = x.val();
+                for(let mail of data){
+                    if(mail === userEmail){
+                        const allDivs = div2.querySelectorAll("div");
+                        for (const div of allDivs) {
+                            if (div.textContent.trim() === userEmail) {
+                                foundId = div.id;
+                                break;
+                            }
                         }
-                    }
-                    if (foundId) {
-                        const idIndex = foundId.split("-").pop();
-                        const foundBtn = div2.querySelector(`#checkIssue-${idIndex}`);
-                        if (foundBtn) {
-                            console.log(foundBtn);
-                            closedIssuesCount++
-                            const IsuuesRef = ref(db, "allIssues");
-                            console.log( "allIssuesCount" , closedIssuesCount , openedIssuesCount , ProgressIssuesCount)
-                            update(IsuuesRef, {
-                                     openedIssues: openedIssuesCount,
-                                    ProgressIssues: ProgressIssuesCount,
-                                     closedIssues: closedIssuesCount,
-                             });
-                            console.log( "closedIssuesCount" , closedIssuesCount)
-                            statusOfAssigned.textContent = "Closed"
-                            foundBtn.style.backgroundColor = "#7c7d7d";
-                            foundBtn.textContent = "Closed"
-                            foundBtn.style.cursor = "not-allowed";
-                            foundBtn.disabled = true;
-                            console.log("Button updated successfully:", foundBtn);
+                        if (foundId) {
+                            const idIndex = foundId.split("-").pop();
+                            const foundBtn = div2.querySelector(`#checkIssue-${idIndex}`);
+                            if (foundBtn) {
+                                console.log(foundBtn);
+                                closedIssuesCount++
+                                const IsuuesRef = ref(db, "allIssues");
+                                console.log( "allIssuesCount" , closedIssuesCount , openedIssuesCount , ProgressIssuesCount)
+                                update(IsuuesRef, {
+                                         openedIssues: openedIssuesCount,
+                                        ProgressIssues: ProgressIssuesCount,
+                                         closedIssues: closedIssuesCount,
+                                 });
+                                console.log( "closedIssuesCount" , closedIssuesCount)
+                                statusOfAssigned.textContent = "Closed"
+                                foundBtn.style.backgroundColor = "#7c7d7d";
+                                foundBtn.textContent = "Closed"
+                                foundBtn.style.cursor = "not-allowed";
+                                foundBtn.disabled = true;
+                                console.log("Button updated successfully:", foundBtn);
+                            }
                         }
                     }
                 }
+                
             }
             else{
             console.log("closed issues not found")
@@ -346,12 +350,6 @@ let clinetEmail = clientEmail.textContent
             } else if (email2 && email2 !== "") {
                 email2 = email2.replace(/[\.\#\$\[\]]/g, "_");
             }
-    
-        const userRef = ref(db, `users/lawyermessage/${email2}`);
-        const data = {
-            msg1: "hii"
-        };
-        await set(userRef, data);
 
         const userRefcence = ref(db, `users/usermessage/${email2}/issuseOpened`);
         const submitData = {
@@ -383,13 +381,6 @@ let clinetEmail = clientEmail.textContent
         }
     
         const sanitizedEmail = email1.replace(/[\.\#\$\[\]]/g, "_");
-    
-        const userRef = ref(db, `users/usermessage/${sanitizedEmail}`);
-        const data = {
-            msg1: "hii"
-        };
-    
-        await set(userRef, data);
         const userRefcence = ref(db, `users/usermessage/${sanitizedEmail}/issuseOpened`);
         const submitData = {
             issueStatus : "Submit"
@@ -408,7 +399,7 @@ let clinetEmail = clientEmail.textContent
 
 
     });
-
+document.querySelector(".load-animation").style.display = "none"
     document.querySelector(".loading").style.display = "none";
 }
 
@@ -462,6 +453,7 @@ document.getElementById("clear").addEventListener("click" , ()=>{
 document.querySelector(".search-input").addEventListener("input", searchIssues);
 
 let valCount = 0;
+let check = true;
 function filter(){
     let filterItems = document.querySelectorAll(".filterItems");
     filterItems.forEach((e)=>{
@@ -499,15 +491,24 @@ function filter(){
         
         if(count === filterArr.length){
             element.previousElementSibling.style.display = "block"
+            check = false
         }
         else if(count === 0){
             element.previousElementSibling.style.display = "none"
-            const head = document.querySelector(".notfound")
-            head.style.display = "block"
-
+            errorShown();
         }
         else{
             element.previousElementSibling.style.display = "none"
+        }
+        console.log(check)
+        function errorShown(){
+            const head = document.querySelector(".notfound")
+              if(count === 0 && check){
+                head.style.display = "block"
+              }
+              else if(!check || count > 0){
+                head.style.display = "none"
+              }
         }
     })
 
@@ -544,8 +545,14 @@ async function checkIssueStatus(email) {
             clientEmailInIssues = data.clientEmail || "";
             console.log("Issue Status in FB:", clientEmailInIssues);
             if (clientEmailInIssues && clientEmailInIssues !== "") {
+                document.querySelector(".load-animation").style.display = "block"
+                document.querySelector(".loading").style.display = "flex";
                 console.log("clientData stored in localStorage:", clientEmailInIssues);
-                window.location.href = "/assets/pages/usercomment.html";
+                setTimeout(()=>{
+                    document.querySelector(".load-animation").style.display = "none"
+                    document.querySelector(".loading").style.display = "none";
+                    window.location.href = "/assets/pages/usercomment.html";
+                },7000)
             } else {
                 console.log("Client email is empty or invalid.");
             }
